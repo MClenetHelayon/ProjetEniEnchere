@@ -23,6 +23,10 @@ public class Categorie {
 		this.numCat = numCat;
 		this.libelle = libelle;
 	}
+	public Categorie(String libelle) {
+		this();
+		this.libelle = libelle;
+	}
 	
 	
 }

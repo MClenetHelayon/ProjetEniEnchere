@@ -1,6 +1,8 @@
 package org.eni.encheres.bo;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ArticleVendu {
 	private int numArticle;
@@ -12,6 +14,7 @@ public class ArticleVendu {
 	private int prixVente;
 	private Utilisateur user;
 	private Categorie categ;
+	private List<Enchere> LEnchere;
 	public int getNumArticle() {
 		return numArticle;
 	}
@@ -66,6 +69,14 @@ public class ArticleVendu {
 	public void setCateg(Categorie categ) {
 		this.categ = categ;
 	}
+	
+	public List<Enchere> getLEnchere() {
+		return LEnchere;
+	}
+	public void setLEnchere(List<Enchere> lEnchere) {
+		LEnchere = lEnchere;
+	}
+	
 	public ArticleVendu(int numArticle, String nom, String description, LocalDate dateDeb, LocalDate dateFin,
 			int prixInit, int prixVente, Utilisateur user, Categorie categ) {
 		this();
@@ -80,8 +91,22 @@ public class ArticleVendu {
 		this.categ = categ;
 	}
 	public ArticleVendu() {
-		super();
+		LEnchere = new ArrayList<Enchere>();
+	}
+	public ArticleVendu(String nom, String description, LocalDate dateDeb, LocalDate dateFin, int prixInit,
+			int prixVente, Utilisateur user, Categorie categ) {
+		this();
+		this.nom = nom;
+		this.description = description;
+		this.dateDeb = dateDeb;
+		this.dateFin = dateFin;
+		this.prixInit = prixInit;
+		this.prixVente = prixVente;
+		this.user = user;
+		this.categ = categ;
 	}
 	
-	
+	public void addEnchere(Enchere e) {
+		this.LEnchere.add(e);
+	}
 }

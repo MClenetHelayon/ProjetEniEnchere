@@ -1,5 +1,8 @@
 package org.eni.encheres.bo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Utilisateur {
 	private int idUser;
 	private String pseudo;
@@ -13,13 +16,36 @@ public class Utilisateur {
 	private String mdp;
 	private int credit;
 	private boolean admin;
+	private List<Enchere> LEnchere;
+	private List<ArticleVendu> LArtVendu;
+	private List<ArticleVendu> LArtAchete;
 	
-	public Utilisateur() {}
+	public Utilisateur() {
+		this.LEnchere = new ArrayList<Enchere>();
+		this.LArtVendu = new ArrayList<ArticleVendu>();
+		this.LArtAchete = new ArrayList<ArticleVendu>();
+	}
 
 	public Utilisateur(int idUser, String pseudo, String nom, String prenom, String email, String telephone, String rue,
 			String codePostal, String ville, String mdp, int credit, boolean admin) {
-		super();
+		this();
 		this.idUser = idUser;
+		this.pseudo = pseudo;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.email = email;
+		this.telephone = telephone;
+		this.rue = rue;
+		this.codePostal = codePostal;
+		this.ville = ville;
+		this.mdp = mdp;
+		this.credit = credit;
+		this.admin = admin;
+	}
+
+	public Utilisateur(String pseudo, String nom, String prenom, String email, String telephone, String rue,
+			String codePostal, String ville, String mdp, int credit, boolean admin) {
+		this();
 		this.pseudo = pseudo;
 		this.nom = nom;
 		this.prenom = prenom;
@@ -128,6 +154,38 @@ public class Utilisateur {
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
 	}
+
+	public List<Enchere> getLEnchere() {
+		return LEnchere;
+	}
+
+	public void setLEnchere(List<Enchere> lEnchere) {
+		this.LEnchere = lEnchere;
+	}
 	
-	
+	public List<ArticleVendu> getLArtVendu() {
+		return LArtVendu;
+	}
+
+	public void setLArtVendu(List<ArticleVendu> lArtVendu) {
+		LArtVendu = lArtVendu;
+	}
+
+	public List<ArticleVendu> getLArtAchete() {
+		return LArtAchete;
+	}
+
+	public void setLArtAchete(List<ArticleVendu> lArtAchete) {
+		LArtAchete = lArtAchete;
+	}
+
+	public void addArticleVendu(ArticleVendu av) {
+		this.LArtVendu.add(av);
+	}
+	public void addArticleAcheter(ArticleVendu aa) {
+		this.LArtAchete.add(aa);
+	}
+	public void addEnchere(Enchere e) {
+		this.LEnchere.add(e);
+	}
 }

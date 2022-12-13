@@ -1,15 +1,13 @@
 package org.eni.encheres.bo;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Enchere {
 	private int numEnchere;
 	private LocalDateTime date;
 	private int montant;
-	private List<ArticleVendu> LArtVendu;
-	private List<Utilisateur> LUser;
+	private Utilisateur user;
+	private ArticleVendu artVendu;
 	public int getNumEnchere() {
 		return numEnchere;
 	}
@@ -28,34 +26,34 @@ public class Enchere {
 	public void setMontant(int montant) {
 		this.montant = montant;
 	}
-	public List<ArticleVendu> getLArtVendu() {
-		return LArtVendu;
+
+	public Utilisateur getUser() {
+		return user;
 	}
-	public void setLArtVendu(List<ArticleVendu> lArtVendu) {
-		LArtVendu = lArtVendu;
+	public void setUser(Utilisateur user) {
+		this.user = user;
 	}
-	public List<Utilisateur> getLUser() {
-		return LUser;
+	public ArticleVendu getArtVendu() {
+		return artVendu;
 	}
-	public void setLUser(List<Utilisateur> lUser) {
-		LUser = lUser;
+	public void setArtVendu(ArticleVendu artVendu) {
+		this.artVendu = artVendu;
 	}
-	public Enchere(int numEnchere, LocalDateTime date, int montant) {
+	public Enchere() {}
+	public Enchere(LocalDateTime date, int montant, Utilisateur user, ArticleVendu artVendu) {
+		this();
+		this.date = date;
+		this.montant = montant;
+		this.user = user;
+		this.artVendu = artVendu;
+	}
+	public Enchere(int numEnchere, LocalDateTime date, int montant, Utilisateur user, ArticleVendu artVendu) {
 		this();
 		this.numEnchere = numEnchere;
 		this.date = date;
 		this.montant = montant;
-	}
-	public Enchere() {
-		this.LUser=new ArrayList<Utilisateur>();
-		this.LArtVendu=new ArrayList<ArticleVendu>();
-	}
-	
-	public void addLUser(Utilisateur user) {
-		this.LUser.add(user);
-	}
-	public void addLArtVendu(ArticleVendu art) {
-		this.LArtVendu.add(art);
+		this.user = user;
+		this.artVendu = artVendu;
 	}
 	
 }
