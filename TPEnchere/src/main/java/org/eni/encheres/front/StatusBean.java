@@ -19,9 +19,11 @@ public class StatusBean {
 	}
 	
 	@PostConstruct
-	public void init(HttpServletRequest request) {
+	public HttpSession init(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		
 		session.setAttribute("isConnect", true);
+		
+		return session;
 	}
 }
