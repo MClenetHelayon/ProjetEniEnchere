@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eni.encheres.back.BusinessException;
 import org.eni.encheres.back.bo.Categorie;
+import org.eni.encheres.back.bo.Utilisateur;
 import org.eni.encheres.back.dal.DAOFactory;
 
 public class CategorieManager {
@@ -41,6 +42,20 @@ public class CategorieManager {
 	public void delete(int id) {
 		try {
 			DAOFactory.getCategorieDAO().delete(id);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+	}
+	public void insert(Categorie categ) {
+		try {
+			DAOFactory.getCategorieDAO().insert(categ);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+	}
+	public void update(Categorie categ) {
+		try {
+			DAOFactory.getCategorieDAO().update(categ);
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}

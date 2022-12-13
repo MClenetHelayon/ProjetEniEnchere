@@ -39,10 +39,10 @@ public class UtilisateurManager {
 		}
 		return vretour;
 	}
-	public Utilisateur selectById(String emailOrName) {
+	public Utilisateur selectById(String emailOrName,String mdp) {
 		Utilisateur vretour = null;
 		try {
-			vretour = (Utilisateur) DAOFactory.getUtilisateurDAO().selectByNameOrEmail(emailOrName);
+			vretour = (Utilisateur) DAOFactory.getUtilisateurDAO().selectByNameOrEmail(emailOrName,mdp);
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}
@@ -51,6 +51,20 @@ public class UtilisateurManager {
 	public void delete(int id) {
 		try {
 			DAOFactory.getUtilisateurDAO().delete(id);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+	}
+	public void insert(Utilisateur user) {
+		try {
+			DAOFactory.getUtilisateurDAO().insert(user);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+	}
+	public void update(Utilisateur user) {
+		try {
+			DAOFactory.getUtilisateurDAO().update(user);
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eni.encheres.back.BusinessException;
 import org.eni.encheres.back.bo.ArticleVendu;
+import org.eni.encheres.back.bo.Utilisateur;
 import org.eni.encheres.back.dal.DAOFactory;
 
 public class ArticleVenduManager {
@@ -48,6 +49,13 @@ public class ArticleVenduManager {
 	public void insert(ArticleVendu artVen) {
 		try {
 			DAOFactory.getArticleVenduDAO().insert(artVen);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+	}
+	public void update(ArticleVendu artVen) {
+		try {
+			DAOFactory.getArticleVenduDAO().update(artVen);
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eni.encheres.back.BusinessException;
 import org.eni.encheres.back.bo.Enchere;
+import org.eni.encheres.back.bo.Utilisateur;
 import org.eni.encheres.back.dal.DAOFactory;
 
 public class EnchereManager {
@@ -31,7 +32,7 @@ public class EnchereManager {
 	public Enchere selectById(int id) {
 		Enchere vretour = null;
 		try {
-			vretour = (Enchere) DAOFactory.getEnchereDAO().selectById(id);
+			vretour = DAOFactory.getEnchereDAO().selectById(id);
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}
@@ -40,6 +41,20 @@ public class EnchereManager {
 	public void delete(int id) {
 		try {
 			DAOFactory.getEnchereDAO().delete(id);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+	}
+	public void insert(Enchere ench) {
+		try {
+			DAOFactory.getEnchereDAO().insert(ench);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+	}
+	public void update(Enchere ench) {
+		try {
+			DAOFactory.getEnchereDAO().update(ench);
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}

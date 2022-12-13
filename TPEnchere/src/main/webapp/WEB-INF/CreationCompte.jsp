@@ -9,7 +9,7 @@
 	</header>
 	<main>
 		<h1>Mon profil</h1>
-		<form class="createAccount-form-init" method="post" action="${pageContext.request.contextPath}/">
+		<form class="createAccount-form-init" method="post" action="${pageContext.request.contextPath}/ServletInscription">
 			<%@include file="/WEB-INF/includes/ListProfil.jsp" %>
 			
 			<div>

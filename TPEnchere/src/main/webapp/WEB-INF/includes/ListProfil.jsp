@@ -37,20 +37,16 @@
 			<input id="lblCodePostal" type="text" name="codePostal" required>
 		</div>
 		<div class="createAccount-form-2div">
-			<label for="lblVille">Vile:</label>
+			<label for="lblVille">Ville:</label>
 			<input id="lblVille" type="text" name="ville" required>
 		</div>
 	</div>
 	
-	<c:if test="${sessionScope.isConnect == true}">
+	<c:if test="${sessionScope.isConnect != true}">
 		<div class="createAccount-form-div">
 			<div class="createAccount-form-2div">
 				<label for="lblCodePostal">Mot de passe actuel:</label>
 				<input id="lblCodePostal" type="text" name="codePostal" required>
-			</div>
-			<div class="createAccount-form-2div">
-				<label for="lblVille">Vile:</label>
-				<input id="lblVille" type="text" name="ville" required>
 			</div>
 		</div>
 	</c:if>

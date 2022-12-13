@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eni.encheres.back.BusinessException;
 import org.eni.encheres.back.bo.Retrait;
+import org.eni.encheres.back.bo.Utilisateur;
 import org.eni.encheres.back.dal.DAOFactory;
 
 
@@ -42,6 +43,20 @@ public class RetraitManager {
 	public void delete(int id) {
 		try {
 			DAOFactory.getRetraitDAO().delete(id);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+	}
+	public void insert(Retrait retrait) {
+		try {
+			DAOFactory.getRetraitDAO().insert(retrait);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+	}
+	public void update(Retrait retrait) {
+		try {
+			DAOFactory.getRetraitDAO().update(retrait);
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}

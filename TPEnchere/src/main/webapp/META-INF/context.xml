@@ -7,7 +7,7 @@
 		type="javax.sql.DataSource"
 		
 		url="jdbc:sqlserver://localhost;databasename=PROJETENCHERE;IntegratedSecurity=false;encrypt=false;trustServerCertificate=false"
-		username="USERENCHERE"
+		username="sa"
 		password="Pa$$w0rd"
 		
 		maxTotal="100"
