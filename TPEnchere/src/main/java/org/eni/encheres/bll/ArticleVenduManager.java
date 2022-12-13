@@ -45,6 +45,13 @@ public class ArticleVenduManager {
 			e.printStackTrace();
 		}
 	}
+	public void insert(ArticleVendu artVen) {
+		try {
+			DAOFactory.getArticleVenduDAO().insert(artVen);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+		}
+	}
 }
 
 

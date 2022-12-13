@@ -31,7 +31,7 @@ public class EnchereManager {
 	public Enchere selectById(int id) {
 		Enchere vretour = null;
 		try {
-			vretour = (Enchere) DAOFactory.getEnchereDAO().selectAllById(id);
+			vretour = (Enchere) DAOFactory.getEnchereDAO().selectById(id);
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}

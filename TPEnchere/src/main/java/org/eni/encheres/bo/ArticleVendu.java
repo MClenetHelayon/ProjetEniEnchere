@@ -15,6 +15,7 @@ public class ArticleVendu {
 	private Utilisateur user;
 	private Categorie categ;
 	private List<Enchere> LEnchere;
+	private boolean etatVente;
 	public int getNumArticle() {
 		return numArticle;
 	}
@@ -76,10 +77,19 @@ public class ArticleVendu {
 	public void setLEnchere(List<Enchere> lEnchere) {
 		LEnchere = lEnchere;
 	}
+	public boolean isEtatVente() {
+		return etatVente;
+	}
+	public void setEtatVente(boolean etatVente) {
+		this.etatVente = etatVente;
+	}
 	
+	public ArticleVendu() {
+		LEnchere = new ArrayList<Enchere>();
+	}
 	public ArticleVendu(int numArticle, String nom, String description, LocalDate dateDeb, LocalDate dateFin,
-			int prixInit, int prixVente, Utilisateur user, Categorie categ) {
-		this();
+			int prixInit, int prixVente, Utilisateur user, Categorie categ, boolean etatVente) {
+		super();
 		this.numArticle = numArticle;
 		this.nom = nom;
 		this.description = description;
@@ -89,13 +99,11 @@ public class ArticleVendu {
 		this.prixVente = prixVente;
 		this.user = user;
 		this.categ = categ;
-	}
-	public ArticleVendu() {
-		LEnchere = new ArrayList<Enchere>();
+		this.etatVente = etatVente;
 	}
 	public ArticleVendu(String nom, String description, LocalDate dateDeb, LocalDate dateFin, int prixInit,
-			int prixVente, Utilisateur user, Categorie categ) {
-		this();
+			int prixVente, Utilisateur user, Categorie categ, boolean etatVente) {
+		super();
 		this.nom = nom;
 		this.description = description;
 		this.dateDeb = dateDeb;
@@ -104,7 +112,9 @@ public class ArticleVendu {
 		this.prixVente = prixVente;
 		this.user = user;
 		this.categ = categ;
+		this.etatVente = etatVente;
 	}
+	
 	
 	public void addEnchere(Enchere e) {
 		this.LEnchere.add(e);

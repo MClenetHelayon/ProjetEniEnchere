@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eni.encheres.BusinessException;
+import org.eni.encheres.bll.ArticleVenduManager;
+import org.eni.encheres.bll.EnchereManager;
+import org.eni.encheres.bo.ArticleVendu;
+import org.eni.encheres.bo.Enchere;
 import org.eni.encheres.bo.Utilisateur;
 import org.eni.encheres.utilitaire.FicheMethodeBool;
 
@@ -18,7 +22,8 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 	private static final String SELECT_BY_ID = "select * from UTILISATEURS WHERE no_utilisateur = ?;";
 	private static final String SELECT_BY_PSEUDO_OR_EMAIL = "select * from UTILISATEURS WHERE pseudo like ? OR email like ?;";
 	private final static String DELETE = "DELETE FROM UTILISATEURS WHERE no_utilisateur=?;";
-	
+	private final static String INSERT = "INSERT INTO UTILISATEURS(pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
+	private final static String UPDATE = "UPDATE UTILISATEURS SET pseudo=?,nom=?,prenom=?,email=?,telephone=?,rue=?,code_postal=?,ville=?,mot_de_passe,credit=?,administrateur=? WHERE no_utilisateur=?;";
 	
 	@Override
 	public List<Utilisateur> selectAll() throws BusinessException {
@@ -30,19 +35,9 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 			
 			ResultSet rs = stmt.executeQuery(SELECT_ALL);
 			while(rs.next()) {
-				Utilisateur unUser = new Utilisateur(	rs.getInt("no_utilisateur"),
-														rs.getString("pseudo"),
-														rs.getString("nom"),
-														rs.getString("prenom"),
-														rs.getString("email"),
-														rs.getString("telephone"),
-														rs.getString("rue"),
-														rs.getString("code_postal"),
-														rs.getString("ville"),
-														rs.getString("mot_de_passe"),
-														rs.getInt("credit"),
-														FicheMethodeBool.bitToBool(rs.getByte("administrateur")));
+				Utilisateur unUser = simplyCreator(rs);
 				vretour.add(unUser);
+				
 			}
 			
 		} catch (SQLException e) {
@@ -51,6 +46,7 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 		
 		return vretour;
 	}
+	@Override
 	public Utilisateur selectById(int id) throws BusinessException{
 		Utilisateur vretour = null;
 		try(Connection cnx = ConnectionProvider.getConnection()){
@@ -58,24 +54,14 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 			pstmt.setInt(1,id);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
-				vretour = new Utilisateur(	rs.getInt("no_utilisateur"),
-											rs.getString("pseudo"),
-											rs.getString("nom"),
-											rs.getString("prenom"),
-											rs.getString("email"),
-											rs.getString("telephone"),
-											rs.getString("rue"),
-											rs.getString("code_postal"),
-											rs.getString("ville"),
-											rs.getString("mot_de_passe"),
-											rs.getInt("credit"),
-											FicheMethodeBool.bitToBool(rs.getByte("administrateur")));
+				vretour = simplyCreator(rs);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return vretour;
 	}
+	@Override
 	public Utilisateur selectByNameOrEmail(String emailOrName) throws BusinessException {
 		Utilisateur vretour = null;
 		try(Connection cnx = ConnectionProvider.getConnection()){
@@ -84,19 +70,7 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 			pstmt.setString(2,emailOrName);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
-				vretour = new Utilisateur(	rs.getInt("no_utilisateur"),
-											rs.getString("pseudo"),
-											rs.getString("nom"),
-											rs.getString("prenom"),
-											rs.getString("email"),
-											rs.getString("telephone"),
-											rs.getString("rue"),
-											rs.getString("code_postal"),
-											rs.getString("ville"),
-											rs.getString("mot_de_passe"),
-											rs.getInt("credit"),
-											FicheMethodeBool.bitToBool(rs.getByte("administrateur")));
-				break;
+				vretour = simplyCreator(rs);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -113,5 +87,92 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 			e.printStackTrace();
 		}
 	}
-
+	@Override
+	public void insert(Utilisateur lObjet) throws BusinessException {
+		if(lObjet.getPseudo()==null||lObjet.getNom()==null||lObjet.getPrenom()==null||lObjet.getEmail()==null||lObjet.getRue()==null||lObjet.getVille()==null||lObjet.getCodePostal()==null||lObjet.getMdp()==null)
+		{
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_NULL);
+			throw businessException;
+		}
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pStmt = cnx.prepareStatement(INSERT);
+			pStmt.setString(1, lObjet.getPseudo());
+			pStmt.setString(2, lObjet.getNom());
+			pStmt.setString(3, lObjet.getPrenom());
+			pStmt.setString(4, lObjet.getEmail());
+			pStmt.setString(5, lObjet.getTelephone());
+			pStmt.setString(6, lObjet.getRue());
+			pStmt.setString(7, lObjet.getCodePostal());
+			pStmt.setString(8, lObjet.getVille());
+			pStmt.setString(9, lObjet.getMdp());
+			pStmt.setInt(10, lObjet.getCredit());
+			pStmt.setByte(11,FicheMethodeBool.boolToBit(lObjet.isAdmin()));
+			pStmt.executeUpdate();
+			ResultSet rs = pStmt.getGeneratedKeys();
+			if(rs.next())
+			{
+				lObjet.setIdUser(rs.getInt(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+	}
+	@Override
+	public void update(Utilisateur lObjet) throws BusinessException {
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pStmt = cnx.prepareStatement(UPDATE);
+			pStmt.setString(1, lObjet.getPseudo());
+			pStmt.setString(2, lObjet.getNom());
+			pStmt.setString(3, lObjet.getPrenom());
+			pStmt.setString(4, lObjet.getEmail());
+			pStmt.setString(5, lObjet.getTelephone());
+			pStmt.setString(6, lObjet.getRue());
+			pStmt.setString(7, lObjet.getCodePostal());
+			pStmt.setString(8, lObjet.getVille());
+			pStmt.setString(9, lObjet.getMdp());
+			pStmt.setInt(10, lObjet.getCredit());
+			pStmt.setByte(11,FicheMethodeBool.boolToBit(lObjet.isAdmin()));
+			pStmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	private Utilisateur simplyCreator(ResultSet rs) {
+		Utilisateur vretour = null;
+		try {
+			vretour = new Utilisateur(	rs.getInt("no_utilisateur"),
+										rs.getString("pseudo"),
+										rs.getString("nom"),
+										rs.getString("prenom"),
+										rs.getString("email"),
+										rs.getString("telephone"),
+										rs.getString("rue"),
+										rs.getString("code_postal"),
+										rs.getString("ville"),
+										rs.getString("mot_de_passe"),
+										rs.getInt("credit"),
+										FicheMethodeBool.bitToBool(rs.getByte("administrateur")));
+			for(Enchere e : EnchereManager.getInstance().selectAll()) {
+				if(e.getUser().getIdUser()==rs.getInt("no_utilisateur")) {
+					vretour.addEnchere(e);
+				}
+			}
+			for(ArticleVendu av : ArticleVenduManager.getInstance().selectAll()) {
+				if(av.getUser().getIdUser()==rs.getInt("no_utilisateur")) {
+					vretour.addArticleVendu(av);
+				}
+			}
+			for(ArticleVendu aa : ArticleVenduManager.getInstance().selectAll()) {
+				if(aa.getUser().getIdUser()==rs.getInt("no_utilisateur")&&aa.isEtatVente()==false) {
+					vretour.addArticleAcheter(aa);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return vretour;
+	}
 }

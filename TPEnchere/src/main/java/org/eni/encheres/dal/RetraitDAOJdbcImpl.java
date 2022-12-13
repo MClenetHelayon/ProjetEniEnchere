@@ -17,6 +17,9 @@ public class RetraitDAOJdbcImpl implements DAO<Retrait> {
 	private final static String SELECT_ALL = "SELECT * FROM RETRAITS;";
 	private static final String SELECT_BY_ID = "select * from RETRAITS WHERE no_article = ?;";
 	private final static String DELETE = "DELETE FROM RETRAITS WHERE no_article=?;";
+	private final static String INSERT = "INSERT INTO RETRAITS(no_article,rue,code_postal,ville) VALUES(?,?,?,?);";
+	private static final String UPDATE = "UPDATE RETRAITS SET rue=?,code_postal=?,ville=? WHERE no_article=?;";
+	
 	
 	@Override
 	public List<Retrait> selectAll() {
@@ -67,6 +70,40 @@ public class RetraitDAOJdbcImpl implements DAO<Retrait> {
 			PreparedStatement pStmt = cnx.prepareStatement(DELETE);
 			pStmt.setInt(1, id);
 			pStmt.executeUpdate();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void insert(Retrait lObjet) throws BusinessException {
+		if(lObjet.getVille()==null||lObjet.getRue()==null||lObjet.getCodePostal()==null||lObjet.getArtVendu()==null||lObjet.getArtVendu().isEtatVente()==false)
+		{
+			BusinessException businessException = new BusinessException();
+			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_NULL);
+			throw businessException;
+		}
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pStmt = cnx.prepareStatement(INSERT);
+			pStmt.setInt(1,lObjet.getArtVendu().getNumArticle());
+			pStmt.setString(2, lObjet.getRue());
+			pStmt.setString(3, lObjet.getCodePostal());
+			pStmt.setString(4, lObjet.getVille());
+			pStmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void update(Retrait lObjet) throws BusinessException {
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pStmt = cnx.prepareStatement(UPDATE);
+			pStmt.setString(1, lObjet.getRue());
+			pStmt.setString(2, lObjet.getCodePostal());
+			pStmt.setString(3, lObjet.getVille());
+			pStmt.setInt(4,lObjet.getArtVendu().getNumArticle());
+			pStmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
