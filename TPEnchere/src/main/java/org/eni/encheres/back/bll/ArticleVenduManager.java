@@ -1,11 +1,11 @@
-package org.eni.encheres.bll;
+package org.eni.encheres.back.bll;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eni.encheres.BusinessException;
-import org.eni.encheres.bo.ArticleVendu;
-import org.eni.encheres.dal.DAOFactory;
+import org.eni.encheres.back.BusinessException;
+import org.eni.encheres.back.bo.ArticleVendu;
+import org.eni.encheres.back.dal.DAOFactory;
 
 public class ArticleVenduManager {
 

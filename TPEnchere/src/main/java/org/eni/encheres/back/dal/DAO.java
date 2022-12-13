@@ -1,8 +1,9 @@
-package org.eni.encheres.dal;
+package org.eni.encheres.back.dal;
 
 import java.util.List;
 
-import org.eni.encheres.BusinessException;
+import org.eni.encheres.back.BusinessException;
+
 
 public interface DAO<T> {
 	public List<T> selectAll() throws BusinessException;

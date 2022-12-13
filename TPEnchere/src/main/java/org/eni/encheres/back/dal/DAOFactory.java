@@ -1,9 +1,9 @@
-package org.eni.encheres.dal;
+package org.eni.encheres.back.dal;
 
-import org.eni.encheres.bo.ArticleVendu;
-import org.eni.encheres.bo.Categorie;
-import org.eni.encheres.bo.Enchere;
-import org.eni.encheres.bo.Retrait;
+import org.eni.encheres.back.bo.ArticleVendu;
+import org.eni.encheres.back.bo.Categorie;
+import org.eni.encheres.back.bo.Enchere;
+import org.eni.encheres.back.bo.Retrait;
 
 public abstract class DAOFactory {
 

@@ -1,4 +1,4 @@
-package org.eni.encheres.utilitaire;
+package org.eni.encheres.back.utilitaire;
 
 public class FicheMethodeBool {
 	public static boolean bitToBool(byte bit) {

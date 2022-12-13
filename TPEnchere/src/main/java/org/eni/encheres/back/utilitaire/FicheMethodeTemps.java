@@ -1,4 +1,4 @@
-package org.eni.encheres.utilitaire;
+package org.eni.encheres.back.utilitaire;
 
 import java.sql.Date;
 import java.sql.ResultSet;

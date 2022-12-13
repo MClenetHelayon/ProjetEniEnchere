@@ -1,4 +1,4 @@
-package org.eni.encheres.dal;
+package org.eni.encheres.back.dal;
 
 /**
  * Les codes disponibles sont entre 10000 et 19999

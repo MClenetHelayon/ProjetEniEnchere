@@ -1,4 +1,4 @@
-package org.eni.encheres.dal;
+package org.eni.encheres.back.dal;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,9 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eni.encheres.BusinessException;
-import org.eni.encheres.bll.ArticleVenduManager;
-import org.eni.encheres.bo.Retrait;
+import org.eni.encheres.back.BusinessException;
+import org.eni.encheres.back.bll.ArticleVenduManager;
+import org.eni.encheres.back.bo.Retrait;
 
 public class RetraitDAOJdbcImpl implements DAO<Retrait> {
 

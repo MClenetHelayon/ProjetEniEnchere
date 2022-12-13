@@ -1,11 +1,13 @@
-package org.eni.encheres.bll;
+package org.eni.encheres.back.bll;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eni.encheres.BusinessException;
-import org.eni.encheres.bo.Utilisateur;
-import org.eni.encheres.dal.DAOFactory;
+import org.eni.encheres.back.BusinessException;
+import org.eni.encheres.back.bo.Utilisateur;
+import org.eni.encheres.back.dal.DAOFactory;
+
+
 
 public class UtilisateurManager {
 	private static UtilisateurManager instance;

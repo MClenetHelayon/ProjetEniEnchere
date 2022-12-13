@@ -1,4 +1,4 @@
-package org.eni.encheres.dal;
+package org.eni.encheres.back.dal;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,13 +8,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eni.encheres.BusinessException;
-import org.eni.encheres.bll.ArticleVenduManager;
-import org.eni.encheres.bll.EnchereManager;
-import org.eni.encheres.bo.ArticleVendu;
-import org.eni.encheres.bo.Enchere;
-import org.eni.encheres.bo.Utilisateur;
-import org.eni.encheres.utilitaire.FicheMethodeBool;
+import org.eni.encheres.back.BusinessException;
+import org.eni.encheres.back.bll.ArticleVenduManager;
+import org.eni.encheres.back.bll.EnchereManager;
+import org.eni.encheres.back.bo.ArticleVendu;
+import org.eni.encheres.back.bo.Enchere;
+import org.eni.encheres.back.bo.Utilisateur;
+import org.eni.encheres.back.utilitaire.FicheMethodeBool;
+
+
 
 public class UtilisateurDAOJdbcImpl implements DAOUser {
 

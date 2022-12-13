@@ -1,4 +1,4 @@
-package org.eni.encheres.bo;
+package org.eni.encheres.back.bo;
 
 public class Categorie {
 	private int numCat;

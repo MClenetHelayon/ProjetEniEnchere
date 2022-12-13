@@ -1,4 +1,4 @@
-package org.eni.encheres.dal;
+package org.eni.encheres.back.dal;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,11 +8,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eni.encheres.BusinessException;
-import org.eni.encheres.bll.CategorieManager;
-import org.eni.encheres.bll.UtilisateurManager;
-import org.eni.encheres.bo.ArticleVendu;
-import org.eni.encheres.utilitaire.FicheMethodeTemps;
+import org.eni.encheres.back.BusinessException;
+import org.eni.encheres.back.bll.CategorieManager;
+import org.eni.encheres.back.bll.UtilisateurManager;
+import org.eni.encheres.back.bo.ArticleVendu;
+import org.eni.encheres.back.utilitaire.FicheMethodeTemps;
 
 public class ArticleVenduDAOJdbcImpl implements DAO<ArticleVendu> {
 	private static final String SELECT_ALL = "select * from ARTICLES_VENDUS av INNER JOIN CATEGORIES c ON c.no_categorie = av.no_categorie;";

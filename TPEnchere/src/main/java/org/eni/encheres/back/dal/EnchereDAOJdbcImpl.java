@@ -1,4 +1,4 @@
-package org.eni.encheres.dal;
+package org.eni.encheres.back.dal;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,14 +8,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eni.encheres.BusinessException;
-import org.eni.encheres.bll.ArticleVenduManager;
-import org.eni.encheres.bll.CategorieManager;
-import org.eni.encheres.bll.UtilisateurManager;
-import org.eni.encheres.bo.ArticleVendu;
-import org.eni.encheres.bo.Enchere;
-import org.eni.encheres.bo.Utilisateur;
-import org.eni.encheres.utilitaire.FicheMethodeTemps;
+import org.eni.encheres.back.BusinessException;
+import org.eni.encheres.back.bll.ArticleVenduManager;
+import org.eni.encheres.back.bll.UtilisateurManager;
+import org.eni.encheres.back.bo.Enchere;
+import org.eni.encheres.back.utilitaire.FicheMethodeTemps;
+
 
 public class EnchereDAOJdbcImpl implements DAO<Enchere> {
 	private static final String SELECT_ALL = "select * from ENCHERES;";
