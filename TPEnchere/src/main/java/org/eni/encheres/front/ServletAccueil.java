@@ -21,9 +21,12 @@ public class ServletAccueil extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = StatusBean.getInstance().init(request);
+		HttpSession session = request.getSession();
 		
-		System.out.println(session.getAttribute("isConnect"));
+		session.setAttribute("isConnect", false);
+		session.setAttribute("idUser", null);
+		
+		System.out.println("path Servlet: " + request.getServletPath() + " isConnect: " + session.getAttribute("isConnect") + " idUser: " + session.getAttribute("idUser"));
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Accueil.jsp");
 		rd.forward(request, response);

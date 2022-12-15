@@ -21,21 +21,44 @@ class Script {
 	}
 
 	ServletAccueil() {
-		document.querySelectorAll('input[name="achatsVentes"]').forEach(f => {
-			f.addEventListener(`change`, e => {
+		document.getElementsByName('achatsVentes').forEach(f => {
+			f.addEventListener(`click`, e => {
+				let ele = document.getElementsByName('achatsVentes');
+		              
+		        for(let i = 0; i < ele.length; i++) {
+					e.target.parentElement.parentElement.parentElement.querySelectorAll('input[type="checkbox"]').forEach(j => {
+						if(ele[i].checked){
+							//console.dir(ele[i].parentElement.parentElement.querySelectorAll('input[type="checkbox"]'))
+							//j.disabled = false;
+						} else {
+							//j.disabled = true;
+						}
+					});
+		        }
+		    });
+	    });
+		/*document.getElementsByName('achatsVentes').forEach(f => {
+			f.addEventListener(`click`, e => {
+				for(i = 0; i < e.length; i++) {
+                	if(ele[i].checked) {
+						console.log(ele[i].checked)
+					}
+                }
 				/* TODO à corriger */
-				/*e.target.parentElement.parentElement.parentElement.children.forEach(j => {
-					console.dir(j.target)
-					if(j.value == e.value) {
+				//console.log(e.target.parentElement.parentElement.parentElement.querySelectorAll('input[type="checkbox"]'))
+				/*e.target.parentElement.parentElement.parentElement.querySelectorAll('input[type="checkbox"]').forEach(j => {
+					console.dir(e.target.checked)
+					if(j.disabled == true) {
 						console.log('ok');
 					} else {
-						j.parentElement.nextSibling.children.forEach(g => {
+						console.log('okokokoko');
+						/*j.parentElement.nextSibling.children.forEach(g => {
 							g.disabled = true;
-						});
+						});*\/
 					}
-				})*/
+				})*\/
 			})
-		})
+		})*/
 	}
 	
 	ServletConnexion() {

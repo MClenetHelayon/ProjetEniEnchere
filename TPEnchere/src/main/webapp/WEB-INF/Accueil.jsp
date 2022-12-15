@@ -27,36 +27,29 @@
 		
 		<form class="filtres-form-init" method="post" action="${pageContext.request.contextPath}/">
 			<h2 class="filtres-form-h2">Filtres:</h2>
-			<input class="filtres-form-inputText" type="text" placeholder="Le nom de l'article contient" name="filtresText">
+			<input class="filtres-form-inputText" type="search" placeholder="Le nom de l'article contient" name="filtresText">
 			<div class="filtres-form-div">
-				<label>Catégorie:</label>
-				<select name="filtresCategorie">
-					<option value="0" selected>Toutes</option>
-					<option value="1">Informatique</option>
-					<option value="2">Ameublement</option>
-					<option value="3">Vêtement</option>
-					<option value="4">Sport&Loisirs</option>
-				</select>
+				<%@include file="/WEB-INF/includes/ListCategorie.jsp" %>
 			</div>
 			
-			<c:if test="${sessionScope.isConnect == true}">
+			<c:if test="${sessionScope.isConnect != true}">
 				<div class="filtres-accountConnected">
 					<div class="filtres-accountConnected-liste">
 						<div>
 							<label for="lblAchats">Achats</label>
-							<input id="lblAchats" type="radio" name="achatsVentes" value="achats">
+							<input id="lblAchats" type="radio" name="achatsVentes" value="achats" checked>
 						</div>
 						<div class="filtres-accountConnected-liste-container-checkbox">
 							<div>
-								<input id="lblEncheresOuvertes" type="checkbox" name="chkEncheresOuvertes" disabled>
+								<input id="lblEncheresOuvertes" type="checkbox" name="chkEncheresOuvertes">
 								<label for="lblEncheresOuvertes">enchères ouvertes</label>
 							</div>
 							<div>
-								<input id="lblMesEncheresEnCours" type="checkbox" name="chkMesEncheresEnCours" disabled>
+								<input id="lblMesEncheresEnCours" type="checkbox" name="chkMesEncheresEnCours">
 								<label for="lblMesEncheresEnCours">mes enchères en cours</label>
 							</div>
 							<div>
-								<input id="lblMesEncheresRemportees" type="checkbox" name="chkMesEncheresRemportees" disabled>
+								<input id="lblMesEncheresRemportees" type="checkbox" name="chkMesEncheresRemportees">
 								<label for="lblMesEncheresRemportees">mes enchères remportées</label>
 							</div>
 						</div>
