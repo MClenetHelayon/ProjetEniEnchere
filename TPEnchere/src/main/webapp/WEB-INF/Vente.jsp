@@ -8,13 +8,7 @@
 		<%@include file="/WEB-INF/includes/BouttonAccueil.jsp" %>
 	</header>
 	<main>
-		<%@include file="/WEB-INF/includes/InfoProfil.jsp" %>
-		
-		<c:if test="true">
-			<div>
-				<a class="profil-a" href="${pageContext.request.contextPath}/ServletEditProfil">Modifier</a>
-			</div>
-		</c:if>
+		<%@include file="/WEB-INF/includes/ListVente.jsp" %>
 	</main>
 	<%@include file="/WEB-INF/includes/Footer.jsp" %>
 </body>

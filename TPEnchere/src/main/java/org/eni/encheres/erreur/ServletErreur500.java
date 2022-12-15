@@ -1,4 +1,4 @@
-package org.eni.encheres.front;
+package org.eni.encheres.erreur;
 
 import java.io.IOException;
 
@@ -8,27 +8,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class ServletAccueil
+ * Servlet implementation class ServletErreur500
  */
-@WebServlet("/ServletAccueil")
-public class ServletAccueil extends HttpServlet {
+@WebServlet("/ServletErreur500")
+public class ServletErreur500 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		
-		session.setAttribute("isConnect", false);
-		session.setAttribute("idUser", null);
-		
-		System.out.println("path Servlet: " + request.getServletPath() + " isConnect: " + session.getAttribute("isConnect") + " idUser: " + session.getAttribute("idUser"));
-		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Accueil.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/pageErreurs/err500.jsp");
 		rd.forward(request, response);
 	}
+
 }

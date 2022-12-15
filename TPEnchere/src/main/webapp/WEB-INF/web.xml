@@ -5,9 +5,19 @@
     <welcome-file>ServletAccueil</welcome-file>
   </welcome-file-list>
   
-<context-param>
-	<description>Nom du site</description>
-	<param-name>NAME_SITE</param-name>
-	<param-value>ENI-Enchères</param-value>
-</context-param>
+	<context-param>
+		<description>Nom du site</description>
+		<param-name>NAME_SITE</param-name>
+		<param-value>ENI-Enchères</param-value>
+	</context-param>
+
+	<error-page>
+		<error-code>404</error-code>
+		<location>/pageErreurs/err404.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/pageErreurs/err500.jsp</location>
+	</error-page>
+
 </web-app>

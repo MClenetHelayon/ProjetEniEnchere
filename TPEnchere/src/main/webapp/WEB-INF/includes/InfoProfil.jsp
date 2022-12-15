@@ -2,35 +2,35 @@
     pageEncoding="UTF-8"%>
 <div class="profil-container">
 	<div class="profil-container-div">
-		<h4>Pseudo:</h4>
-		<h4></h4>		
+		<p>Pseudo:</p>
+		<p>Jojo44</p>		
 	</div>
-	<div>
-		<h4>Nom:</h4>
-		<h4></h4>		
+	<div class="profil-container-div">
+		<p>Nom:</p>
+		<p></p>		
 	</div>
-	<div>
-		<h4>Prénom:</h4>
-		<h4></h4>		
+	<div class="profil-container-div">
+		<p>Prénom:</p>
+		<p></p>		
 	</div>
-	<div>
-		<h4>Email:</h4>
-		<h4></h4>		
+	<div class="profil-container-div">
+		<p>Email:</p>
+		<p></p>		
 	</div>
-	<div>
-		<h4>Téléphone:</h4>
-		<h4></h4>		
+	<div class="profil-container-div">
+		<p>Téléphone:</p>
+		<p></p>		
 	</div>
-	<div>
-		<h4>Rue:</h4>
-		<h4></h4>		
+	<div class="profil-container-div">
+		<p>Rue:</p>
+		<p></p>		
 	</div>
-	<div>
-		<h4>Code postal:</h4>
-		<h4></h4>		
+	<div class="profil-container-div">
+		<p>Code postal:</p>
+		<p></p>		
 	</div>
-	<div>
-		<h4>Ville:</h4>
-		<h4></h4>		
+	<div class="profil-container-div">
+		<p>Ville:</hp4>
+		<p></p>		
 	</div>
 </div>
