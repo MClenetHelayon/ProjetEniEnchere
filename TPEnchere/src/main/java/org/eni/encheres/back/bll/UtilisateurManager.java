@@ -42,7 +42,7 @@ public class UtilisateurManager {
 	public Utilisateur connection(String emailOrName,String mdp) {
 		Utilisateur vretour = null;
 		try {
-			vretour = (Utilisateur) DAOFactory.getUtilisateurDAO().selectByNameOrEmail(emailOrName,mdp);
+			vretour = DAOFactory.getUtilisateurDAO().connection(emailOrName,mdp);
 		} catch (BusinessException e) {
 			e.printStackTrace();
 		}

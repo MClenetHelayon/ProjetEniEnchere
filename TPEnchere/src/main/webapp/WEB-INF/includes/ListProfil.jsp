@@ -4,49 +4,49 @@
 	<div class="createAccount-form-div">
 		<div class="createAccount-form-2div">
 			<label for="lblPseudo">Pseudo:</label>
-			<input id="lblPseudo" type="text" name="pseudo" required>
+			<input id="lblPseudo" type="text" name="pseudo" value="${sessionScope.userCo.pseudo}" required>
 		</div>
 		<div class="createAccount-form-2div">
 			<label for="lblNom">Nom:</label>
-			<input id="lblNom" type="text" name="nom" required>
+			<input id="lblNom" type="text" name="nom" value="${sessionScope.userCo.nom}" required>
 		</div>
 	</div>
 	<div class="createAccount-form-div">
 		<div class="createAccount-form-2div">
 			<label for="lblPrenom">Prénom:</label>
-			<input id="lblPrenom" type="text" name="prenom" required>
+			<input id="lblPrenom" type="text" name="prenom" value="${sessionScope.userCo.prenom}" required>
 		</div>
 		<div class="createAccount-form-2div">
 			<label for="lblEmail">Email:</label>
-			<input id="lblEmail" type="text" name="email" required>
+			<input id="lblEmail" type="text" name="email" value="${sessionScope.userCo.email}" required>
 		</div>
 	</div>
 	<div class="createAccount-form-div">
 		<div class="createAccount-form-2div">
 			<label for="lblTelephone">Téléphone:</label>
-			<input id="lblTelephone" type="text" name="telephone" required>
+			<input id="lblTelephone" type="text" name="telephone" value="${sessionScope.userCo.telephone}" required>
 		</div>
 		<div class="createAccount-form-2div">
 			<label for="lblRue">Rue:</label>
-			<input id="lblRue" type="text" name="rue" required>
+			<input id="lblRue" type="text" name="rue" value="${sessionScope.userCo.rue}" required>
 		</div>
 	</div>
 	<div class="createAccount-form-div">
 		<div class="createAccount-form-2div">
 			<label for="lblCodePostal">Code Postal:</label>
-			<input id="lblCodePostal" type="text" name="codePostal" required>
+			<input id="lblCodePostal" type="text" name="codePostal" value="${sessionScope.userCo.codePostal}" required>
 		</div>
 		<div class="createAccount-form-2div">
 			<label for="lblVille">Ville:</label>
-			<input id="lblVille" type="text" name="ville" required>
+			<input id="lblVille" type="text" name="ville" value="${sessionScope.userCo.ville}" required>
 		</div>
 	</div>
 	
 	<c:if test="${sessionScope.isConnect == true}">
 		<div class="createAccount-form-div">
 			<div class="createAccount-form-2div">
-				<label for="lblCodePostal">Mot de passe actuel:</label>
-				<input id="lblCodePostal" type="text" name="codePostal" required>
+				<label for="lblMdPActuel">Mot de passe actuel:</label>
+				<input id="lblMdPActuel" type="text" name="motDePasseOld" required>
 			</div>
 		</div>
 	</c:if>

@@ -28,6 +28,7 @@
 				</div>
 			</div>
 		</form>
+		<p>${requestScope.erreur }</p>
 		<a class="connexion-a" href="${pageContext.request.contextPath}/ServletCreationCompte">Créer un compte</a>
 	</main>
 	<%@include file="/WEB-INF/includes/Footer.jsp" %>

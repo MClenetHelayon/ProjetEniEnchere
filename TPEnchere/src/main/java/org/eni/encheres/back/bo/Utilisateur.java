@@ -59,6 +59,21 @@ public class Utilisateur {
 		this.admin = admin;
 	}
 
+	public Utilisateur(int idUser,String pseudo, String nom, String prenom, String email, String telephone, String rue,
+			String codePostal, String ville, String mdp) {
+		this();
+		this.idUser = idUser;
+		this.pseudo = pseudo;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.email = email;
+		this.telephone = telephone;
+		this.rue = rue;
+		this.codePostal = codePostal;
+		this.ville = ville;
+		this.mdp = mdp;
+	}
+
 	public int getIdUser() {
 		return idUser;
 	}

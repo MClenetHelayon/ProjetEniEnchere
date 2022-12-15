@@ -29,11 +29,20 @@ public class ServletConnexion extends HttpServlet {
 	}
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Utilisateur userCo =  UtilisateurManager.getInstance().connection(request.getParameter("identifiant"), request.getParameter("password"));
 		HttpSession session = request.getSession();
-		session.setAttribute("isConnect",true);
-		session.setAttribute("userCo",userCo);
-		RequestDispatcher rd = request.getRequestDispatcher("/ServletAccueil");
-		rd.forward(request, response);
+		Utilisateur userCo = null;
+		try {
+			userCo =  UtilisateurManager.getInstance().connection(request.getParameter("identifiant"), request.getParameter("password"));
+			System.out.println(userCo.toString());
+			session.setAttribute("isConnect",true);
+			session.setAttribute("userCo",userCo);
+			RequestDispatcher rd = request.getRequestDispatcher("/ServletAccueil");
+			rd.forward(request, response);
+		}catch (Exception e) {
+			request.setAttribute("erreur","erreur!!!");
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Connexion.jsp");
+			rd.forward(request, response);
+		}
+
 	}
 }

@@ -9,14 +9,15 @@
 	</header>
 	<main>
 		<h1>Mon profil</h1>
-		<form class="editAccount-form-init" method="post" action="${pageContext.request.contextPath}/">
+		<form class="editAccount-form-init" method="post" action="${pageContext.request.contextPath}/update?idUser=${sessionScope.userCo.idUser}">
 			<%@include file="/WEB-INF/includes/ListProfil.jsp" %>
 			
 			<div>
 				<input class="editAccount-submit" type="submit" value="Enregistrer">
-				<a class="supprimer-a" href="${pageContext.request.contextPath}/">Supprimer mon compte</a>
+				<a class="supprimer-a" href="${pageContext.request.contextPath}/delete?idUser=${sessionScope.userCo.idUser}">Supprimer mon compte</a>
 			</div>
 		</form>
+		<p>${result}</p>
 	</main>
 	<%@include file="/WEB-INF/includes/Footer.jsp" %>
 </body>

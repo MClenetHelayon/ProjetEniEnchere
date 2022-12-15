@@ -17,6 +17,7 @@
 				<a class="connexion-a" href="${pageContext.request.contextPath}/">Annuler</a>
 			</div>
 		</form>
+		<p>${requestScope.result}</p>
 	</main>
 	<%@include file="/WEB-INF/includes/Footer.jsp" %>
 </body>

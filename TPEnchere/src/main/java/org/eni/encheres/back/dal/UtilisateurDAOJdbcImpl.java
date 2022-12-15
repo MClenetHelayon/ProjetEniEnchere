@@ -25,7 +25,8 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 	private static final String SELECT_BY_PSEUDO_OR_EMAIL_AND_MDP = "select * from UTILISATEURS WHERE (pseudo like ? OR email like ?) AND mot_de_passe like ?;";
 	private final static String DELETE = "DELETE FROM UTILISATEURS WHERE no_utilisateur=?;";
 	private final static String INSERT = "INSERT INTO UTILISATEURS(pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
-	private final static String UPDATE = "UPDATE UTILISATEURS SET pseudo=?,nom=?,prenom=?,email=?,telephone=?,rue=?,code_postal=?,ville=?,mot_de_passe=?,credit=?,administrateur=? WHERE no_utilisateur=?;";
+	private final static String UPDATE = "UPDATE UTILISATEURS SET pseudo=?,nom=?,prenom=?,email=?,telephone=?,rue=?,code_postal=?,ville=?,mot_de_passe=? WHERE no_utilisateur=?;";
+	
 	
 	@Override
 	public List<Utilisateur> selectAll() throws BusinessException {
@@ -64,7 +65,7 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 		return vretour;
 	}
 	@Override
-	public Utilisateur selectByNameOrEmail(String emailOrName,String mdp) throws BusinessException {
+	public Utilisateur connection(String emailOrName,String mdp) throws BusinessException {
 		Utilisateur vretour = null;
 		try(Connection cnx = ConnectionProvider.getConnection()){
 			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_PSEUDO_OR_EMAIL_AND_MDP);
@@ -134,8 +135,7 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 			pStmt.setString(7, lObjet.getCodePostal());
 			pStmt.setString(8, lObjet.getVille());
 			pStmt.setString(9, lObjet.getMdp());
-			pStmt.setInt(10, lObjet.getCredit());
-			pStmt.setByte(11,FicheMethodeBool.boolToBit(lObjet.isAdmin()));
+			pStmt.setInt(10, lObjet.getIdUser());
 			pStmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
