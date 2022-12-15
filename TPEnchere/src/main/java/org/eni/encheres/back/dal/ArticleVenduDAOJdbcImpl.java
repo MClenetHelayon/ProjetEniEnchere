@@ -135,6 +135,8 @@ public class ArticleVenduDAOJdbcImpl implements DAO<ArticleVendu> {
 										bool);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} catch (BusinessException e) {
+			e.printStackTrace();
 		};
 		
 		return vretour;

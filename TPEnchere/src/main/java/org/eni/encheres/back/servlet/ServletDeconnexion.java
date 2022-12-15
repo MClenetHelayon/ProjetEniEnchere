@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.eni.encheres.back.BusinessException;
 import org.eni.encheres.back.bll.UtilisateurManager;
 
 /**
@@ -22,7 +23,11 @@ public class ServletDeconnexion extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.getServletPath().equals("/delete")) {
 			int idUser = Integer.parseInt(request.getParameter("idUser"));
-			UtilisateurManager.getInstance().delete(idUser);
+			try {
+				UtilisateurManager.getInstance().delete(idUser);
+			} catch (BusinessException e) {
+				e.printStackTrace();
+			}
 		}
 		HttpSession session = request.getSession();
 		session.setAttribute("isConnect", null);

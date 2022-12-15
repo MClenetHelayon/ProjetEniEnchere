@@ -22,6 +22,7 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 
 	private static final String SELECT_ALL = "select * from UTILISATEURS;";
 	private static final String SELECT_BY_ID = "select * from UTILISATEURS WHERE no_utilisateur = ?;";
+	private static final String SELECT_BY_EMAIL = "select * from UTILISATEURS WHERE email = ?;";
 	private static final String SELECT_BY_PSEUDO_OR_EMAIL_AND_MDP = "select * from UTILISATEURS WHERE (pseudo like ? OR email like ?) AND mot_de_passe like ?;";
 	private final static String DELETE = "DELETE FROM UTILISATEURS WHERE no_utilisateur=?;";
 	private final static String INSERT = "INSERT INTO UTILISATEURS(pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
@@ -72,6 +73,21 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 			pstmt.setString(1,emailOrName);
 			pstmt.setString(2,emailOrName);
 			pstmt.setString(3,mdp);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				vretour = simplyCreator(rs);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return vretour;
+	}
+	@Override
+	public Utilisateur mdpOublier(String email) throws BusinessException {
+		Utilisateur vretour = null;
+		try(Connection cnx = ConnectionProvider.getConnection()){
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_EMAIL);
+			pstmt.setString(1,email);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				vretour = simplyCreator(rs);

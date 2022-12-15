@@ -121,6 +121,8 @@ public class EnchereDAOJdbcImpl implements DAO<Enchere> {
 									ArticleVenduManager.getInstance().selectById(rs.getInt("no_article")));
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} catch (BusinessException e) {
+			e.printStackTrace();
 		}
 		return vretour;
 	}

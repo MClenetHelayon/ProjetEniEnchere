@@ -24,7 +24,7 @@
 						<input id="lblCheckbox" type="checkbox" name="alwaysOpen">
 						<label for="lblCheckbox">Se Souvenir de moi</label>
 					</div>
-					<a href="#">Mot de passe oublié</a>
+					<a href="${pageContext.request.contextPath}/ServletMdpOublier">Mot de passe oublié</a>
 				</div>
 			</div>
 		</form>

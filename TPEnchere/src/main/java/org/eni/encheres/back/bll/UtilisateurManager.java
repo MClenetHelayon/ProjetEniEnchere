@@ -21,52 +21,33 @@ public class UtilisateurManager {
 	
 	private UtilisateurManager() { }
 	
-	public List<Utilisateur> selectAll() {
+	public List<Utilisateur> selectAll() throws BusinessException {
 		List<Utilisateur> vretour = new ArrayList<Utilisateur>();
-		try {
-			vretour = DAOFactory.getUtilisateurDAO().selectAll();
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+		vretour = DAOFactory.getUtilisateurDAO().selectAll();
 		return vretour;
 	}
-	public Utilisateur selectById(int id) {
+	public Utilisateur selectById(int id) throws BusinessException {
 		Utilisateur vretour = null;
-		try {
-			vretour = DAOFactory.getUtilisateurDAO().selectById(id);
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+		vretour = DAOFactory.getUtilisateurDAO().selectById(id);
 		return vretour;
 	}
-	public Utilisateur connection(String emailOrName,String mdp) {
+	public Utilisateur connection(String emailOrName,String mdp) throws BusinessException {
 		Utilisateur vretour = null;
-		try {
-			vretour = DAOFactory.getUtilisateurDAO().connection(emailOrName,mdp);
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+		vretour = DAOFactory.getUtilisateurDAO().connection(emailOrName,mdp);
 		return vretour;
 	}
-	public void delete(int id) {
-		try {
-			DAOFactory.getUtilisateurDAO().delete(id);
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+	public Utilisateur mdpOublier(String email) throws BusinessException {
+		Utilisateur vretour = null;
+		vretour = DAOFactory.getUtilisateurDAO().mdpOublier(email);
+		return vretour;
 	}
-	public void insert(Utilisateur user) {
-		try {
-			DAOFactory.getUtilisateurDAO().insert(user);
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+	public void delete(int id) throws BusinessException {
+		DAOFactory.getUtilisateurDAO().delete(id);
 	}
-	public void update(Utilisateur user) {
-		try {
-			DAOFactory.getUtilisateurDAO().update(user);
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+	public void insert(Utilisateur user) throws BusinessException {
+		DAOFactory.getUtilisateurDAO().insert(user);
+	}
+	public void update(Utilisateur user) throws BusinessException {
+		DAOFactory.getUtilisateurDAO().update(user);
 	}
 }

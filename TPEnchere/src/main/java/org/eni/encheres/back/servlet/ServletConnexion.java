@@ -20,9 +20,6 @@ import org.eni.encheres.back.bo.Utilisateur;
 public class ServletConnexion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Connexion.jsp");
 		rd.forward(request, response);
@@ -31,17 +28,23 @@ public class ServletConnexion extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Utilisateur userCo = null;
-		try {
-			userCo =  UtilisateurManager.getInstance().connection(request.getParameter("identifiant"), request.getParameter("password"));
-			System.out.println(userCo.toString());
-			session.setAttribute("isConnect",true);
-			session.setAttribute("userCo",userCo);
-			RequestDispatcher rd = request.getRequestDispatcher("/ServletAccueil");
-			rd.forward(request, response);
-		}catch (Exception e) {
-			request.setAttribute("erreur","erreur!!!");
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Connexion.jsp");
-			rd.forward(request, response);
+		if(request.getParameter("etat").equals("skip")) {
+			doGet(request, response);
+		}else {
+			try {
+				userCo =  UtilisateurManager.getInstance().connection(request.getParameter("identifiant"), request.getParameter("password"));
+				System.out.println(userCo.toString());
+				session.setAttribute("isConnect",true);
+				session.setAttribute("userCo",userCo);
+				request.setAttribute("erreur","");
+				RequestDispatcher rd = request.getRequestDispatcher("/ServletAccueil");
+				rd.forward(request, response);
+			}catch (Exception e) {
+				request.setAttribute("erreur","erreur!!!");
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Connexion.jsp");
+				rd.forward(request, response);
+			}
+
 		}
 
 	}
