@@ -39,7 +39,7 @@ public class UtilisateurManager {
 		}
 		return vretour;
 	}
-	public Utilisateur selectById(String emailOrName,String mdp) {
+	public Utilisateur connection(String emailOrName,String mdp) {
 		Utilisateur vretour = null;
 		try {
 			vretour = (Utilisateur) DAOFactory.getUtilisateurDAO().selectByNameOrEmail(emailOrName,mdp);

@@ -1,4 +1,4 @@
-package org.eni.encheres.front;
+package org.eni.encheres.back.servlet;
 
 import java.io.IOException;
 
@@ -11,27 +11,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class ServletAccueil
+ * Servlet implementation class ServletDeconnexion
  */
-@WebServlet("/ServletAccueil")
-public class ServletAccueil extends HttpServlet {
+@WebServlet("/back/ServletDeconnexion")
+public class ServletDeconnexion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+       
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		if(session.getAttribute("isConnect")==null) {
-			session.setAttribute("isConnect", false);
-			session.setAttribute("userCo", null);
-			
-			System.out.println("path Servlet: " + request.getServletPath() + " isConnect: " + session.getAttribute("isConnect") + " userCo: " + session.getAttribute("userCo"));
-		}
+		session.setAttribute("isConnect", null);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Accueil.jsp");
 		rd.forward(request, response);
 	}
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException ,IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
+
 }

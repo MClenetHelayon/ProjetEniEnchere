@@ -30,7 +30,7 @@
 		<p></p>		
 	</div>
 	<div class="profil-container-div">
-		<p>Ville:</hp4>
+		<p>Ville:</p>
 		<p></p>		
 	</div>
 </div>

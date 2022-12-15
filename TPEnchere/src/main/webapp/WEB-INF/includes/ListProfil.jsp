@@ -42,7 +42,7 @@
 		</div>
 	</div>
 	
-	<c:if test="${sessionScope.isConnect != true}">
+	<c:if test="${sessionScope.isConnect == true}">
 		<div class="createAccount-form-div">
 			<div class="createAccount-form-2div">
 				<label for="lblCodePostal">Mot de passe actuel:</label>

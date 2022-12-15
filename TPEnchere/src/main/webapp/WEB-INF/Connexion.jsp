@@ -8,7 +8,7 @@
 		<%@include file="/WEB-INF/includes/BouttonAccueil.jsp" %>
 	</header>
 	<main>
-		<form class="connexion-form-init" method="post" action="${pageContext.request.contextPath}/">
+		<form class="connexion-form-init" method="post" action="${pageContext.request.contextPath}/back/ServletConnexion">
 			<div class="connexion-form-div">
 				<label for="lblId">Identifiant:</label>
 				<input id="lblId" type="text" name="identifiant" required>

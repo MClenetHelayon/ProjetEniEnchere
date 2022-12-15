@@ -8,6 +8,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.eni.encheres.back.bll.UtilisateurManager;
+import org.eni.encheres.back.bo.Utilisateur;
 
 /**
  * Servlet implementation class ServletConnexion
@@ -25,7 +29,11 @@ public class ServletConnexion extends HttpServlet {
 	}
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Connexion.jsp");
+		Utilisateur userCo =  UtilisateurManager.getInstance().connection(request.getParameter("identifiant"), request.getParameter("password"));
+		HttpSession session = request.getSession();
+		session.setAttribute("isConnect",true);
+		session.setAttribute("userCo",userCo);
+		RequestDispatcher rd = request.getRequestDispatcher("/ServletAccueil");
 		rd.forward(request, response);
 	}
 }

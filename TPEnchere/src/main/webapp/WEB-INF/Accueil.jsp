@@ -9,11 +9,11 @@
 		<nav class="header-nav">
 		
 			<c:choose>
-				<c:when test="${sessionScope.isConnect != true}">
+				<c:when test="${sessionScope.isConnect == true}">
 					<a href="${pageContext.request.contextPath}/">Enchères</a>
 					<a href="${pageContext.request.contextPath}/">Vendre un article</a>
 					<a href="${pageContext.request.contextPath}/ServletProfil">Mon Profil</a>
-					<a href="${pageContext.request.contextPath}/">Déconnexion</a>
+					<a href="${pageContext.request.contextPath}/back/ServletDeconnexion">Déconnexion</a>
 				</c:when>
 				<c:otherwise>
 					<a href="${pageContext.request.contextPath}/ServletCreationCompte">S'inscrire</a>
