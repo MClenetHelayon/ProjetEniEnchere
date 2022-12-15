@@ -28,4 +28,8 @@ public class ServletAccueil extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Accueil.jsp");
 		rd.forward(request, response);
 	}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException ,IOException {
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Accueil.jsp");
+		rd.forward(request, response);
+	}
 }
