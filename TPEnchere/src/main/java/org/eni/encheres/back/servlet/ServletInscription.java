@@ -20,20 +20,22 @@ public class ServletInscription extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String 	pseudo = request.getParameter("pseudo"),
-				nom = request.getParameter("nom"),
-				prenom = request.getParameter("prenom"),
-				email = request.getParameter("email"),
-				telephone = request.getParameter("telephone"),
-				codePostal = request.getParameter("codePostal"),
-				rue = request.getParameter("rue"),
-				ville = request.getParameter("ville"),
-				motDePasse = request.getParameter("motDePasse"),
+		String 	motDePasse = request.getParameter("motDePasse"),
 				confirmation = request.getParameter("confirmation");
 		if(confirmation.equals(motDePasse)) {
-			Utilisateur tryToConnect = new Utilisateur(pseudo,nom,prenom,email,telephone,codePostal,rue,ville,motDePasse,0,false);
-			UtilisateurManager.getInstance().insert(tryToConnect);
-			RequestDispatcher rd = request.getRequestDispatcher("/");
+			UtilisateurManager.getInstance().insert(new Utilisateur(	request.getParameter("pseudo"),
+																		request.getParameter("nom"),
+																		request.getParameter("prenom"),
+																		request.getParameter("email"),
+																		request.getParameter("telephone"),
+																		request.getParameter("codePostal"),
+																		request.getParameter("rue"),
+																		request.getParameter("ville"),
+																		motDePasse,
+																		0,
+																		false));
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/back/ServletConnexion");
 			rd.forward(request, response);
 		}else {
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/CreationCompte.jsp");
