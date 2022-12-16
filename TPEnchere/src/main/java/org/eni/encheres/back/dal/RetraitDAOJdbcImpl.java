@@ -22,7 +22,7 @@ public class RetraitDAOJdbcImpl implements DAO<Retrait> {
 	
 	
 	@Override
-	public List<Retrait> selectAll() {
+	public List<Retrait> selectAll() throws BusinessException {
 		List<Retrait> vretour = new ArrayList<>();
 		
 		try(Connection cnx = ConnectionProvider.getConnection()) {

@@ -4,7 +4,8 @@
 <select name="choixCategorie">
 	<c:forEach var="elem" items="${requestScope.listCategorie}" varStatus="value">
 		<c:choose>
-			<c:when test="${value} == 0">
+			<% // TODO à essayer sur la page ServletReadVente %>
+			<c:when test="${empty requestScope.unArticle.categ} == ${value} ? ${value} : 0"><"${value} == 0"-->
 				<option value="${elem.numCat}" selected>${elem.libelle}</option>
 			</c:when>
 			<c:otherwise>

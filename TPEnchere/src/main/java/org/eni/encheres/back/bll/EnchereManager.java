@@ -42,12 +42,8 @@ public class EnchereManager {
 			e.printStackTrace();
 		}
 	}
-	public void insert(Enchere ench) {
-		try {
-			DAOFactory.getEnchereDAO().insert(ench);
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+	public void insert(Enchere ench) throws BusinessException {
+		DAOFactory.getEnchereDAO().insert(ench);
 	}
 	public void update(Enchere ench) {
 		try {

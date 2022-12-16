@@ -8,22 +8,24 @@
 		<%@include file="/WEB-INF/includes/BouttonAccueil.jsp" %>
 	</header>
 	<main>
-		<form class="connexion-form-init" method="post" action="${pageContext.request.contextPath}/forgotMdp">
-			<div class="connexion-form-div">
+		<form class="motDePasseOublier-form-init" method="post" action="${pageContext.request.contextPath}/forgotMdp">
+			<div class="motDePasseOublier-form-div">
 				<label for="lblEmail">Email:</label>
 				<input id="lblIEmail" type="text" name="email" required>
 			</div>
-			<div class="connexion-form-div">
+			<div class="motDePasseOublier-form-div">
 				<label for="lblEmail">Nouveau Mot de Passe:</label>
-				<input id="lblIEmail" type="text" name="motDePasse" required>
+				<input id="lblIEmail" type="password" name="motDePasse" required>
 			</div>
-			<div class="connexion-form-div">
+			<div class="motDePasseOublier-form-div">
 				<label for="lblEmail">Confirmer le Mot de Passe:</label>
-				<input id="lblIEmail" type="text" name="confirmation" required>
+				<input id="lblIEmail" type="password" name="Envoyer" required>
 			</div>
-			<input class="connexion-form-inputSubmit" type="submit" value="Connexion">
+			<input class="motDePasseOublier-form-inputSubmit" type="submit" value="Connexion">
 		</form>
 		<p>${requestScope.result}</p>
+		
+		<%@include file="/WEB-INF/includes/Erreur.jsp" %>
 	</main>
 	<%@include file="/WEB-INF/includes/Footer.jsp" %>
 </body>
