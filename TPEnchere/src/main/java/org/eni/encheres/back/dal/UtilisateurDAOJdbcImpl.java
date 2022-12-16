@@ -179,16 +179,6 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 					vretour.addEnchere(e);
 				}
 			}
-			for(ArticleVendu av : ArticleVenduManager.getInstance().selectAll()) {
-				if(av.getUser().getIdUser()==rs.getInt("no_utilisateur")) {
-					vretour.addArticleVendu(av);
-				}
-			}
-			for(ArticleVendu aa : ArticleVenduManager.getInstance().selectAll()) {
-				if(aa.getUser().getIdUser()==rs.getInt("no_utilisateur")&&aa.isEtatVente()==false) {
-					vretour.addArticleAcheter(aa);
-				}
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

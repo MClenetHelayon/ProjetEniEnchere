@@ -23,7 +23,6 @@ public class ServletConnexion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
 		Cookie[] cookies = request.getCookies();
 		if(cookies!=null) {
 			for(Cookie c : cookies) {
@@ -45,22 +44,22 @@ public class ServletConnexion extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Utilisateur userCo = null;
+		boolean bool = false;
 		try {
 			userCo =  UtilisateurManager.getInstance().connection(request.getParameter("identifiant"), request.getParameter("password"));
 			createSession(request, userCo);
-			if(request.getParameter("alwaysOpen").equals("on")) {
-		        String idUser = Integer.toString(userCo.getIdUser());		        
-		        Cookie cookie = new Cookie("id", idUser);
-		        cookie.setMaxAge(10000);
-		        response.addCookie(cookie);
-			}
-			
+			bool = true;
 			returnBack(request, response,"/ServletAccueil");
 		}catch (Exception e) {
 			request.setAttribute("erreur","erreur !!!!");
 			returnBack(request, response,"/WEB-INF/Connexion.jsp");
 		}
-
+		if(request.getParameter("alwaysOpen").equals("on")&&bool) {
+	        String idUser = Integer.toString(userCo.getIdUser());		        
+	        Cookie cookie = new Cookie("id", idUser);
+	        cookie.setMaxAge(10000);
+	        response.addCookie(cookie);
+		}
 	}
 	private void returnBack(HttpServletRequest request, HttpServletResponse response,String link) {
 		RequestDispatcher rd = request.getRequestDispatcher(link);

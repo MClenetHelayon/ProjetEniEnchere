@@ -77,7 +77,7 @@ public class RetraitDAOJdbcImpl implements DAO<Retrait> {
 
 	@Override
 	public void insert(Retrait lObjet) throws BusinessException {
-		if(lObjet.getVille()==null||lObjet.getRue()==null||lObjet.getCodePostal()==null||lObjet.getArtVendu()==null||lObjet.getArtVendu().isEtatVente()==false)
+		if(lObjet.getVille()==null||lObjet.getRue()==null||lObjet.getCodePostal()==null||lObjet.getArtVendu()==null)
 		{
 			BusinessException businessException = new BusinessException();
 			businessException.ajouterErreur(CodesResultatDAL.INSERT_OBJET_NULL);

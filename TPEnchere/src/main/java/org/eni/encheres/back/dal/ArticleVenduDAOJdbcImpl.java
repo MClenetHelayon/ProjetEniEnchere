@@ -12,6 +12,7 @@ import org.eni.encheres.back.BusinessException;
 import org.eni.encheres.back.bll.CategorieManager;
 import org.eni.encheres.back.bll.UtilisateurManager;
 import org.eni.encheres.back.bo.ArticleVendu;
+import org.eni.encheres.back.bo.Utilisateur;
 import org.eni.encheres.back.utilitaire.FicheMethodeTemps;
 
 public class ArticleVenduDAOJdbcImpl implements DAO<ArticleVendu> {
@@ -119,10 +120,7 @@ public class ArticleVenduDAOJdbcImpl implements DAO<ArticleVendu> {
 	private ArticleVendu simplyCreator(ResultSet rs) {
 		ArticleVendu vretour = null;
 		try {
-			boolean bool = false;
-			if(String.valueOf(rs.getInt("prix_vente"))!=null) {
-				bool = true;
-			}
+			Utilisateur user = UtilisateurManager.getInstance().selectById(rs.getInt("no_utilisateur"));
 			vretour = new ArticleVendu(	rs.getInt("no_article"),
 										rs.getString("nom_article"),
 										rs.getString("description"),
@@ -130,9 +128,11 @@ public class ArticleVenduDAOJdbcImpl implements DAO<ArticleVendu> {
 										FicheMethodeTemps.LocalDateToDate(rs.getDate("date_fin_encheres")),
 										rs.getInt("prix_initial"),
 										rs.getInt("prix_vente"),
-										UtilisateurManager.getInstance().selectById(rs.getInt("no_utilisateur")),
+										user,
 										CategorieManager.getInstance().selectById(rs.getInt("no_categorie")),
-										bool);
+										0);
+			user.addArticleAcheter(vretour);
+			user.addArticleVendu(vretour);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (BusinessException e) {
