@@ -173,7 +173,8 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 										rs.getString("ville"),
 										rs.getString("mot_de_passe"),
 										rs.getInt("credit"),
-										FicheMethodeBool.bitToBool(rs.getByte("administrateur")));
+										FicheMethodeBool.bitToBool(rs.getByte("administrateur")),
+										false);
 			for(Enchere e : EnchereManager.getInstance().selectAll()) {
 				if(e.getUser().getIdUser()==rs.getInt("no_utilisateur")) {
 					vretour.addEnchere(e);

@@ -16,6 +16,7 @@ public class Utilisateur {
 	private String mdp;
 	private int credit;
 	private boolean admin;
+	private boolean bloque;
 	private List<Enchere> LEnchere;
 	private List<ArticleVendu> LArtVendu;
 	private List<ArticleVendu> LArtAchete;
@@ -27,7 +28,7 @@ public class Utilisateur {
 	}
 
 	public Utilisateur(int idUser, String pseudo, String nom, String prenom, String email, String telephone, String rue,
-			String codePostal, String ville, String mdp, int credit, boolean admin) {
+			String codePostal, String ville, String mdp, int credit, boolean admin,boolean bloque) {
 		this();
 		this.idUser = idUser;
 		this.pseudo = pseudo;
@@ -41,10 +42,11 @@ public class Utilisateur {
 		this.mdp = mdp;
 		this.credit = credit;
 		this.admin = admin;
+		this.bloque = bloque;
 	}
 
 	public Utilisateur(String pseudo, String nom, String prenom, String email, String telephone, String rue,
-			String codePostal, String ville, String mdp, int credit, boolean admin) {
+			String codePostal, String ville, String mdp, int credit, boolean admin,boolean bloque) {
 		this();
 		this.pseudo = pseudo;
 		this.nom = nom;
@@ -57,10 +59,11 @@ public class Utilisateur {
 		this.mdp = mdp;
 		this.credit = credit;
 		this.admin = admin;
+		this.bloque = bloque;
 	}
 
 	public Utilisateur(int idUser,String pseudo, String nom, String prenom, String email, String telephone, String rue,
-			String codePostal, String ville, String mdp) {
+			String codePostal, String ville, String mdp,boolean bloque) {
 		this();
 		this.idUser = idUser;
 		this.pseudo = pseudo;
@@ -72,6 +75,7 @@ public class Utilisateur {
 		this.codePostal = codePostal;
 		this.ville = ville;
 		this.mdp = mdp;
+		this.bloque = bloque;
 	}
 
 	public int getIdUser() {
@@ -168,6 +172,14 @@ public class Utilisateur {
 
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
+	}
+
+	public boolean isBloque() {
+		return bloque;
+	}
+
+	public void setBloque(boolean bloque) {
+		this.bloque = bloque;
 	}
 
 	public List<Enchere> getLEnchere() {

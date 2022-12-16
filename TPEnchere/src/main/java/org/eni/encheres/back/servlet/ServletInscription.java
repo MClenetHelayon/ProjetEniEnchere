@@ -54,7 +54,8 @@ public class ServletInscription extends HttpServlet {
 																			request.getParameter("codePostal"),
 																			request.getParameter("rue"),
 																			request.getParameter("ville"),
-																			motDePasse));
+																			motDePasse,
+																			false));
 			} catch (NumberFormatException e1) {
 				e1.printStackTrace();
 			} catch (BusinessException e1) {
@@ -91,6 +92,7 @@ public class ServletInscription extends HttpServlet {
 																				request.getParameter("ville"),
 																				motDePasse,
 																				0,
+																				false,
 																				false));
 				} catch (BusinessException e) {
 					e.printStackTrace();
@@ -121,7 +123,8 @@ public class ServletInscription extends HttpServlet {
 							user.getCodePostal(),
 							user.getRue(),
 							user.getVille(),
-							motDePasse));
+							motDePasse,
+							false));
 				}
 			} catch (BusinessException e) {
 				e.printStackTrace();
