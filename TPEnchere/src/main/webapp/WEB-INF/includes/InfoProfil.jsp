@@ -33,4 +33,8 @@
 		<p>Ville:</hp4>
 		<p></p>		
 	</div>
+	<div class="profil-container-div">
+		<p>Credit:</hp4>
+		<p>200</p>		
+	</div>
 </div>

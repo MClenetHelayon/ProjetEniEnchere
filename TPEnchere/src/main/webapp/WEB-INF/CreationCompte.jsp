@@ -9,7 +9,7 @@
 	</header>
 	<main>
 		<h1>Mon profil</h1>
-		<form class="createAccount-form-init" method="post" action="${pageContext.request.contextPath}/">
+		<form class="createAccount-form-init" method="post" action="${pageContext.request.contextPath}/ServletInscription">
 			<%@include file="/WEB-INF/includes/ListProfil.jsp" %>
 			
 			<div>
@@ -17,7 +17,10 @@
 				<a class="connexion-a" href="${pageContext.request.contextPath}/">Annuler</a>
 			</div>
 		</form>
+		
+		<%@include file="/WEB-INF/includes/Erreur.jsp" %>
 	</main>
 	<%@include file="/WEB-INF/includes/Footer.jsp" %>
+	<%@include file="/WEB-INF/includes/scriptJs.jsp" %>
 </body>
 </html>
