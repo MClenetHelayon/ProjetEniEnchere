@@ -23,9 +23,14 @@ import org.eni.encheres.back.bo.Utilisateur;
 /**
  * Servlet implementation class ServletVente
  */
-@WebServlet({"/ServletVente", "/ServletEditVente"})
+@WebServlet({"/ServletVente", "/ServletReadVente", "/ServletAnnuleVente"})
 public class ServletVente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private void reqDispatcher(HttpServletRequest req, HttpServletResponse resp, String nameFile) throws ServletException, IOException {
+		RequestDispatcher rd = req.getRequestDispatcher("/WEB-INF/" + nameFile + ".jsp");
+		rd.forward(req, resp);
+	}
    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -48,19 +53,42 @@ public class ServletVente extends HttpServlet {
 				Utilisateur retraitUserById = UtilisateurManager.getInstance().selectById(idUser);
 				
 				request.setAttribute("RetraitUserById", retraitUserById);
+				
+				reqDispatcher(request, response, "Vente");
 			} catch (BusinessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} else if(request.getServletPath().equals("/ServletEditVente")) {
+		} else if(request.getServletPath().equals("/ServletReadVente")) {
+			String articleId = request.getParameter("idArticle");
 			
-			//faire requete avec articleid et userid
+			try {
+				ArticleVendu unArticle = ArticleVenduManager.getInstance().selectById(Integer.valueOf(articleId));
+				
+				request.setAttribute("unArticle", unArticle);
+				request.setAttribute("statutBalise", "readonly");
+				
+				reqDispatcher(request, response, "Vente");
+			} catch (BusinessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else if(request.getServletPath().equals("/ServletAnnuleVente")) {
+			String idArticle = request.getParameter("idArticle");
 			
+			try {
+				ArticleVenduManager.getInstance().delete(Integer.valueOf(idArticle));
+				
+				reqDispatcher(request, response, "Accueil");
+			} catch (NumberFormatException | BusinessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Vente.jsp");
-		rd.forward(request, response);
 	}
+	
+	
+	
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

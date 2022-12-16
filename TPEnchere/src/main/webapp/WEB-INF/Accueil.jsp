@@ -82,7 +82,7 @@
 			<c:forEach var="elem" items="${requestScope.listArticle}">
 				<c:choose>
 					<c:when test="${sessionScope.isConnect == true && sessionScope.userId == elem.user.idUser}">
-						<a class="article-a" href="${pageContext.request.contextPath}/ServletEditVente?idArticle=${elem.numArticle}&idUser=${elem.user.idUser}">
+						<a class="article-a" href="${pageContext.request.contextPath}/ServletReadVente?idArticle=${elem.numArticle}&idUser=${elem.user.idUser}">
 					</c:when>
 					<c:otherwise>
 						<a class="article-a" href="${pageContext.request.contextPath}/ServletDetailVente?idArticle=${elem.numArticle}">
@@ -90,7 +90,7 @@
 				</c:choose>
 					
 						<div class="article-init">
-							<img class="article-img" src="" />
+							<img class="article-img" src="./img/defaultPicture.webp" />
 							<div>
 								<h4 class="article-h4">${elem.nom}</h4>
 								<p>Prix: ${elem.prixInit} points</p>
