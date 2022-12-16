@@ -94,6 +94,7 @@ public class ServletInscription extends HttpServlet {
 																				false));
 				} catch (BusinessException e) {
 					e.printStackTrace();
+					verif = false;
 				}
 
 
