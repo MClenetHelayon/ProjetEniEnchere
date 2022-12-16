@@ -20,22 +20,18 @@ public class CategorieManager {
 	
 	private CategorieManager() { }
 	
-	public List<Categorie> selectAll() {
+	public List<Categorie> selectAll() throws BusinessException {
 		List<Categorie> vretour = new ArrayList<Categorie>();
-		try {
-			vretour = DAOFactory.getCategorieDAO().selectAll();
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+		
+		vretour = DAOFactory.getCategorieDAO().selectAll();
+		
 		return vretour;
 	}
-	public Categorie selectById(int id) {
+	public Categorie selectById(int id) throws BusinessException {
 		Categorie vretour = null;
-		try {
-			vretour = DAOFactory.getCategorieDAO().selectById(id);
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+		
+		vretour = DAOFactory.getCategorieDAO().selectById(id);
+		
 		return vretour;
 	}
 	public void delete(int id) {

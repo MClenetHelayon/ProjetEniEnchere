@@ -49,7 +49,7 @@ public class ServletConnexion extends HttpServlet {
 			userCo =  UtilisateurManager.getInstance().connection(request.getParameter("identifiant"), request.getParameter("password"));
 			createSession(request, userCo);
 			bool = true;
-			returnBack(request, response,"/ServletAccueil");
+			returnBack(request, response,"/WEB-INF/Accueil.jsp");
 		}catch (Exception e) {
 			request.setAttribute("erreur","erreur !!!!");
 			returnBack(request, response,"/WEB-INF/Connexion.jsp");
@@ -75,5 +75,6 @@ public class ServletConnexion extends HttpServlet {
 		session.setAttribute("userCo",u);
 		session.setAttribute("userId",u.getIdUser());
 		request.setAttribute("erreur","");
+
 	}
 }

@@ -159,7 +159,7 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 	}
 	
 	
-	private Utilisateur simplyCreator(ResultSet rs) {
+	private Utilisateur simplyCreator(ResultSet rs) throws BusinessException {
 		Utilisateur vretour = null;
 		try {
 			vretour = new Utilisateur(	rs.getInt("no_utilisateur"),

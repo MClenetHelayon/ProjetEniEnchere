@@ -78,14 +78,14 @@ public class ArticleVenduDAOJdbcImpl implements DAO<ArticleVendu> {
 			throw businessException;
 		}
 		try(Connection cnx = ConnectionProvider.getConnection()) {
-			PreparedStatement pStmt = cnx.prepareStatement(INSERT);
-			pStmt.setString(2, lObjet.getNom());
-			pStmt.setString(3, lObjet.getDescription());
-			pStmt.setDate(4,FicheMethodeTemps.dateToLocalDate(lObjet.getDateDeb()));
-			pStmt.setDate(5,FicheMethodeTemps.dateToLocalDate(lObjet.getDateFin()));
-			pStmt.setInt(6, lObjet.getPrixInit());
-			pStmt.setInt(7, lObjet.getPrixVente());
-			pStmt.setInt(8, lObjet.getUser().getIdUser());
+			PreparedStatement pStmt = cnx.prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
+			pStmt.setString(1, lObjet.getNom());
+			pStmt.setString(2, lObjet.getDescription());
+			pStmt.setDate(3,FicheMethodeTemps.dateToLocalDate(lObjet.getDateDeb()));
+			pStmt.setDate(4,FicheMethodeTemps.dateToLocalDate(lObjet.getDateFin()));
+			pStmt.setInt(5, lObjet.getPrixInit());
+			pStmt.setInt(6, lObjet.getPrixVente());
+			pStmt.setInt(7, lObjet.getUser().getIdUser());
 			pStmt.setInt(8, lObjet.getCateg().getNumCat());
 			pStmt.executeUpdate();
 			ResultSet rs = pStmt.getGeneratedKeys();

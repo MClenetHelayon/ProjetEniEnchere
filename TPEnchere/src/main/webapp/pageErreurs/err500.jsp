@@ -9,7 +9,7 @@
 	<main>
 		<div class="erreur-div">
 			<h1>Erreur 500</h1>
-			<h2 class="erreur-div-h2">Le serveur a rencontrÃ© un problÃ¨me inattendu qui l'empÃªche de rÃ©pondre Ã  la requÃªte.</h2>
+			<h2 class="erreur-div-h2">Le serveur a rencontré un problème inattendu qui l'empèche de répondre à la requête.</h2>
 			<p>Veuillez contacter l'administrateur</p>
 		</div>
 	</main>

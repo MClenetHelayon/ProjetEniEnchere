@@ -19,13 +19,11 @@ public class EnchereManager {
 	
 	private EnchereManager() { }
 	
-	public List<Enchere> selectAll() {
+	public List<Enchere> selectAll() throws BusinessException {
 		List<Enchere> vretour = new ArrayList<Enchere>();
-		try {
-			vretour = DAOFactory.getEnchereDAO().selectAll();
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+		
+		vretour = DAOFactory.getEnchereDAO().selectAll();
+		
 		return vretour;
 	}
 	public Enchere selectById(int id) {

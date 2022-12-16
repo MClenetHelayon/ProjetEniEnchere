@@ -164,6 +164,10 @@ input:disabled ~ * {
 	grid-gap: 2rem;
 }
 
+.article-a {
+	display: inherit;
+}
+
 .article-init {
 	display: inherit;
 	grid-template-columns: .8fr 1fr;
