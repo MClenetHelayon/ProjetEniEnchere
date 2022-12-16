@@ -15,6 +15,8 @@
 				<a class="profil-a" href="${pageContext.request.contextPath}/ServletEditProfil">Modifier</a>
 			</div>
 		</c:if>
+		
+		<%@include file="/WEB-INF/includes/Erreur.jsp" %>
 	</main>
 	<%@include file="/WEB-INF/includes/Footer.jsp" %>
 </body>

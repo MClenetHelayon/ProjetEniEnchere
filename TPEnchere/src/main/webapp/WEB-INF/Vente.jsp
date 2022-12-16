@@ -9,6 +9,8 @@
 	</header>
 	<main>
 		<%@include file="/WEB-INF/includes/ListVente.jsp" %>
+		
+		<%@include file="/WEB-INF/includes/Erreur.jsp" %>
 	</main>
 	<%@include file="/WEB-INF/includes/Footer.jsp" %>
 </body>

@@ -25,7 +25,7 @@
 	<main>
 		<h1>Liste des enchères</h1>
 		
-		<form class="filtres-form-init" method="post" action="${pageContext.request.contextPath}/">
+		<form class="filtres-form-init" name="accueilFiltres">
 			<h2 class="filtres-form-h2">Filtres:</h2>
 			<input class="filtres-form-inputText" type="search" placeholder="Le nom de l'article contient" name="filtresText">
 			<div class="filtres-form-div">
@@ -41,15 +41,15 @@
 						</div>
 						<div class="filtres-accountConnected-liste-container-checkbox">
 							<div>
-								<input id="lblEncheresOuvertes" type="checkbox" name="chkEncheresOuvertes">
+								<input id="lblEncheresOuvertes" type="checkbox" name="achats" value="chkEncheresOuvertes">
 								<label for="lblEncheresOuvertes">enchères ouvertes</label>
 							</div>
 							<div>
-								<input id="lblMesEncheresEnCours" type="checkbox" name="chkMesEncheresEnCours">
+								<input id="lblMesEncheresEnCours" type="checkbox" name="achats" value="chkMesEncheresEnCours">
 								<label for="lblMesEncheresEnCours">mes enchères en cours</label>
 							</div>
 							<div>
-								<input id="lblMesEncheresRemportees" type="checkbox" name="chkMesEncheresRemportees">
+								<input id="lblMesEncheresRemportees" type="checkbox" name="achats" value="chkMesEncheresRemportees">
 								<label for="lblMesEncheresRemportees">mes enchères remportées</label>
 							</div>
 						</div>
@@ -61,15 +61,15 @@
 						</div>
 						<div class="filtres-accountConnected-liste-container-checkbox">
 							<div>
-								<input id="lblMesVenteEnCours" type="checkbox" name="chkMesVenteEnCours" disabled>
+								<input id="lblMesVenteEnCours" type="checkbox" name="mesVentes" value="chkMesVenteEnCours" disabled>
 								<label for="lblMesVenteEnCours">mes ventes en cours</label>
 							</div>
 							<div>
-								<input id="lblVentesNonDébutés" type="checkbox" name="chkVentesNonDébutés" disabled>
+								<input id="lblVentesNonDébutés" type="checkbox" name="mesVentes" value="chkVentesNonDebutes" disabled>
 								<label for="lblVentesNonDébutés">ventes non débutées</label>
 							</div>
 							<div>
-								<input id="lblVentesTerminees" type="checkbox" name="chkVentesTerminees" disabled>
+								<input id="lblVentesTerminees" type="checkbox" name="mesVentes" value="chkVentesTerminees" disabled>
 								<label for="lblVentesTerminees">ventes terminées</label>
 							</div>
 						</div>
@@ -77,8 +77,7 @@
 				</div>
 			</c:if>
 			
-			<input class="filtres-form-inputSubmit" type="submit" value="Rechercher">
-			
+			<span class="filtres-form-inputSubmit">Rechercher</span>
 		</form>
 		
 		<div class="listeArticle">
@@ -101,7 +100,10 @@
 				</div>
 			</div>
 		</div>
+		
+		<%@include file="/WEB-INF/includes/Erreur.jsp" %>
 	</main>
 	<%@include file="/WEB-INF/includes/Footer.jsp" %>
+	<%@include file="/WEB-INF/includes/scriptJs.jsp" %>
 </body>
 </html>

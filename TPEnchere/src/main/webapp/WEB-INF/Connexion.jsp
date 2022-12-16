@@ -24,11 +24,13 @@
 						<input id="lblCheckbox" type="checkbox" name="alwaysOpen">
 						<label for="lblCheckbox">Se Souvenir de moi</label>
 					</div>
-					<a href="#">Mot de passe oublié</a>
+					<a href="${pageContext.request.contextPath}/ServletMotDePasseOublier">Mot de passe oublié</a>
 				</div>
 			</div>
 		</form>
 		<a class="connexion-a" href="${pageContext.request.contextPath}/ServletCreationCompte">Créer un compte</a>
+		
+		<%@include file="/WEB-INF/includes/Erreur.jsp" %>
 	</main>
 	<%@include file="/WEB-INF/includes/Footer.jsp" %>
 </body>

@@ -83,6 +83,8 @@
 			</c:choose>
 			
 		</div>
+		
+		<%@include file="/WEB-INF/includes/Erreur.jsp" %>
 	</main>
 	<%@include file="/WEB-INF/includes/Footer.jsp" %>
 </body>
