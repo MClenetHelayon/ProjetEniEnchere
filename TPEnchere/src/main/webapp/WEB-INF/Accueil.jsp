@@ -17,7 +17,7 @@
 				</c:when>
 				<c:otherwise>
 					<a href="${pageContext.request.contextPath}/ServletCreationCompte">S'inscrire</a>
-					<a href="${pageContext.request.contextPath}/ServletConnexion">Se connecter</a>
+					<a href="${pageContext.request.contextPath}/back/ServletConnexion">Se connecter</a>
 				</c:otherwise>
 			</c:choose>
 		</nav>
