@@ -44,11 +44,22 @@
 						<p>Vendeur:</p>
 						<p>jojo44</p>
 					</div>
-					<form method="post" action="${pageContext.request.contextPath}/">
-						<label for="lblMaProposition">Ma proposition:</label>
-						<input id="lblMaProposition" min="0" type="number" name="maProposition" value="0" required>
-						<input class="venteDetail-submit" type="submit" value="Enchérir">
-					</form>
+					
+					<c:choose>
+						<c:when test="${sessionScope.isConnect == true && sessionScope.userId == param.idUser}">
+							<form method="post" action="${pageContext.request.contextPath}/">
+								<label for="lblMaProposition">Ma proposition:</label>
+								<input id="lblMaProposition" min="1" type="number" name="maProposition" value="0" required>
+								<input class="venteDetail-submit" type="submit" value="Enchérir">
+							</form>
+						</c:when>
+						<c:otherwise>
+							<div class="detailVente-form-4div">
+								<h4>Connectez-vous pour participer à l'enchère</h4>
+							</div>
+						</c:otherwise>
+					</c:choose>
+					
 				</div>
 			</div>
 		</div>

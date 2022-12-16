@@ -27,21 +27,15 @@ public class ArticleVenduManager {
 		
 		return vretour;
 	}
-	public ArticleVendu selectById(int id) {
+	public ArticleVendu selectById(int id) throws BusinessException {
 		ArticleVendu vretour = null;
-		try {
-			vretour = DAOFactory.getArticleVenduDAO().selectById(id);
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+
+		vretour = DAOFactory.getArticleVenduDAO().selectById(id);
+		
 		return vretour;
 	}
-	public void delete(int id) {
-		try {
-			DAOFactory.getArticleVenduDAO().delete(id);
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+	public void delete(int id) throws BusinessException {
+		DAOFactory.getArticleVenduDAO().delete(id);
 	}
 	public void insert(ArticleVendu artVen) throws BusinessException {
 		DAOFactory.getArticleVenduDAO().insert(artVen);

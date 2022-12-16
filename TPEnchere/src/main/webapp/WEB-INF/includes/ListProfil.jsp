@@ -46,14 +46,14 @@
 		<div class="createAccount-form-div">
 			<div class="createAccount-form-2div">
 				<label for="lblMdPActuel">Mot de passe actuel:</label>
-				<input id="lblMdPActuel" type="text" name="motDePasseOld" required>
+				<input id="lblMdPActuel" type="password" name="motDePasseOld"  value="${sessionScope.userCo.mdp}" required>
 			</div>
 		</div>
 	</c:if>
 	
 	<div class="createAccount-form-div">
 		<div class="createAccount-form-2div">
-			<label for="lblMotDePasse">Mot de passe:</label>
+			<label for="lblMotDePasse">Nouveau mot de passe:</label>
 			<input id="lblMotDePasse" type="password" name="motDePasse" required>
 		</div>
 		<div class="createAccount-form-2div">
@@ -66,7 +66,7 @@
 		<div class="createAccount-form-div">
 			<div class="createAccount-form-2div">
 				<label>Credit:</label>
-				<p>200<p>
+				<p>${sessionScope.userCo.credit}<p>
 			</div>
 		</div>
 	</c:if>
