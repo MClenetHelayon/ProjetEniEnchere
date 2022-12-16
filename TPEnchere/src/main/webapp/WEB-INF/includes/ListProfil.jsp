@@ -56,11 +56,21 @@
 	<div class="createAccount-form-div">
 		<div class="createAccount-form-2div">
 			<label for="lblMotDePasse">Mot de passe:</label>
-			<input id="lblMotDePasse" type="text" name="motDePasse" required>
+			<input id="lblMotDePasse" type="password" name="motDePasse" required>
 		</div>
 		<div class="createAccount-form-2div">
 			<label for="lblConfirmation">Confirmation:</label>
-			<input id="lblConfirmation" type="text" name="confirmation" required>
+			<input id="lblConfirmation" type="password" name="confirmation" required>
 		</div>
 	</div>
+	
+	<c:if test="${sessionScope.isConnect == true}">
+		<div class="createAccount-form-div">
+			<div class="createAccount-form-2div">
+				<label>Credit:</label>
+				<p>200<p>
+			</div>
+		</div>
+	</c:if>
+	
 </div>

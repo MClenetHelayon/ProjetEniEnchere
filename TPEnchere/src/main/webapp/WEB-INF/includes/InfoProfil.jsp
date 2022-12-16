@@ -33,4 +33,8 @@
 		<p>Ville:</p>
 		<p>${sessionScope.userCo.ville}</p>		
 	</div>
+	<div class="profil-container-div">
+		<p>Credit:</hp4>
+		<p>200</p>		
+	</div>
 </div>
