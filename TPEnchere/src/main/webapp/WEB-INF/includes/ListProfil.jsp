@@ -51,8 +51,6 @@
 		</div>
 	</c:if>
 	
-	<!-- TODO A faire check comparaison password -->
-	
 	<div class="createAccount-form-div">
 		<div class="createAccount-form-2div">
 			<label for="lblMotDePasse">Mot de passe:</label>

@@ -28,16 +28,17 @@ public class ServletConnexion extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Utilisateur userCo = null;
-		if(request.getParameter("etat").equals("skip")) {
+		/*if(request.getParameter("etat").equals("skip")) {
 			doGet(request, response);
-		}else {
+		}else {*/
 			try {
-				userCo =  UtilisateurManager.getInstance().connection(request.getParameter("identifiant"), request.getParameter("password"));
+				userCo = UtilisateurManager.getInstance().connection(request.getParameter("identifiant"), request.getParameter("password"));
 				System.out.println(userCo.toString());
 				session.setAttribute("isConnect",true);
 				session.setAttribute("userCo",userCo);
+				session.setAttribute("userId",userCo.getIdUser());
 				request.setAttribute("erreur","");
-				RequestDispatcher rd = request.getRequestDispatcher("/ServletAccueil");
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Accueil.jsp");
 				rd.forward(request, response);
 			}catch (Exception e) {
 				request.setAttribute("erreur","erreur!!!");
@@ -45,7 +46,7 @@ public class ServletConnexion extends HttpServlet {
 				rd.forward(request, response);
 			}
 
-		}
+		//}
 
 	}
 }

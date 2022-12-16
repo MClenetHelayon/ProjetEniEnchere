@@ -159,7 +159,7 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 	}
 	
 	
-	private Utilisateur simplyCreator(ResultSet rs) {
+	private Utilisateur simplyCreator(ResultSet rs) throws BusinessException {
 		Utilisateur vretour = null;
 		try {
 			vretour = new Utilisateur(	rs.getInt("no_utilisateur"),
@@ -177,16 +177,6 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 			for(Enchere e : EnchereManager.getInstance().selectAll()) {
 				if(e.getUser().getIdUser()==rs.getInt("no_utilisateur")) {
 					vretour.addEnchere(e);
-				}
-			}
-			for(ArticleVendu av : ArticleVenduManager.getInstance().selectAll()) {
-				if(av.getUser().getIdUser()==rs.getInt("no_utilisateur")) {
-					vretour.addArticleVendu(av);
-				}
-			}
-			for(ArticleVendu aa : ArticleVenduManager.getInstance().selectAll()) {
-				if(aa.getUser().getIdUser()==rs.getInt("no_utilisateur")&&aa.isEtatVente()==false) {
-					vretour.addArticleAcheter(aa);
 				}
 			}
 		} catch (SQLException e) {

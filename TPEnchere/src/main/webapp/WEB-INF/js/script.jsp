@@ -23,30 +23,33 @@ class Script {
 	
 	calculWidthHeader(initWidth) {
 		let navMenu = $('header-nav');
-		let headerLogo = $('header-div-a');
 		
-		if(headerLogo.clientWidth < 146 && !navMenu.classList.contains(navMenu)) {
-			let header = document.getElementsByTagName('header')[0];
-			let tailleContainerChildren = 0;
+		if(navMenu !== undefined) {
+			let headerLogo = $('header-div-a');
 			
-			for(let i = 0; i < navMenu.children.length; i++) {
-				tailleContainerChildren += navMenu.children[i].clientWidth;
+			if(headerLogo.clientWidth < 146 && !navMenu.classList.contains(navMenu)) {
+				let header = document.getElementsByTagName('header')[0];
+				let tailleContainerChildren = 0;
+				
+				for(let i = 0; i < navMenu.children.length; i++) {
+					tailleContainerChildren += navMenu.children[i].clientWidth;
+				}
+				
+				navMenu.classList.add("header-navMenu");
+				header.classList.add("headerMenu");
+				
+				const navMenuStyle = window.getComputedStyle(navMenu, null);
+				let navMenuCalcul = parseFloat(navMenuStyle.paddingLeft) + parseFloat(navMenuStyle.paddingRight) + parseFloat(navMenuStyle.rowGap);
+				
+				const headerStyle = window.getComputedStyle(header, null);
+				let headerCalcul = parseFloat(headerStyle.paddingLeft) + parseFloat(headerStyle.paddingRight) + parseFloat(headerStyle.rowGap);
+				
+				initWidth = navMenuCalcul + headerCalcul + tailleContainerChildren + headerLogo.clientWidth;
+				
+			} else if(navMenu.classList.contains("header-navMenu") && initWidth <= window.innerWidth) {
+				document.getElementsByTagName('header')[0].classList.remove("headerMenu");
+				navMenu.classList.remove("header-navMenu");
 			}
-			
-			navMenu.classList.add("header-navMenu");
-			header.classList.add("headerMenu");
-			
-			const navMenuStyle = window.getComputedStyle(navMenu, null);
-			let navMenuCalcul = parseFloat(navMenuStyle.paddingLeft) + parseFloat(navMenuStyle.paddingRight) + parseFloat(navMenuStyle.rowGap);
-			
-			const headerStyle = window.getComputedStyle(header, null);
-			let headerCalcul = parseFloat(headerStyle.paddingLeft) + parseFloat(headerStyle.paddingRight) + parseFloat(headerStyle.rowGap);
-			
-			initWidth = navMenuCalcul + headerCalcul + tailleContainerChildren + headerLogo.clientWidth;
-			
-		} else if(navMenu.classList.contains("header-navMenu") && initWidth <= window.innerWidth) {
-			document.getElementsByTagName('header')[0].classList.remove("headerMenu");
-			navMenu.classList.remove("header-navMenu");
 		}
 		
 		return initWidth;

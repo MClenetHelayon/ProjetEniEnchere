@@ -20,13 +20,11 @@ public class ArticleVenduManager {
 	
 	private ArticleVenduManager() { }
 	
-	public List<ArticleVendu> selectAll() {
+	public List<ArticleVendu> selectAll() throws BusinessException {
 		List<ArticleVendu> vretour = new ArrayList<ArticleVendu>();
-		try {
-			vretour = DAOFactory.getArticleVenduDAO().selectAll();
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+		
+		vretour = DAOFactory.getArticleVenduDAO().selectAll();
+		
 		return vretour;
 	}
 	public ArticleVendu selectById(int id) {
@@ -45,12 +43,8 @@ public class ArticleVenduManager {
 			e.printStackTrace();
 		}
 	}
-	public void insert(ArticleVendu artVen) {
-		try {
-			DAOFactory.getArticleVenduDAO().insert(artVen);
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+	public void insert(ArticleVendu artVen) throws BusinessException {
+		DAOFactory.getArticleVenduDAO().insert(artVen);
 	}
 	public void update(ArticleVendu artVen) {
 		try {

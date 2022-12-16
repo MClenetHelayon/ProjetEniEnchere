@@ -30,13 +30,11 @@ public class RetraitManager {
 		}
 		return vretour;
 	}
-	public Retrait selectById(int id) {
+	public Retrait selectById(int id) throws BusinessException {
 		Retrait vretour = null;
-		try {
-			vretour = DAOFactory.getRetraitDAO().selectById(id);
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+
+		vretour = DAOFactory.getRetraitDAO().selectById(id);
+		
 		return vretour;
 	}
 	public void delete(int id) {
