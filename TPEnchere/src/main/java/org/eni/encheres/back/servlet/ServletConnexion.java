@@ -54,7 +54,7 @@ public class ServletConnexion extends HttpServlet {
 			request.setAttribute("erreur","erreur !!!!");
 			returnBack(request, response,"/WEB-INF/Connexion.jsp");
 		}
-		if(request.getParameter("alwaysOpen").equals("on")&&bool) {
+		if(checkBox(request)&&bool) {
 	        String idUser = Integer.toString(userCo.getIdUser());		        
 	        Cookie cookie = new Cookie("id", idUser);
 	        cookie.setMaxAge(10000);
@@ -75,6 +75,12 @@ public class ServletConnexion extends HttpServlet {
 		session.setAttribute("userCo",u);
 		session.setAttribute("userId",u.getIdUser());
 		request.setAttribute("erreur","");
-
+	}
+	private boolean checkBox(HttpServletRequest request) {
+		boolean vretour = false;
+		if(request.getParameter("alwaysOpen")!=null) {
+			vretour = true;
+		}
+		return vretour;
 	}
 }

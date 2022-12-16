@@ -7,11 +7,7 @@
 	<header>
 		<%@include file="/WEB-INF/includes/BouttonAccueil.jsp" %>
 		<nav class="header-nav">
-			<a href="${pageContext.request.contextPath}/ServletAdmin"></a>
-			<a href="${pageContext.request.contextPath}/">Enchères</a>
-			<a href="${pageContext.request.contextPath}/">Vendre un article</a>
-			<a href="${pageContext.request.contextPath}/ServletProfil">Mon Profil</a>
-			<a href="${pageContext.request.contextPath}/back/ServletDeconnexion">Déconnexion</a>
+			<%@include file="/WEB-INF/includes/header.jsp" %>
 		</nav>
 	</header>
 	<main>
@@ -27,7 +23,7 @@
 			<div class="listeArticle">
 				<div class="article-init">
 					<div><h4 class="article-h4">${u.pseudo }</h4></div>
-					<div><a href="${pageContext.request.contextPath}/ServletAdmin?id=${u.idUser}">Supprimer</a></div>
+					<div><a href="${pageContext.request.contextPath}/adminDelete?id=${u.idUser}">Supprimer</a></div>
 					<div><a href="#">Bloquer</a></div>
 				</div>
 			</div>

@@ -27,7 +27,8 @@ public class ServletAdmin extends HttpServlet {
 		if(request.getServletPath().equals("/ServletAdmin")) {
 
 			listUser(request, response, LUser);
-			reload(request, response);
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/administration.jsp");
+			rd.forward(request, response);
 		}
 		if(request.getServletPath().equals("/adminLock")) {
 			
@@ -37,7 +38,8 @@ public class ServletAdmin extends HttpServlet {
 			try {
 				UtilisateurManager.getInstance().delete(id);
 				listUser(request, response, LUser);
-				reload(request, response);
+				RequestDispatcher rd = request.getRequestDispatcher("/ServletAdmin");
+				rd.forward(request, response);
 			} catch (BusinessException e) {
 				e.printStackTrace();
 			}
@@ -55,13 +57,5 @@ public class ServletAdmin extends HttpServlet {
 		}
 		request.setAttribute("LUser",LUser);
 
-	}
-	private void reload(HttpServletRequest request, HttpServletResponse response) {
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/administration.jsp");
-		try {
-			rd.forward(request, response);
-		} catch (ServletException | IOException e) {
-			e.printStackTrace();
-		}
 	}
 }

@@ -10,10 +10,7 @@
 		
 			<c:choose>
 				<c:when test="${sessionScope.isConnect == true}">
-					<a href="${pageContext.request.contextPath}/ServletAdmin">Administration</a>
-					<a href="${pageContext.request.contextPath}/ServletVente">Vendre un article</a>
-					<a href="${pageContext.request.contextPath}/ServletProfil">Mon Profil</a>
-					<a href="${pageContext.request.contextPath}/back/ServletDeconnexion">Déconnexion</a>
+					<%@include file="/WEB-INF/includes/header.jsp" %>
 				</c:when>
 				<c:otherwise>
 					<a href="${pageContext.request.contextPath}/ServletCreationCompte">S'inscrire</a>

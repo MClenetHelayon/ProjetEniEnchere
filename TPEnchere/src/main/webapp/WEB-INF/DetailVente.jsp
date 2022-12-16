@@ -46,7 +46,7 @@
 					</div>
 					<form method="post" action="${pageContext.request.contextPath}/">
 						<label for="lblMaProposition">Ma proposition:</label>
-						<input id="lblMaProposition" min="0" type="number" name="maProposition" value="0" required>
+						<input id="lblMaProposition" min="1" type="number" name="maProposition" value="0" required>
 						<input class="venteDetail-submit" type="submit" value="Enchérir">
 					</form>
 				</div>

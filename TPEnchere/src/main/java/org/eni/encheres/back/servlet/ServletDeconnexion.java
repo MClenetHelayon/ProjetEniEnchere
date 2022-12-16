@@ -31,6 +31,8 @@ public class ServletDeconnexion extends HttpServlet {
 		}
 		HttpSession session = request.getSession();
 		session.setAttribute("isConnect", null);
+		session.setAttribute("userCo",null);
+		session.setAttribute("userId",null);
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Accueil.jsp");
 		rd.forward(request, response);
 	}

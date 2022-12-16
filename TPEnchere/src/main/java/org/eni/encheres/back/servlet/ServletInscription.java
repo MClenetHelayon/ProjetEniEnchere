@@ -110,6 +110,7 @@ public class ServletInscription extends HttpServlet {
 			Utilisateur user = null;
 			try {
 				user = UtilisateurManager.getInstance().mdpOublier(request.getParameter("email"));
+				System.out.println(user.getNom());
 				if(user.getNom()!=null) {
 					UtilisateurManager.getInstance().update(new Utilisateur(user.getIdUser(),
 							user.getPseudo(),
