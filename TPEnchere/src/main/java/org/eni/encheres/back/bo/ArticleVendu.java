@@ -100,6 +100,9 @@ public class ArticleVendu {
 		this.user = user;
 		this.categ = categ;
 		this.etatVente = etatVente;
+		
+		categ.addArt(this);
+		user.addArticleVendu(this);
 	}
 	public ArticleVendu(String nom, String description, LocalDate dateDeb, LocalDate dateFin, int prixInit,
 			int prixVente, Utilisateur user, Categorie categ, int etatVente) {
@@ -113,6 +116,9 @@ public class ArticleVendu {
 		this.user = user;
 		this.categ = categ;
 		this.etatVente = etatVente;
+		
+		categ.addArt(this);
+		user.addArticleVendu(this);
 	}
 	
 	

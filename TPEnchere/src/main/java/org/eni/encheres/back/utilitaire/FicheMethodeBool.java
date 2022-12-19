@@ -15,4 +15,12 @@ public class FicheMethodeBool {
 		}
 		return vretour;
 	}
+	public static boolean reverseBool(boolean vretour) {
+		if(vretour) {
+			vretour = false;
+		}else {
+			vretour = true;
+		}
+		return vretour;
+	}
 }

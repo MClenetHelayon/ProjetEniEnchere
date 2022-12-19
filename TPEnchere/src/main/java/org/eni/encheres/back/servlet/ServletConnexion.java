@@ -24,13 +24,14 @@ public class ServletConnexion extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Cookie[] cookies = request.getCookies();
-		if(cookies!=null) {
+		HttpSession session = request.getSession();
+		if(cookies!=null&&session.getAttribute("cookie")!=null) {
 			for(Cookie c : cookies) {
 				Utilisateur u = null;
 				try {
 					u = UtilisateurManager.getInstance().selectById(Integer.valueOf(c.getValue()));
 					if(u!=null) {
-						createSession(request, u);
+						createSession(request, u,session);
 						returnBack(request, response,"/ServletAccueil");
 						break;
 					}
@@ -44,10 +45,11 @@ public class ServletConnexion extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Utilisateur userCo = null;
+		HttpSession session = request.getSession();
 		boolean bool = false;
 		try {
 			userCo =  UtilisateurManager.getInstance().connection(request.getParameter("identifiant"), request.getParameter("password"));
-			createSession(request, userCo);
+			createSession(request, userCo,session);
 			bool = true;
 			returnBack(request, response,"/WEB-INF/Accueil.jsp");
 		}catch (Exception e) {
@@ -59,6 +61,7 @@ public class ServletConnexion extends HttpServlet {
 	        Cookie cookie = new Cookie("id", idUser);
 	        cookie.setMaxAge(10000);
 	        response.addCookie(cookie);
+	        session.setAttribute("cookie",cookie);
 		}
 	}
 	private void returnBack(HttpServletRequest request, HttpServletResponse response,String link) {
@@ -69,8 +72,7 @@ public class ServletConnexion extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-	private void createSession(HttpServletRequest request,Utilisateur u) {
-		HttpSession session = request.getSession();
+	private void createSession(HttpServletRequest request,Utilisateur u,HttpSession session) {
 		session.setAttribute("isConnect",true);
 		session.setAttribute("userCo",u);
 		session.setAttribute("userId",u.getIdUser());

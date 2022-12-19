@@ -34,7 +34,7 @@
 		<p>${sessionScope.userCo.ville}</p>		
 	</div>
 	<div class="profil-container-div">
-		<p>Credit:</hp4>
+		<p>Credit:</p>
 		<p>${sessionScope.userCo.credit}</p>		
 	</div>
 </div>

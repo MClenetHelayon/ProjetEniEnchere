@@ -12,15 +12,17 @@ import org.eni.encheres.back.BusinessException;
 import org.eni.encheres.back.bll.CategorieManager;
 import org.eni.encheres.back.bll.UtilisateurManager;
 import org.eni.encheres.back.bo.ArticleVendu;
+import org.eni.encheres.back.bo.Categorie;
 import org.eni.encheres.back.bo.Utilisateur;
 import org.eni.encheres.back.utilitaire.FicheMethodeTemps;
 
-public class ArticleVenduDAOJdbcImpl implements DAO<ArticleVendu> {
+public class ArticleVenduDAOJdbcImpl implements DAOArticle {
 	private static final String SELECT_ALL = "select * from ARTICLES_VENDUS av INNER JOIN CATEGORIES c ON c.no_categorie = av.no_categorie;";
 	private static final String SELECT_BY_ID = "select * from ARTICLES_VENDUS WHERE no_article = ?;";
+	private static final String SELECT_BY_IDCATEG = "select * from ARTICLES_VENDUS av INNER JOIN CATEGORIES c ON c.no_categorie = av.no_categorie WHERE av.no_categorie = ?;";
 	private final static String DELETE = "DELETE FROM ARTICLES_VENDUS WHERE no_article=?;";
 	private final static String INSERT = "INSERT INTO ARTICLES_VENDUS(nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,no_utilisateur,no_categorie) VALUES(?,?,?,?,?,?,?,?);";
-	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article=?,description=?,date_debut_encheres=?,date_fin_encheres=?,prix_initial=?,no_utilisateur=?,no_categorie=? WHERE no_article=?;";
+	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article=?,description=?,date_debut_encheres=?,date_fin_encheres=?,prix_initial=?,prix_vente=?,no_utilisateur=?,no_categorie=? WHERE no_article=?;";
 	
 	@Override
 	public List<ArticleVendu> selectAll() throws BusinessException {
@@ -57,7 +59,22 @@ public class ArticleVenduDAOJdbcImpl implements DAO<ArticleVendu> {
 			}
 			return vretour;
 	}
-
+	@Override
+	public List<ArticleVendu> selectAllByCateg(int idCat) throws BusinessException {
+		List<ArticleVendu> vretour = new ArrayList<>();
+		try(Connection cnx = ConnectionProvider.getConnection()){
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_IDCATEG);
+			pstmt.setInt(1,idCat);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				ArticleVendu unArticle = simplyCreator(rs);
+				vretour.add(unArticle);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return vretour;
+	}
 	@Override
 	public void delete(int id) {
 		try(Connection cnx = ConnectionProvider.getConnection()) {
@@ -109,6 +126,7 @@ public class ArticleVenduDAOJdbcImpl implements DAO<ArticleVendu> {
 			pStmt.setInt(6, lObjet.getPrixVente());
 			pStmt.setInt(7, lObjet.getUser().getIdUser());
 			pStmt.setInt(8, lObjet.getCateg().getNumCat());
+			System.out.println(lObjet.getNumArticle());
 			pStmt.setInt(9, lObjet.getNumArticle());
 			pStmt.executeUpdate();
 		} catch (SQLException e) {
@@ -121,6 +139,7 @@ public class ArticleVenduDAOJdbcImpl implements DAO<ArticleVendu> {
 		ArticleVendu vretour = null;
 		try {
 			Utilisateur user = UtilisateurManager.getInstance().selectById(rs.getInt("no_utilisateur"));
+			Categorie categ = CategorieManager.getInstance().selectById(rs.getInt("no_categorie"));
 			vretour = new ArticleVendu(	rs.getInt("no_article"),
 										rs.getString("nom_article"),
 										rs.getString("description"),
@@ -129,8 +148,9 @@ public class ArticleVenduDAOJdbcImpl implements DAO<ArticleVendu> {
 										rs.getInt("prix_initial"),
 										rs.getInt("prix_vente"),
 										user,
-										CategorieManager.getInstance().selectById(rs.getInt("no_categorie")),
+										categ,
 										0);
+			categ.addArt(vretour);
 			user.addArticleAcheter(vretour);
 			user.addArticleVendu(vretour);
 		} catch (SQLException e) {

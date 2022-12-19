@@ -9,10 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eni.encheres.back.BusinessException;
-import org.eni.encheres.back.bll.ArticleVenduManager;
-import org.eni.encheres.back.bll.EnchereManager;
-import org.eni.encheres.back.bo.ArticleVendu;
-import org.eni.encheres.back.bo.Enchere;
 import org.eni.encheres.back.bo.Utilisateur;
 import org.eni.encheres.back.utilitaire.FicheMethodeBool;
 
@@ -25,8 +21,8 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 	private static final String SELECT_BY_EMAIL = "select * from UTILISATEURS WHERE email = ?;";
 	private static final String SELECT_BY_PSEUDO_OR_EMAIL_AND_MDP = "select * from UTILISATEURS WHERE (pseudo like ? OR email like ?) AND mot_de_passe like ?;";
 	private final static String DELETE = "DELETE FROM UTILISATEURS WHERE no_utilisateur=?;";
-	private final static String INSERT = "INSERT INTO UTILISATEURS(pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
-	private final static String UPDATE = "UPDATE UTILISATEURS SET pseudo=?,nom=?,prenom=?,email=?,telephone=?,rue=?,code_postal=?,ville=?,mot_de_passe=? WHERE no_utilisateur=?;";
+	private final static String INSERT = "INSERT INTO UTILISATEURS(pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur,bloque) VALUES(?,?,?,?,?,?,?,?,?,?,?,?);";
+	private final static String UPDATE = "UPDATE UTILISATEURS SET pseudo=?,nom=?,prenom=?,email=?,telephone=?,rue=?,code_postal=?,ville=?,mot_de_passe=?,bloque=? WHERE no_utilisateur=?;";
 	
 	
 	@Override
@@ -128,6 +124,7 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 			pStmt.setString(9, lObjet.getMdp());
 			pStmt.setInt(10, lObjet.getCredit());
 			pStmt.setByte(11,FicheMethodeBool.boolToBit(lObjet.isAdmin()));
+			pStmt.setByte(12,FicheMethodeBool.boolToBit(lObjet.isBloque()));
 			pStmt.executeUpdate();
 			ResultSet rs = pStmt.getGeneratedKeys();
 			if(rs.next())
@@ -151,7 +148,8 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 			pStmt.setString(7, lObjet.getCodePostal());
 			pStmt.setString(8, lObjet.getVille());
 			pStmt.setString(9, lObjet.getMdp());
-			pStmt.setInt(10, lObjet.getIdUser());
+			pStmt.setByte(10,FicheMethodeBool.boolToBit(lObjet.isBloque()));
+			pStmt.setInt(11, lObjet.getIdUser());
 			pStmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -175,11 +173,6 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 										rs.getInt("credit"),
 										FicheMethodeBool.bitToBool(rs.getByte("administrateur")),
 										false);
-			for(Enchere e : EnchereManager.getInstance().selectAll()) {
-				if(e.getUser().getIdUser()==rs.getInt("no_utilisateur")) {
-					vretour.addEnchere(e);
-				}
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

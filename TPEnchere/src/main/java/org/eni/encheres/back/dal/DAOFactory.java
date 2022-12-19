@@ -1,13 +1,12 @@
 package org.eni.encheres.back.dal;
 
-import org.eni.encheres.back.bo.ArticleVendu;
 import org.eni.encheres.back.bo.Categorie;
 import org.eni.encheres.back.bo.Enchere;
 import org.eni.encheres.back.bo.Retrait;
 
 public abstract class DAOFactory {
 
-	public static DAO<ArticleVendu> getArticleVenduDAO() {
+	public static DAOArticle getArticleVenduDAO() {
 		return new ArticleVenduDAOJdbcImpl();
 	}
 	public static DAOUser getUtilisateurDAO() {

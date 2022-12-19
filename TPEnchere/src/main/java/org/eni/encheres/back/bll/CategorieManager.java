@@ -22,16 +22,12 @@ public class CategorieManager {
 	
 	public List<Categorie> selectAll() throws BusinessException {
 		List<Categorie> vretour = new ArrayList<Categorie>();
-		
 		vretour = DAOFactory.getCategorieDAO().selectAll();
-		
 		return vretour;
 	}
 	public Categorie selectById(int id) throws BusinessException {
 		Categorie vretour = null;
-		
 		vretour = DAOFactory.getCategorieDAO().selectById(id);
-		
 		return vretour;
 	}
 	public void delete(int id) {

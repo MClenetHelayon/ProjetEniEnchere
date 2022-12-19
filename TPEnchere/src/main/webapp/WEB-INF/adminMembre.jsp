@@ -24,7 +24,7 @@
 				<div class="article-init">
 					<div><h4 class="article-h4">${u.pseudo }</h4></div>
 					<div><a href="${pageContext.request.contextPath}/adminDelete?id=${u.idUser}">Supprimer</a></div>
-					<div><a href="#">Bloquer</a></div>
+					<div><a href="${pageContext.request.contextPath}/adminLock?id=${u.idUser}">Bloquer</a></div>
 				</div>
 			</div>
 			</c:if>
