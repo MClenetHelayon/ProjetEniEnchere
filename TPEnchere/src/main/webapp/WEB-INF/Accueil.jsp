@@ -28,7 +28,6 @@
 			<div class="filtres-form-div">
 				<%@include file="/WEB-INF/includes/ListCategorie.jsp" %>
 			</div>
-			
 			<c:if test="${sessionScope.isConnect == true}">
 				<div class="filtres-accountConnected">
 					<div class="filtres-accountConnected-liste">
