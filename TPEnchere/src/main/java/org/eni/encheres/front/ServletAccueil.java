@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.eni.encheres.back.BusinessException;
 import org.eni.encheres.back.bll.ArticleVenduManager;
@@ -28,15 +27,6 @@ public class ServletAccueil extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		
-		if(session.getAttribute("isConnect")==null) {
-			session.setAttribute("isConnect", false);
-			session.setAttribute("userCo", null);
-			
-			System.out.println("path Servlet: " + request.getServletPath() + " isConnect: " + session.getAttribute("isConnect") + " userCo: " + session.getAttribute("userCo"));
-		}
-		
 		try {
 			List<Categorie> listCategorie = CategorieManager.getInstance().selectAll();
 			
@@ -59,8 +49,7 @@ public class ServletAccueil extends HttpServlet {
 		rd.forward(request, response);
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException ,IOException {
-		
 		/* add filtre liste article */
-		
+		//request.getParameter("")
 	}
 }

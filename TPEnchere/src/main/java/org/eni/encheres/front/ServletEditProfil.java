@@ -8,6 +8,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.eni.encheres.back.BusinessException;
+import org.eni.encheres.back.bll.UtilisateurManager;
+import org.eni.encheres.back.bo.Utilisateur;
 
 /**
  * Servlet implementation class ServletEditProfil
@@ -20,6 +25,17 @@ public class ServletEditProfil extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		
+		try {
+			Utilisateur unUtilisateur = UtilisateurManager.getInstance().selectById((int) session.getAttribute("userId"));
+			
+			request.setAttribute("unUtilisateur", unUtilisateur);
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/EditProfil.jsp");
 		rd.forward(request, response);
 	}

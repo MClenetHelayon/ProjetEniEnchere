@@ -18,12 +18,13 @@ import org.eni.encheres.back.bo.Utilisateur;
 /**
  * Servlet implementation class ServletConnexion
  */
-@WebServlet("/back/ServletConnexion")
+@WebServlet("/ServletConnexion")
 public class ServletConnexion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Cookie[] cookies = request.getCookies();
+
 		if(cookies!=null) {
 			for(Cookie c : cookies) {
 				Utilisateur u = null;
@@ -31,6 +32,7 @@ public class ServletConnexion extends HttpServlet {
 					u = UtilisateurManager.getInstance().selectById(Integer.valueOf(c.getValue()));
 					if(u!=null) {
 						createSession(request, u);
+						
 						returnBack(request, response,"/ServletAccueil");
 						break;
 					}
@@ -49,11 +51,14 @@ public class ServletConnexion extends HttpServlet {
 			userCo =  UtilisateurManager.getInstance().connection(request.getParameter("identifiant"), request.getParameter("password"));
 			createSession(request, userCo);
 			bool = true;
-			returnBack(request, response,"/WEB-INF/Accueil.jsp");
+			
+			response.sendRedirect("./ServletAccueil");
 		}catch (Exception e) {
-			request.setAttribute("erreur","erreur !!!!");
+			request.setAttribute("erreur","Connexion impossible");
+			
 			returnBack(request, response,"/WEB-INF/Connexion.jsp");
 		}
+		
 		if(checkBox(request)&&bool) {
 	        String idUser = Integer.toString(userCo.getIdUser());		        
 	        Cookie cookie = new Cookie("id", idUser);
@@ -61,6 +66,7 @@ public class ServletConnexion extends HttpServlet {
 	        response.addCookie(cookie);
 		}
 	}
+	
 	private void returnBack(HttpServletRequest request, HttpServletResponse response,String link) {
 		RequestDispatcher rd = request.getRequestDispatcher(link);
 		try {

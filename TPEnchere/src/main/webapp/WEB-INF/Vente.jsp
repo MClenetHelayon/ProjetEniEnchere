@@ -13,5 +13,6 @@
 		<%@include file="/WEB-INF/includes/Erreur.jsp" %>
 	</main>
 	<%@include file="/WEB-INF/includes/Footer.jsp" %>
+	<%@include file="/WEB-INF/includes/scriptJs.jsp" %>
 </body>
 </html>

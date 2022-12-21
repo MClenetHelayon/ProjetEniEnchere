@@ -1,3 +1,5 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="org.eni.encheres.back.bo.ArticleVendu"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -10,11 +12,11 @@
 	<main>
 		<div class="detailVente-form-div">
 			<c:choose>
-				<c:when test="true">
+				<c:when test="${sessionScope.isConnect == true && sessionScope.userId == requestScope.miseMaxUtilisateur.idUser}">
 					<h1 class="detailVente-form-div-h1">Vous avez remporté la vente</h1>
 				</c:when>
 				<c:otherwise>
-					<h1 class="detailVente-form-div-h1">User à remporté la vente</h1>
+					<h1 class="detailVente-form-div-h1">${requestScope.miseMaxUtilisateur.nom} à remporté la vente</h1>
 				</c:otherwise>
 			</c:choose>
 			
@@ -22,27 +24,37 @@
 				<img class="detailVente-form-2div-img" src="./img/defaultPicture.webp" />
 				<div class="detailVente-form-3div">
 					<div class="detailVente-form-4div">
-						<h3 class="detailVente-form-4div-h3">PC Gamer pour travailler</h3>
+						<h3 class="detailVente-form-4div-h3">${requestScope.unArticle.nom}</h3>
 					</div>
 					<div class="detailVente-form-4div-cust">
 						<p>Description:</p>
-						<p class="detailVente-form-4div-p">blabla Informatique Informatique Informatique Informatique Informatique Informatique Informatique InformatiqueInformatiqueInformatiqueInformatiqueInformatiqueInformatiqueInformatique  InformatiqueInformatiqueInformatiqueInformatique Informatique Informatique Informatique Informatique Informatique</p>
+						<p class="detailVente-form-4div-p">${requestScope.unArticle.description}</p>
 					</div>
 					<div class="detailVente-form-4div">
 						<p>Meilleur offre:</p>
-						<p>210 pts par Bob</p>
+						
+						<c:choose>
+							<c:when test="${sessionScope.isConnect == true && sessionScope.userId == requestScope.miseMaxUtilisateur.idUser}">
+								<p>${requestScope.unArticle.enchereMax.montant} pts</p>
+							</c:when>
+							<c:otherwise>
+								<p>${requestScope.unArticle.enchereMax.montant} pts par ${requestScope.miseMaxUtilisateur.nom}</p>
+							</c:otherwise>
+						</c:choose>
+						
+						
 					</div>
 					<div class="detailVente-form-4div">
 						<p>Mise à prix:</p>
-						<p>185 points</p>
+						<p>${requestScope.unArticle.prixInit} points</p>
 					</div>
 					
 					<!-- si other win -->
 					
-					<c:if test="">
+					<c:if test="${sessionScope.userId != requestScope.miseMaxUtilisateur.idUser}">
 						<div class="detailVente-form-4div">
 							<p>Fin de l'enchère:</p>
-							<p>09/10/2018</p>
+							<p><%=DateTimeFormatter.ofPattern("dd/MM/YYYY").format(((ArticleVendu) request.getAttribute("unArticle")).getDateFin()) %></p>
 						</div>
 					</c:if>
 					
@@ -50,19 +62,19 @@
 					
 					<div class="detailVente-form-4div">
 						<p>Retrait:</p>
-						<p>10 allée des Alouettes 44880 Saint-Herblain</p>
+						<p>${requestScope.leVendeur.rue} ${requestScope.leVendeur.codePostal} ${requestScope.leVendeur.ville}</p>
 					</div>
 					<div class="detailVente-form-4div">
 						<p>Vendeur:</p>
-						<p>jojo44</p>
+						<p>${requestScope.leVendeur.nom}</p>
 					</div>
 					
 					<!-- si j'ai win -->
 					
-					<c:if test="">
+					<c:if test="${sessionScope.isConnect == true && sessionScope.userId == requestScope.miseMaxUtilisateur.idUser}">
 						<div class="detailVente-form-4div">
-							<p>Fin de l'enchère:</p>
-							<p>09/10/2018</p>
+							<p>Tel:</p>
+							<p>${requestScope.leVendeur.telephone}</p>
 						</div>
 					</c:if>
 					
@@ -73,15 +85,11 @@
 		</div>
 		<div>
 			
-			<c:choose>
-				<c:when test="">
-					<a class="detailVente-a-back" href="${pageContext.request.contextPath}/">Retrait effectué</a>
-				</c:when>
-				<c:otherwise>
-					<a class="detailVente-a-back" href="${pageContext.request.contextPath}/">Annuler</a>
-				</c:otherwise>
-			</c:choose>
+			<c:if test="${sessionScope.isConnect == true && sessionScope.userId == requestScope.miseMaxUtilisateur.idUser || sessionScope.userId == requestScope.leVendeur.idUser}">
+				<a class="detailVente-a-back" href="${pageContext.request.contextPath}/ServletFinaliser">Retrait effectué</a>
+			</c:if>
 			
+			<a class="detailVente-a-back" href="${pageContext.request.contextPath}/">Retour</a>
 		</div>
 		
 		<%@include file="/WEB-INF/includes/Erreur.jsp" %>

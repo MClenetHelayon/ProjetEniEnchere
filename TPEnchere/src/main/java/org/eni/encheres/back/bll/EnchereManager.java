@@ -26,7 +26,7 @@ public class EnchereManager {
 		
 		return vretour;
 	}
-	public Enchere selectById(int id) {
+	/*public Enchere selectById(int id) {
 		Enchere vretour = null;
 		try {
 			vretour = DAOFactory.getEnchereDAO().selectById(id);
@@ -34,7 +34,16 @@ public class EnchereManager {
 			e.printStackTrace();
 		}
 		return vretour;
+	}*/
+	
+	public Enchere selectByIdArticle(int idArticle) throws BusinessException {
+		Enchere vretour = null;
+		
+		vretour = DAOFactory.getEnchereDAO().selectById(idArticle);
+		
+		return vretour;
 	}
+	
 	public void delete(int id) {
 		try {
 			DAOFactory.getEnchereDAO().delete(id);
@@ -45,11 +54,8 @@ public class EnchereManager {
 	public void insert(Enchere ench) throws BusinessException {
 		DAOFactory.getEnchereDAO().insert(ench);
 	}
-	public void update(Enchere ench) {
-		try {
-			DAOFactory.getEnchereDAO().update(ench);
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+	public void update(Enchere ench) throws BusinessException {
+		DAOFactory.getEnchereDAO().update(ench);
+		
 	}
 }

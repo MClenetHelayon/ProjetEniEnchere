@@ -85,7 +85,7 @@ class Script {
 			const nameRadioBox = "achatsVentes";
 			let formData = new FormData();
 			
-			for(let i = 0; i < infoForm.elements.length -1; i++) {
+			for(let i = 0; i < infoForm.elements.length; i++) {
 				if((infoForm.elements[i].name == nameRadioBox && infoForm.elements[i].checked) || (infoForm.elements[i].type == "checkbox" && infoForm.elements[i].name == infoForm.elements.achatsVentes.value)) {
 					if(infoForm.elements[i].type == "checkbox") {
 						formData.append(infoForm.elements[i].name, infoForm.elements[i].checked);
@@ -114,6 +114,10 @@ class Script {
 				</jsp:include>`);
 				throw new Error("<%= msgErreur0 %> :\n" + err);
 			});
+		});
+		
+		$('filtres-form-inputText').addEventListener(`keypress`, e => {
+			if(e.keyCode == 13) e.preventDefault();
 		});
 	}
 	
@@ -145,12 +149,43 @@ class Script {
 		});
 	}
 	
+	PreviewImage() {
+		document.getElementById('lblPhotoArticle').addEventListener('change', () => {
+			const reader = new FileReader();
+			const file = document.querySelector('input[type="file"]').files[0];
+			
+			reader.addEventListener("load", () => {
+				const value = reader.result;
+				$('vente-form-2div-img').src = value;
+  			}, false);
+
+			if (/(jpe?g|png|webp)$/i.test(file.name)) reader.readAsDataURL(file);
+			else {
+				$('vente-form-2div-img').src = "./img/defaultPicture.webp";
+			}
+		});
+	}
+	
+	ServletReadVente() {
+		this.PreviewImage();
+	}
+	
+	ServletVente() {
+		this.PreviewImage();
+	}
+	
 	ServletEditProfil() {
 		this.VerifPassword($('editAccount-submit'));
 	}
 	
 	ServletCreationCompte() {
 		this.VerifPassword($('createAccount-submit'));
+	}
+	
+	ServletDeconnexion() {
+		for(let i = 0; i < window.history.length; i++) {
+			/*à retirer les historique*/
+		}
 	}
 }
 

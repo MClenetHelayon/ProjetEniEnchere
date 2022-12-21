@@ -8,7 +8,7 @@
 		<%@include file="/WEB-INF/includes/BouttonAccueil.jsp" %>
 	</header>
 	<main>
-		<form class="connexion-form-init" method="post" action="${pageContext.request.contextPath}/back/ServletConnexion">
+		<form class="connexion-form-init" method="post" action="${pageContext.request.contextPath}/ServletConnexion">
 			<div class="connexion-form-div">
 				<label for="lblId">Identifiant:</label>
 				<input id="lblId" type="text" name="identifiant" required>
@@ -28,7 +28,6 @@
 				</div>
 			</div>
 		</form>
-		<p>${requestScope.erreur }</p>
 		<a class="connexion-a" href="${pageContext.request.contextPath}/ServletCreationCompte">Créer un compte</a>
 		
 		<%@include file="/WEB-INF/includes/Erreur.jsp" %>

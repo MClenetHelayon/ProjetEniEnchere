@@ -69,7 +69,7 @@ public class RetraitDAOJdbcImpl implements DAO<Retrait> {
 		try(Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pStmt = cnx.prepareStatement(DELETE);
 			pStmt.setInt(1, id);
-			pStmt.executeUpdate();			
+			pStmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -102,8 +102,12 @@ public class RetraitDAOJdbcImpl implements DAO<Retrait> {
 			pStmt.setString(1, lObjet.getRue());
 			pStmt.setString(2, lObjet.getCodePostal());
 			pStmt.setString(3, lObjet.getVille());
-			pStmt.setInt(4,lObjet.getArtVendu().getNumArticle());
-			pStmt.executeUpdate();
+			pStmt.setInt(4, lObjet.getArtVendu().getNumArticle());
+			int rt = pStmt.executeUpdate();
+			
+			if(rt == 0) {
+				insert(lObjet);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

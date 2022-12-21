@@ -9,10 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eni.encheres.back.BusinessException;
-import org.eni.encheres.back.bll.ArticleVenduManager;
-import org.eni.encheres.back.bll.EnchereManager;
-import org.eni.encheres.back.bo.ArticleVendu;
-import org.eni.encheres.back.bo.Enchere;
 import org.eni.encheres.back.bo.Utilisateur;
 import org.eni.encheres.back.utilitaire.FicheMethodeBool;
 
@@ -175,11 +171,6 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 										rs.getInt("credit"),
 										FicheMethodeBool.bitToBool(rs.getByte("administrateur")),
 										false);
-			for(Enchere e : EnchereManager.getInstance().selectAll()) {
-				if(e.getUser().getIdUser()==rs.getInt("no_utilisateur")) {
-					vretour.addEnchere(e);
-				}
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

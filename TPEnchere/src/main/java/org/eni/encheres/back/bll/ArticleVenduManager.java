@@ -40,12 +40,8 @@ public class ArticleVenduManager {
 	public void insert(ArticleVendu artVen) throws BusinessException {
 		DAOFactory.getArticleVenduDAO().insert(artVen);
 	}
-	public void update(ArticleVendu artVen) {
-		try {
-			DAOFactory.getArticleVenduDAO().update(artVen);
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+	public void update(ArticleVendu artVen) throws BusinessException {
+		DAOFactory.getArticleVenduDAO().update(artVen);
 	}
 }
 
