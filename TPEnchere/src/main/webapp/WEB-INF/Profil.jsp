@@ -12,7 +12,7 @@
 		
 		<c:if test="${sessionScope.isConnect == true && sessionScope.userId == requestScope.unUtilisateur.idUser}">
 			<div>
-				<a class="profil-a" href="${pageContext.request.contextPath}/ServletEditProfil">Modifier</a>
+				<a class="profil-a" href="${pageContext.request.contextPath}/editProfil">Modifier</a>
 			</div>
 		</c:if>
 		

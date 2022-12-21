@@ -12,16 +12,19 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class ServletErreur500
  */
-@WebServlet("/ServletErreur500")
+@WebServlet({"/erreur500","/erreur404"})
 public class ServletErreur500 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/pageErreurs/err500.jsp");
-		rd.forward(request, response);
+		if(request.getServletPath().equals("/erreur500")) {
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/pageErreurs/err500.jsp");
+			rd.forward(request, response);
+		}
+		if(request.getServletPath().equals("/erreur404")) {
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/pageErreurs/err404.jsp");
+			rd.forward(request, response);
+		}
 	}
 
 }

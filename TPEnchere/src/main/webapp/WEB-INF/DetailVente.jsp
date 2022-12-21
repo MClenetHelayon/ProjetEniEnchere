@@ -1,4 +1,4 @@
-<%@page import="org.eni.encheres.back.bo.ArticleVendu"%>
+<%@page import="org.eni.encheres.bo.ArticleVendu"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -48,8 +48,8 @@
 					</div>
 					
 					<c:choose>
-						<c:when test="${sessionScope.isConnect == true && sessionScope.userId != param.idUser}">
-							<form method="post" action="${pageContext.request.contextPath}/ServletDetailVente?idArticle=${param.idArticle}">
+						<c:when test="${sessionScope.isConnect == true && sessionScope.userId != param.idUser && sessionScope.userCo.bloque == false}">
+							<form method="post" action="${pageContext.request.contextPath}/detailVente?idArticle=${param.idArticle}">
 								<label for="lblMaProposition">Ma proposition:</label>
 								<input id="lblMaProposition" min="${requestScope.unArticle.prixVente == 0 ? requestScope.unArticle.prixInit +1 : requestScope.unArticle.prixVente +1}" type="number" name="maProposition" value="${requestScope.unArticle.prixVente == 0 ? requestScope.unArticle.prixInit +1 : requestScope.unArticle.prixVente +1}" required>
 								<input class="venteDetail-submit" type="submit" value="Enchérir">
@@ -57,7 +57,14 @@
 						</c:when>
 						<c:otherwise>
 							<div class="detailVente-form-4div">
-								<h4>Connectez-vous pour participer à l'enchère</h4>
+							<c:choose>
+								<c:when test="${sessionScope.isConnect == true && sessionScope.userId != param.idUser && sessionScope.userCo.bloque == true}">
+									<h4>Vous êtes bloquer</h4>
+								</c:when>
+								<c:otherwise>
+									<h4>Connectez-vous pour participer à l'enchère</h4>
+								</c:otherwise>
+							</c:choose>
 							</div>
 						</c:otherwise>
 					</c:choose>

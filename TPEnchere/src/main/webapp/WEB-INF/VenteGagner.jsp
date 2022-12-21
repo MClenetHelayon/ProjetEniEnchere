@@ -1,5 +1,5 @@
 <%@page import="java.time.format.DateTimeFormatter"%>
-<%@page import="org.eni.encheres.back.bo.ArticleVendu"%>
+<%@page import="org.eni.encheres.bo.ArticleVendu"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -16,7 +16,7 @@
 					<h1 class="detailVente-form-div-h1">Vous avez remporté la vente</h1>
 				</c:when>
 				<c:otherwise>
-					<h1 class="detailVente-form-div-h1">${requestScope.miseMaxUtilisateur.nom} à remporté la vente</h1>
+					<h1 class="detailVente-form-div-h1">${empty requestScope.miseMaxUtilisateur ? requestScope.personne : requestScope.miseMaxUtilisateur.nom} à remporté la vente</h1>
 				</c:otherwise>
 			</c:choose>
 			
@@ -38,7 +38,7 @@
 								<p>${requestScope.unArticle.enchereMax.montant} pts</p>
 							</c:when>
 							<c:otherwise>
-								<p>${requestScope.unArticle.enchereMax.montant} pts par ${requestScope.miseMaxUtilisateur.nom}</p>
+								<p>${empty requestScope.unArticle.enchereMax.montant ? "0" : requestScope.unArticle.enchereMax.montant} pts par ${empty requestScope.miseMaxUtilisateur ? requestScope.personne : requestScope.miseMaxUtilisateur.nom}</p>
 							</c:otherwise>
 						</c:choose>
 						
@@ -86,7 +86,7 @@
 		<div>
 			
 			<c:if test="${sessionScope.isConnect == true && sessionScope.userId == requestScope.miseMaxUtilisateur.idUser || sessionScope.userId == requestScope.leVendeur.idUser}">
-				<a class="detailVente-a-back" href="${pageContext.request.contextPath}/ServletFinaliser">Retrait effectué</a>
+				<a class="detailVente-a-back" href="${pageContext.request.contextPath}/finaliser">Retrait effectué</a>
 			</c:if>
 			
 			<a class="detailVente-a-back" href="${pageContext.request.contextPath}/">Retour</a>

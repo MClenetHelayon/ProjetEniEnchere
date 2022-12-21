@@ -2,11 +2,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<form class="vente-form-init" method="post" action="${pageContext.request.contextPath}/ServletVente"> <!-- enctype="multipart/form-data" -->
+<form class="vente-form-init" method="post" action="${pageContext.request.contextPath}/vente"> <!-- enctype="multipart/form-data" -->
 	<div class="vente-form-div">
 		
 		<c:choose>
-			<c:when test="${requestScope['javax.servlet.forward.servlet_path'] == '/ServletReadVente'}">
+			<c:when test="${requestScope['javax.servlet.forward.servlet_path'] == '/readVente'}">
 				<h1 class="vente-form-div-h1">Edit vente</h1>
 			</c:when>
 			<c:otherwise>
@@ -73,7 +73,7 @@
 		<a class="vente-a-back" href="${pageContext.request.contextPath}/">Retour</a>
 		
 		<c:if test="${sessionScope.isConnect == true && sessionScope.userId == param.idUser}">
-			<a class="vente-a-removeArticle" href="${pageContext.request.contextPath}/ServletAnnuleVente?idArticle=${param.idArticle}&idUser=${param.idUser}">Annuler la vente</a>
+			<a class="vente-a-removeArticle" href="${pageContext.request.contextPath}/annuleVente?idArticle=${param.idArticle}&idUser=${param.idUser}">Annuler la vente</a>
 		</c:if>
 		
 	</div>

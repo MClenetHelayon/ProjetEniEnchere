@@ -1,5 +1,5 @@
 <%@page import="java.time.format.DateTimeFormatter"%>
-<%@page import="org.eni.encheres.back.bo.ArticleVendu"%>
+<%@page import="org.eni.encheres.bo.ArticleVendu"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -16,8 +16,8 @@
 					<%@include file="/WEB-INF/includes/header.jsp" %>
 				</c:when>
 				<c:otherwise>
-					<a href="${pageContext.request.contextPath}/ServletCreationCompte">S'inscrire</a>
-					<a href="${pageContext.request.contextPath}/ServletConnexion">Se connecter</a>
+					<a href="${pageContext.request.contextPath}/creationCompte">S'inscrire</a>
+					<a href="${pageContext.request.contextPath}/connexion">Se connecter</a>
 				</c:otherwise>
 			</c:choose>
 		</nav>
@@ -25,7 +25,7 @@
 	<main>
 		<h1>Liste des enchères</h1>
 		
-		<form class="filtres-form-init" name="accueilFiltres" method="post" action="${pageContext.request.contextPath}/ServletAccueil">
+		<form class="filtres-form-init" name="accueilFiltres" method="post" action="${pageContext.request.contextPath}/accueil">
 			<h2 class="filtres-form-h2">Filtres:</h2>
 			<input class="filtres-form-inputText" type="search" placeholder="Le nom de l'article contient" value="${requestScope.txt}" name="filtresText">
 			<div class="filtres-form-div">
@@ -89,16 +89,16 @@
 							
 							<c:choose>
 								<c:when test="${elem.etatVente == 2 && sessionScope.isConnect == true && sessionScope.userId != null}">
-									<a class="article-a" href="${pageContext.request.contextPath}/ServletWinEnchere?idArticle=${elem.numArticle}&idUser=${elem.user.idUser}">
+									<a class="article-a" href="${pageContext.request.contextPath}/winEnchere?idArticle=${elem.numArticle}&idUser=${elem.user.idUser}">
 								</c:when>
 								<c:when test="${elem.etatVente == 2}">
-									<a class="article-a" href="${pageContext.request.contextPath}/ServletWinEnchere?idArticle=${elem.numArticle}">
+									<a class="article-a" href="${pageContext.request.contextPath}/winEnchere?idArticle=${elem.numArticle}">
 								</c:when>
 								<c:when test="${elem.etatVente == 1}">
-									<a class="article-a" href="${pageContext.request.contextPath}/ServletDetailVente?idArticle=${elem.numArticle}">
+									<a class="article-a" href="${pageContext.request.contextPath}/detailVente?idArticle=${elem.numArticle}">
 								</c:when>
 								<c:when test="${elem.etatVente == 0 && sessionScope.isConnect == true && sessionScope.userId != null}">
-									<a class="article-a" href="${pageContext.request.contextPath}/ServletReadVente?idArticle=${elem.numArticle}&idUser=${elem.user.idUser}">
+									<a class="article-a" href="${pageContext.request.contextPath}/readVente?idArticle=${elem.numArticle}&idUser=${elem.user.idUser}">
 								</c:when>
 							</c:choose>
 							
@@ -107,7 +107,7 @@
 							<p>Prix: ${elem.prixInit} points</p>
 							<fmt:parseDate  value="${elem.dateFin}" type="date" pattern="yyyy-MM-dd" var="parsedDate" />
 							<p>Fin de l'enchère: <fmt:formatDate type="date" value="${parsedDate}" pattern="dd/MM/YYYY"/></p>
-							<p>Vendeur: <a class="article-a2" href="${pageContext.request.contextPath}/ServletProfil${elem.user.idUser != sessionScope.userId ? '?idUser=' += elem.user.idUser : '' }">${elem.user.pseudo}</a></p>
+							<p>Vendeur: <a class="article-a2" href="${pageContext.request.contextPath}/profil${elem.user.idUser != sessionScope.userId ? '?idUser=' += elem.user.idUser : '' }">${elem.user.pseudo}</a></p>
 						</div>
 					</div>
 					

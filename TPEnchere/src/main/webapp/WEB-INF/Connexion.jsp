@@ -8,7 +8,7 @@
 		<%@include file="/WEB-INF/includes/BouttonAccueil.jsp" %>
 	</header>
 	<main>
-		<form class="connexion-form-init" method="post" action="${pageContext.request.contextPath}/ServletConnexion">
+		<form class="connexion-form-init" method="post" action="${pageContext.request.contextPath}/connexion">
 			<div class="connexion-form-div">
 				<label for="lblId">Identifiant:</label>
 				<input id="lblId" type="text" name="identifiant" required>
@@ -24,11 +24,11 @@
 						<input id="lblCheckbox" type="checkbox" name="alwaysOpen">
 						<label for="lblCheckbox">Se Souvenir de moi</label>
 					</div>
-					<a href="${pageContext.request.contextPath}/ServletMdpOublier">Mot de passe oublié</a>
+					<a href="${pageContext.request.contextPath}/mdpOublier">Mot de passe oublié</a>
 				</div>
 			</div>
 		</form>
-		<a class="connexion-a" href="${pageContext.request.contextPath}/ServletCreationCompte">Créer un compte</a>
+		<a class="connexion-a" href="${pageContext.request.contextPath}/creationCompte">Créer un compte</a>
 		
 		<%@include file="/WEB-INF/includes/Erreur.jsp" %>
 	</main>

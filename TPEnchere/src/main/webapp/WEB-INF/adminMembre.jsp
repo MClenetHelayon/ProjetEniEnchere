@@ -12,12 +12,6 @@
 	</header>
 	<main>
 		<h1>Liste des utilisateurs</h1>
-
-		<form class="filtres-form-init" name="accueilFiltres">
-			<h2 class="filtres-form-h2">Filtres:</h2>
-			<input class="filtres-form-inputText" type="search" placeholder="Le nom de l'article contient" name="filtresText">
-			<span class="filtres-form-inputSubmit">Rechercher</span>
-		</form>
 		<c:forEach var="u" items="${requestScope.LUser}">
 			<c:if test="${!u.admin}">
 			<div class="listeArticle">
