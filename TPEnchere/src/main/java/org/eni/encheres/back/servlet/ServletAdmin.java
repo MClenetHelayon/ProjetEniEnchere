@@ -49,6 +49,9 @@ public class ServletAdmin extends HttpServlet {
 																			u.getVille(),
 																			u.getMdp(),
 																			FicheMethodeBool.reverseBool(u.isBloque())));
+				UtilisateurManager.getInstance().bloquer(u.getIdUser());
+				RequestDispatcher rd = request.getRequestDispatcher("/adminUser");
+				rd.forward(request, response);
 			} catch (BusinessException e) {
 				e.printStackTrace();
 			}
@@ -78,9 +81,6 @@ public class ServletAdmin extends HttpServlet {
 					request.setAttribute("LArticle",LArticle);
 				}else {
 					LArticle = ArticleVenduManager.getInstance().selectAllByCateg(id);
-					for(ArticleVendu a : LArticle) {
-						System.out.println(a.getNom());
-					}
 					request.setAttribute("LArticle",LArticle);
 				}
 			} catch (BusinessException e) {
@@ -120,9 +120,12 @@ public class ServletAdmin extends HttpServlet {
 	}
 	private void rebootCateg(HttpServletRequest request, HttpServletResponse response) {
 		List<Categorie> LCateg = new ArrayList<Categorie>();
+		List<ArticleVendu> LArticle = new ArrayList<ArticleVendu>();
 		try {
 			LCateg = CategorieManager.getInstance().selectAll();
 			request.setAttribute("listCategorie",LCateg);
+			LArticle = ArticleVenduManager.getInstance().selectAll();
+			request.setAttribute("listArticle", LArticle);
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/adminCateg.jsp");
 			rd.forward(request, response);
 		} catch (BusinessException | ServletException | IOException e) {

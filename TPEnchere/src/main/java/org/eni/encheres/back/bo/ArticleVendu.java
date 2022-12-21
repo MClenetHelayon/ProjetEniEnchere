@@ -122,6 +122,12 @@ public class ArticleVendu {
 	}
 	
 	
+	@Override
+	public String toString() {
+		return "ArticleVendu [numArticle=" + numArticle + ", nom=" + nom + ", description=" + description + ", dateDeb="
+				+ dateDeb + ", dateFin=" + dateFin + ", prixInit=" + prixInit + ", prixVente=" + prixVente + ", user="
+				+ user + ", categ=" + categ + ", etatVente=" + etatVente + "]";
+	}
 	public void addEnchere(Enchere e) {
 		this.LEnchere.add(e);
 	}

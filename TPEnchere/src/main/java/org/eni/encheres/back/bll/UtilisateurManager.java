@@ -41,6 +41,9 @@ public class UtilisateurManager {
 		vretour = DAOFactory.getUtilisateurDAO().mdpOublier(email);
 		return vretour;
 	}
+	public void bloquer(int id)throws BusinessException{
+		DAOFactory.getUtilisateurDAO().bloquer(id);
+	}
 	public void delete(int id) throws BusinessException {
 		DAOFactory.getUtilisateurDAO().delete(id);
 	}

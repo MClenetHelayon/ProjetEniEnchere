@@ -35,18 +35,19 @@ public class ArticleVenduManager {
 		vretour = DAOFactory.getArticleVenduDAO().selectAllByCateg(idCateg);
 		return vretour;
 	}
+	public List<ArticleVendu> selectAllByNom(String nom) throws BusinessException{
+		List<ArticleVendu> vretour = new ArrayList<ArticleVendu>();
+		vretour = DAOFactory.getArticleVenduDAO().selectAllByText(nom);
+		return vretour;
+	}
 	public void delete(int id) throws BusinessException {
 		DAOFactory.getArticleVenduDAO().delete(id);
 	}
 	public void insert(ArticleVendu artVen) throws BusinessException {
 		DAOFactory.getArticleVenduDAO().insert(artVen);
 	}
-	public void update(ArticleVendu artVen) {
-		try {
-			DAOFactory.getArticleVenduDAO().update(artVen);
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+	public void update(ArticleVendu artVen) throws BusinessException {
+		DAOFactory.getArticleVenduDAO().update(artVen);
 	}
 }
 

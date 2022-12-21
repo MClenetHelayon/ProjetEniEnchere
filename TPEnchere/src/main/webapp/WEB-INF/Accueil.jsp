@@ -22,9 +22,9 @@
 	<main>
 		<h1>Liste des enchères</h1>
 		
-		<form class="filtres-form-init" name="accueilFiltres">
+		<form class="filtres-form-init" name="accueilFiltres" method="post" action="${pageContext.request.contextPath}/ServletAccueil">
 			<h2 class="filtres-form-h2">Filtres:</h2>
-			<input class="filtres-form-inputText" type="search" placeholder="Le nom de l'article contient" name="filtresText">
+			<input class="filtres-form-inputText" type="search" placeholder="Le nom de l'article contient" value="${requestScope.txt}" name="filtresText">
 			<div class="filtres-form-div">
 				<%@include file="/WEB-INF/includes/ListCategorie.jsp" %>
 			</div>
@@ -73,8 +73,8 @@
 					</div>
 				</div>
 			</c:if>
-			
-			<span class="filtres-form-inputSubmit">Rechercher</span>
+			<input type="submit" value="Rechercher">
+			<!--<span class="filtres-form-inputSubmit">Rechercher</span>-->
 		</form>
 		
 		<div class="listeArticle">

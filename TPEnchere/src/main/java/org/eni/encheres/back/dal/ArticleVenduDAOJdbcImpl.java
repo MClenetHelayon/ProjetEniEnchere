@@ -18,6 +18,7 @@ import org.eni.encheres.back.utilitaire.FicheMethodeTemps;
 
 public class ArticleVenduDAOJdbcImpl implements DAOArticle {
 	private static final String SELECT_ALL = "select * from ARTICLES_VENDUS av INNER JOIN CATEGORIES c ON c.no_categorie = av.no_categorie;";
+	private static final String SELECT_ALL_BY_NAME = "select * from ARTICLES_VENDUS WHERE nom_article like ?;";
 	private static final String SELECT_BY_ID = "select * from ARTICLES_VENDUS WHERE no_article = ?;";
 	private static final String SELECT_BY_IDCATEG = "select * from ARTICLES_VENDUS av INNER JOIN CATEGORIES c ON c.no_categorie = av.no_categorie WHERE av.no_categorie = ?;";
 	private final static String DELETE = "DELETE FROM ARTICLES_VENDUS WHERE no_article=?;";
@@ -34,8 +35,7 @@ public class ArticleVenduDAOJdbcImpl implements DAOArticle {
 			
 			ResultSet rs = stmt.executeQuery(SELECT_ALL);
 			while(rs.next()) {
-				ArticleVendu unArticle = simplyCreator(rs);
-				vretour.add(unArticle);
+				vretour.add(simplyCreator(rs));
 			}
 			
 		} catch (SQLException e) {
@@ -60,6 +60,21 @@ public class ArticleVenduDAOJdbcImpl implements DAOArticle {
 			return vretour;
 	}
 	@Override
+	public List<ArticleVendu> selectAllByText(String nom) throws BusinessException {
+			List<ArticleVendu> vretour = new ArrayList<ArticleVendu>();
+			try(Connection cnx = ConnectionProvider.getConnection()){
+				PreparedStatement pstmt = cnx.prepareStatement(SELECT_ALL_BY_NAME);
+				pstmt.setString(1,"%"+nom+"%");
+				ResultSet rs = pstmt.executeQuery();
+				while(rs.next()) {
+					vretour.add(simplyCreator(rs));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return vretour;
+	}
+	@Override
 	public List<ArticleVendu> selectAllByCateg(int idCat) throws BusinessException {
 		List<ArticleVendu> vretour = new ArrayList<>();
 		try(Connection cnx = ConnectionProvider.getConnection()){
@@ -67,8 +82,7 @@ public class ArticleVenduDAOJdbcImpl implements DAOArticle {
 			pstmt.setInt(1,idCat);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
-				ArticleVendu unArticle = simplyCreator(rs);
-				vretour.add(unArticle);
+				vretour.add(simplyCreator(rs));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

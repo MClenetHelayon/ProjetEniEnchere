@@ -22,8 +22,9 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 	private static final String SELECT_BY_PSEUDO_OR_EMAIL_AND_MDP = "select * from UTILISATEURS WHERE (pseudo like ? OR email like ?) AND mot_de_passe like ?;";
 	private final static String DELETE = "DELETE FROM UTILISATEURS WHERE no_utilisateur=?;";
 	private final static String INSERT = "INSERT INTO UTILISATEURS(pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur,bloque) VALUES(?,?,?,?,?,?,?,?,?,?,?,?);";
-	private final static String UPDATE = "UPDATE UTILISATEURS SET pseudo=?,nom=?,prenom=?,email=?,telephone=?,rue=?,code_postal=?,ville=?,mot_de_passe=?,bloque=? WHERE no_utilisateur=?;";
-	
+	private final static String UPDATE = "UPDATE UTILISATEURS SET pseudo=?,nom=?,prenom=?,email=?,telephone=?,rue=?,code_postal=?,ville=?,mot_de_passe=?,bloquer=? WHERE no_utilisateur=?;";
+	private final static String BLOQUER1 = "DELETE FROM ARTICLES_VENDUS WHERE no_utilisateur=?;";
+	private final static String BLOQUER2 = "DELETE FROM ENCHERES WHERE no_utilisateur=?;";
 	
 	@Override
 	public List<Utilisateur> selectAll() throws BusinessException {
@@ -92,6 +93,23 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 			e.printStackTrace();
 		}
 		return vretour;
+	}
+	@Override
+	public void bloquer(int idUser) throws BusinessException {
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pStmt = cnx.prepareStatement(BLOQUER1);
+			pStmt.setInt(1, idUser);
+			pStmt.executeUpdate();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pStmt = cnx.prepareStatement(BLOQUER2);
+			pStmt.setInt(1, idUser);
+			pStmt.executeUpdate();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	@Override
 	public void delete(int id) {
@@ -178,4 +196,5 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 		}
 		return vretour;
 	}
+
 }
