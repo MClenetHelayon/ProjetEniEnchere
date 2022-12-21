@@ -14,7 +14,7 @@
 			
 			<div>
 				<input class="editAccount-submit" type="submit" value="Enregistrer">
-				<a class="supprimer-a" href="${pageContext.request.contextPath}/delete?idUser=${sessionScope.userCo.idUser}">Supprimer mon compte</a>
+				<a class="supprimer-a" href="${pageContext.request.contextPath}/delete">Supprimer mon compte</a>
 			</div>
 		</form>
 		<p>${result}</p>

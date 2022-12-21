@@ -1,3 +1,5 @@
+<%@page import="org.eni.encheres.back.bo.ArticleVendu"%>
+<%@page import="java.time.format.DateTimeFormatter"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -14,41 +16,42 @@
 				<img class="detailVente-form-2div-img" src="./img/defaultPicture.webp" />
 				<div class="detailVente-form-3div">
 					<div class="detailVente-form-4div">
-						<h3 class="detailVente-form-4div-h3">PC Gamer pour travailler</h3>
+						<h3 class="detailVente-form-4div-h3">${requestScope.unArticle.nom}</h3>
 					</div>
 					<div class="detailVente-form-4div-cust">
 						<p>Description:</p>
-						<p class="detailVente-form-4div-p" maxlength="300">blabla Informatique Informatique Informatique Informatique Informatique Informatique Informatique InformatiqueInformatiqueInformatiqueInformatiqueInformatiqueInformatiqueInformatique  InformatiqueInformatiqueInformatiqueInformatique Informatique Informatique Informatique Informatique Informatique</p>
+						<p class="detailVente-form-4div-p" maxlength="300">${requestScope.unArticle.description}</p>
 					</div>
 					<div class="detailVente-form-4div">
 						<p>Catégorie:</p>
-						<p>Informatique</p>
+						<p>${requestScope.unArticle.categ.libelle}</p>
 					</div>
 					<div class="detailVente-form-4div">
 						<p>Meilleur offre:</p>
-						<p>210 pts par Bob</p>
+						<p>${requestScope.unArticle.prixVente} pts <c:if test="${requestScope.unArticle.prixVente} == 0">par ${requestScope.maxMontantUser}</c:if></p>
 					</div>
 					<div class="detailVente-form-4div">
 						<p>Mise à prix:</p>
-						<p>185 points</p>
+						<p>${requestScope.unArticle.prixInit} points</p>
 					</div>
 					<div class="detailVente-form-4div">
 						<p>Fin de l'enchère:</p>
-						<p>09/10/2018</p>
+						<p><%=DateTimeFormatter.ofPattern("dd/MM/YYYY").format(((ArticleVendu) request.getAttribute("unArticle")).getDateFin()) %></p>
 					</div>
 					<div class="detailVente-form-4div">
 						<p>Retrait:</p>
-						<p>10 allée des Alouettes 44880 Saint-Herblain</p>
+						<p>${requestScope.unArticle.user.rue} ${requestScope.unArticle.user.codePostal} ${requestScope.unArticle.user.ville}</p>
 					</div>
 					<div class="detailVente-form-4div">
 						<p>Vendeur:</p>
-						<p>jojo44</p>
-					</div>	
+						<p>${requestScope.unArticle.user.nom}</p>
+					</div>
+					
 					<c:choose>
-						<c:when test="${sessionScope.isConnect == true && sessionScope.userId == param.idUser}">
-							<form method="post" action="${pageContext.request.contextPath}/">
+						<c:when test="${sessionScope.isConnect == true && sessionScope.userId != param.idUser}">
+							<form method="post" action="${pageContext.request.contextPath}/ServletDetailVente?idArticle=${param.idArticle}">
 								<label for="lblMaProposition">Ma proposition:</label>
-								<input id="lblMaProposition" min="1" type="number" name="maProposition" value="0" required>
+								<input id="lblMaProposition" min="${requestScope.unArticle.prixVente == 0 ? requestScope.unArticle.prixInit +1 : requestScope.unArticle.prixVente +1}" type="number" name="maProposition" value="${requestScope.unArticle.prixVente == 0 ? requestScope.unArticle.prixInit +1 : requestScope.unArticle.prixVente +1}" required>
 								<input class="venteDetail-submit" type="submit" value="Enchérir">
 							</form>
 						</c:when>
@@ -58,9 +61,11 @@
 							</div>
 						</c:otherwise>
 					</c:choose>
+					
 				</div>
 			</div>
 		</div>
+		<a class="detailVente-a-back" href="${pageContext.request.contextPath}/">Retour</a>
 		
 		<%@include file="/WEB-INF/includes/Erreur.jsp" %>
 	</main>

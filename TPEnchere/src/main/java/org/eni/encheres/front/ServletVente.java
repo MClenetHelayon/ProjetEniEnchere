@@ -15,9 +15,11 @@ import javax.servlet.http.HttpSession;
 import org.eni.encheres.back.BusinessException;
 import org.eni.encheres.back.bll.ArticleVenduManager;
 import org.eni.encheres.back.bll.CategorieManager;
+import org.eni.encheres.back.bll.RetraitManager;
 import org.eni.encheres.back.bll.UtilisateurManager;
 import org.eni.encheres.back.bo.ArticleVendu;
 import org.eni.encheres.back.bo.Categorie;
+import org.eni.encheres.back.bo.Retrait;
 import org.eni.encheres.back.bo.Utilisateur;
 
 /**
@@ -47,7 +49,7 @@ public class ServletVente extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		if(request.getServletPath().equals("/ServletVente")) {
 			try {
 				Utilisateur retraitUserById = UtilisateurManager.getInstance().selectById(idUser);
@@ -62,11 +64,16 @@ public class ServletVente extends HttpServlet {
 		} else if(request.getServletPath().equals("/ServletReadVente")) {
 			String articleId = request.getParameter("idArticle");
 			
+			if(articleId == null) {
+				response.sendRedirect("./ServletAccueil");
+				return;
+			}
+			
 			try {
 				ArticleVendu unArticle = ArticleVenduManager.getInstance().selectById(Integer.valueOf(articleId));
 				
 				request.setAttribute("unArticle", unArticle);
-				request.setAttribute("statutBalise", "readonly");
+				//request.setAttribute("statutBalise", "readonly");
 				
 				reqDispatcher(request, response, "Vente");
 			} catch (BusinessException e) {
@@ -74,21 +81,29 @@ public class ServletVente extends HttpServlet {
 				e.printStackTrace();
 			}
 		} else if(request.getServletPath().equals("/ServletAnnuleVente")) {
-			String idArticle = request.getParameter("idArticle");
+			String articleId = request.getParameter("idArticle");
+			
+			if(articleId == null) {
+				response.sendRedirect("./ServletAccueil");
+				return;
+			}
 			
 			try {
-				ArticleVenduManager.getInstance().delete(Integer.valueOf(idArticle));
+				Retrait unRetrait = RetraitManager.getInstance().selectById(Integer.valueOf(articleId));
 				
-				reqDispatcher(request, response, "Accueil");
+				if(unRetrait != null) {
+					RetraitManager.getInstance().delete(Integer.valueOf(articleId));
+				}
+				
+				ArticleVenduManager.getInstance().delete(Integer.valueOf(articleId));
+				
+				response.sendRedirect("./ServletAccueil");
 			} catch (NumberFormatException | BusinessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
-	
-	
-	
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -97,32 +112,55 @@ public class ServletVente extends HttpServlet {
 		HttpSession session = request.getSession();
 		int utiliateurId = (int) session.getAttribute("userId");
 		
-		String nomArticle = request.getParameter("article");
-		String descriptionArticle = request.getParameter("description");
-		String filtreCategorieArticle = request.getParameter("choixCategorie");
-		//String photoArticle = request.getParameter("photo"); // plus tard
-		String prixInitialArticle = request.getParameter("miseAPrix");
-		String dateDebutEnchereArticle = request.getParameter("dateFinEnchere");
-		String dateFinEnchereArticle = request.getParameter("dateDebutEnchere");
-		
 		try {
-			Categorie uneCategorie = CategorieManager.getInstance().selectById(Integer.parseInt(filtreCategorieArticle));
-			Utilisateur unUtilisateur = UtilisateurManager.getInstance().selectById(utiliateurId);
+			Utilisateur siAutoriser = UtilisateurManager.getInstance().selectById(utiliateurId);
 			
-			ArticleVendu unArticle = new ArticleVendu(nomArticle, descriptionArticle, LocalDate.parse(dateDebutEnchereArticle), LocalDate.parse(dateFinEnchereArticle), 
-					Integer.valueOf(prixInitialArticle), 0, unUtilisateur, uneCategorie, 0);
-			
-			ArticleVenduManager.getInstance().insert(unArticle);
-			
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Accueil.jsp");
-			rd.forward(request, response);
-			
-		} catch (NumberFormatException | BusinessException e) {
-			e.printStackTrace();
-			request.setAttribute("erreur", e);
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Vente.jsp");
-			rd.forward(request, response);
-		}		
+			if(siAutoriser.isBloque()) {
+				System.out.println("utilisateur bloquer par l'admin");
+			} else if(request.getServletPath().equals("/ServletVente") || request.getServletPath().equals("/ServletReadVente")) {
+				
+				String nomArticle = request.getParameter("article");
+				String descriptionArticle = request.getParameter("description");
+				String filtreCategorieArticle = request.getParameter("choixCategorie");
+				//String photoArticle = request.getParameter("photo"); // plus tard
+				String prixInitialArticle = request.getParameter("miseAPrix");
+				String dateDebutEnchereArticle = request.getParameter("dateFinEnchere");
+				String dateFinEnchereArticle = request.getParameter("dateDebutEnchere");
+				String rueVendeur = request.getParameter("rue").trim();
+				String codePostalVendeur = request.getParameter("codePostal").trim();
+				String villeVendeur = request.getParameter("ville").trim();
+				
+				try {
+					Categorie uneCategorie = CategorieManager.getInstance().selectById(Integer.parseInt(filtreCategorieArticle));
+					Utilisateur unUtilisateur = UtilisateurManager.getInstance().selectById(utiliateurId);
+					
+					if((!rueVendeur.isEmpty() || !rueVendeur.isBlank()) && (!codePostalVendeur.isEmpty() || !codePostalVendeur.isBlank()) && (!villeVendeur.isEmpty() || !villeVendeur.isBlank())) {
+						unUtilisateur.setRue(rueVendeur);
+						unUtilisateur.setCodePostal(codePostalVendeur);
+						unUtilisateur.setVille(villeVendeur);
+					} else {
+						unUtilisateur.setRue("");
+						unUtilisateur.setCodePostal("");
+						unUtilisateur.setVille("");
+					}
+					
+					ArticleVendu unArticle = new ArticleVendu(nomArticle, descriptionArticle, LocalDate.parse(dateDebutEnchereArticle), LocalDate.parse(dateFinEnchereArticle), 
+							Integer.valueOf(prixInitialArticle), 0, unUtilisateur, uneCategorie, 0);
+					
+					ArticleVenduManager.getInstance().insert(unArticle);
+					
+					response.sendRedirect("./ServletAccueil");
+				} catch (NumberFormatException | BusinessException e) {
+					e.printStackTrace();
+					request.setAttribute("erreur", e);
+					RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Vente.jsp");
+					rd.forward(request, response);
+				}
+			}
+		} catch (BusinessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 
 }

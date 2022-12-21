@@ -18,7 +18,7 @@ import org.eni.encheres.back.bo.Utilisateur;
 /**
  * Servlet implementation class ServletConnexion
  */
-@WebServlet("/back/ServletConnexion")
+@WebServlet("/ServletConnexion")
 public class ServletConnexion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -51,11 +51,14 @@ public class ServletConnexion extends HttpServlet {
 			userCo =  UtilisateurManager.getInstance().connection(request.getParameter("identifiant"), request.getParameter("password"));
 			createSession(request, userCo,session);
 			bool = true;
-			returnBack(request, response,"/WEB-INF/Accueil.jsp");
+			
+			response.sendRedirect("./ServletAccueil");
 		}catch (Exception e) {
-			request.setAttribute("erreur","erreur !!!!");
+			request.setAttribute("erreur","Connexion impossible");
+			
 			returnBack(request, response,"/WEB-INF/Connexion.jsp");
 		}
+		
 		if(checkBox(request)&&bool) {
 	        String idUser = Integer.toString(userCo.getIdUser());		        
 	        Cookie cookie = new Cookie("id", idUser);
@@ -64,6 +67,7 @@ public class ServletConnexion extends HttpServlet {
 	        session.setAttribute("cookie",cookie);
 		}
 	}
+	
 	private void returnBack(HttpServletRequest request, HttpServletResponse response,String link) {
 		RequestDispatcher rd = request.getRequestDispatcher(link);
 		try {

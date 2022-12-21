@@ -37,12 +37,8 @@ public class RetraitManager {
 		
 		return vretour;
 	}
-	public void delete(int id) {
-		try {
-			DAOFactory.getRetraitDAO().delete(id);
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		}
+	public void delete(int id) throws BusinessException {
+		DAOFactory.getRetraitDAO().delete(id);
 	}
 	public void insert(Retrait retrait) {
 		try {

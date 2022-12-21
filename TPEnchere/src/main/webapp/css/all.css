@@ -168,6 +168,12 @@ input:disabled ~ * {
 	display: inherit;
 }
 
+.article-a2 {
+	font-weight: bold;
+	text-decoration: underline;
+	color: var(--colorBlue);
+}
+
 .article-init {
 	display: inherit;
 	grid-template-columns: .8fr 1fr;
@@ -237,7 +243,7 @@ input:disabled ~ * {
 	padding: 0 1rem;
 }
 
-.connexion-a, .createAccount-submit, .supprimer-a, .editAccount-submit, .profil-a, [class^="vente-a-"], .venteDetail-submit, [class^="detailVente-a"], .motDePaddeOublier-a {
+.connexion-a, .createAccount-submit, .supprimer-a, .editAccount-submit, .profil-a, [class^="vente-a-"], .venteDetail-submit, .venteDetail-a-back, [class^="detailVente-a"], .motDePaddeOublier-a {
 	text-decoration: 2px solid var(--colorOrange) underline;
 	border: 1px solid #c8c8c8;
 	background-color: var(--colorWhite);
@@ -423,8 +429,8 @@ label[for="lblPhotoArticle"]:hover {
    z-index: -1;
 }
 
-.detailVente-form-4div-cust {
-	grid-template-columns: 1fr auto;
+.detailVente-form-4div-cust { 
+	grid-template-columns: auto auto; /*1fr auto*/
 }
 
 .detailVente-form-4div-p {

@@ -16,11 +16,12 @@ import org.eni.encheres.back.utilitaire.FicheMethodeTemps;
 
 
 public class EnchereDAOJdbcImpl implements DAO<Enchere> {
-	private static final String SELECT_ALL = "select * from ENCHERES;";
-	private static final String SELECT_BY_ID = "select * from ENCHERES WHERE no_enchere = ?;";
+	private static final String SELECT_ALL = "SELECT * FROM ENCHERES;";
+	//private static final String SELECT_BY_ID = "SELECT * FROM ENCHERES WHERE no_enchere = ?;";
+	private static final String SELECT_BY_ID_ARTICLE = "SELECT * FROM ENCHERES WHERE no_article = ? AND  montant_enchere = (SELECT MAX(montant_enchere) FROM ENCHERES);";
 	private final static String DELETE = "DELETE FROM ENCHERES WHERE no_enchere=?;";
-	private final static String INSERT = "INSERT INTO ENCHERES(date_enchere,montant,no_utilisateur,no_article) VALUES(?,?,?,?,?);";
-	private static final String UPDATE = "UPDATE ENCHERES SET date_enchere=?,montant=?,no_utilisateur=?,no_article=? WHERE no_enchere=?;";
+	private final static String INSERT = "INSERT INTO ENCHERES(date_enchere,montant_enchere,no_utilisateur,no_article) VALUES(?,?,?,?);";
+	private static final String UPDATE = "UPDATE ENCHERES SET date_enchere=?,montant_enchere=?,no_utilisateur=?,no_article=? WHERE no_article=? AND no_utilisateur= ?;";
 	
 	@Override
 	public List<Enchere> selectAll() throws BusinessException {
@@ -45,20 +46,25 @@ public class EnchereDAOJdbcImpl implements DAO<Enchere> {
 
 	@Override
 	public Enchere selectById(int id) throws BusinessException {
+		// Custom
+		
 		Enchere vretour = null;
-		try(Connection cnx = ConnectionProvider.getConnection()){
-			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_ID);
-			pstmt.setInt(1,id);
-			ResultSet rs = pstmt.executeQuery();
-			while(rs.next()) { //4. parcours du résultat
+
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_ID_ARTICLE);
+			pStmt.setInt(1, id);
+			ResultSet rs = pStmt.executeQuery();
+			
+			while(rs.next()) {
 				vretour = simplyCreator(rs);
-				
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		return vretour;
 	}
+	
 	@Override
 	public void delete(int id) {
 		try(Connection cnx = ConnectionProvider.getConnection()) {
@@ -85,11 +91,7 @@ public class EnchereDAOJdbcImpl implements DAO<Enchere> {
 			pStmt.setInt(3, lObjet.getUser().getIdUser());
 			pStmt.setInt(4, lObjet.getArtVendu().getNumArticle());
 			pStmt.executeUpdate();
-			ResultSet rs = pStmt.getGeneratedKeys();
-			if(rs.next())
-			{
-				lObjet.setNumEnchere(rs.getInt(1));
-			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -103,8 +105,13 @@ public class EnchereDAOJdbcImpl implements DAO<Enchere> {
 			pStmt.setInt(2, lObjet.getMontant());
 			pStmt.setInt(3, lObjet.getUser().getIdUser());
 			pStmt.setInt(4, lObjet.getArtVendu().getNumArticle());
-			pStmt.setInt(5, lObjet.getNumEnchere());
-			pStmt.executeUpdate();
+			pStmt.setInt(5, lObjet.getArtVendu().getNumArticle());
+			pStmt.setInt(6, lObjet.getUser().getIdUser());
+			int rs = pStmt.executeUpdate();
+
+			if(rs == 0) {
+				insert(lObjet);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -116,7 +123,7 @@ public class EnchereDAOJdbcImpl implements DAO<Enchere> {
 		try {
 			vretour = new Enchere(	rs.getInt("no_enchere"),
 									FicheMethodeTemps.dateToLocalDateTimeWithResultSet(rs,"date_enchere"), 
-									rs.getInt("montant"),
+									rs.getInt("montant_enchere"),
 									UtilisateurManager.getInstance().selectById(rs.getInt("no_utilisateur")),
 									ArticleVenduManager.getInstance().selectById(rs.getInt("no_article")));
 		} catch (SQLException e) {

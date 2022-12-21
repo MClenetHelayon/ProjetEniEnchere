@@ -15,7 +15,9 @@ public class ArticleVendu {
 	private Utilisateur user;
 	private Categorie categ;
 	private List<Enchere> LEnchere;
+	private Enchere enchereMax;
 	private int etatVente;
+	
 	public int getNumArticle() {
 		return numArticle;
 	}
@@ -130,5 +132,11 @@ public class ArticleVendu {
 	}
 	public void addEnchere(Enchere e) {
 		this.LEnchere.add(e);
+	}
+	public Enchere getEnchereMax() {
+		return enchereMax;
+	}
+	public void setEnchereMax(Enchere enchereMax) {
+		this.enchereMax = enchereMax;
 	}
 }

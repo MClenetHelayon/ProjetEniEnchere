@@ -31,7 +31,7 @@ public class ServletCreationCompte extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		HttpSession session = req.getSession();
+		doGet(req, resp);
 	}
 
 }

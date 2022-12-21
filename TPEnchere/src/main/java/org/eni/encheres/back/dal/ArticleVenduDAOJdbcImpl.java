@@ -5,14 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eni.encheres.back.BusinessException;
 import org.eni.encheres.back.bll.CategorieManager;
+import org.eni.encheres.back.bll.RetraitManager;
 import org.eni.encheres.back.bll.UtilisateurManager;
 import org.eni.encheres.back.bo.ArticleVendu;
-import org.eni.encheres.back.bo.Categorie;
+import org.eni.encheres.back.bo.Retrait;
 import org.eni.encheres.back.bo.Utilisateur;
 import org.eni.encheres.back.utilitaire.FicheMethodeTemps;
 
@@ -22,8 +24,8 @@ public class ArticleVenduDAOJdbcImpl implements DAOArticle {
 	private static final String SELECT_BY_ID = "select * from ARTICLES_VENDUS WHERE no_article = ?;";
 	private static final String SELECT_BY_IDCATEG = "select * from ARTICLES_VENDUS av INNER JOIN CATEGORIES c ON c.no_categorie = av.no_categorie WHERE av.no_categorie = ?;";
 	private final static String DELETE = "DELETE FROM ARTICLES_VENDUS WHERE no_article=?;";
-	private final static String INSERT = "INSERT INTO ARTICLES_VENDUS(nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,no_utilisateur,no_categorie) VALUES(?,?,?,?,?,?,?,?);";
-	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article=?,description=?,date_debut_encheres=?,date_fin_encheres=?,prix_initial=?,prix_vente=?,no_utilisateur=?,no_categorie=? WHERE no_article=?;";
+	private final static String INSERT = "INSERT INTO ARTICLES_VENDUS(nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,no_utilisateur,no_categorie, etat) VALUES(?,?,?,?,?,?,?,?,?);";
+	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article=?,description=?,date_debut_encheres=?,date_fin_encheres=?,prix_initial=?,prix_vente=?,no_utilisateur=?,no_categorie=?, etat=? WHERE no_article=?;";
 	
 	@Override
 	public List<ArticleVendu> selectAll() throws BusinessException {
@@ -94,7 +96,7 @@ public class ArticleVenduDAOJdbcImpl implements DAOArticle {
 		try(Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement pStmt = cnx.prepareStatement(DELETE);
 			pStmt.setInt(1, id);
-			pStmt.executeUpdate();			
+			pStmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -118,12 +120,21 @@ public class ArticleVenduDAOJdbcImpl implements DAOArticle {
 			pStmt.setInt(6, lObjet.getPrixVente());
 			pStmt.setInt(7, lObjet.getUser().getIdUser());
 			pStmt.setInt(8, lObjet.getCateg().getNumCat());
-			pStmt.executeUpdate();
+			pStmt.setInt(9, lObjet.getEtatVente());
+			int rt = pStmt.executeUpdate();
 			ResultSet rs = pStmt.getGeneratedKeys();
-			if(rs.next())
-			{
-				lObjet.setNumArticle(rs.getInt(1));
+			
+			if(rt == 1) {
+				if(rs.next()) {
+					ArticleVendu article = selectById(rs.getInt(1));
+					
+					if((!lObjet.getUser().getRue().isEmpty() || !lObjet.getUser().getRue().isBlank()) && (!lObjet.getUser().getCodePostal().isEmpty() || !lObjet.getUser().getCodePostal().isBlank()) && (!lObjet.getUser().getVille().isEmpty() || !lObjet.getUser().getVille().isBlank())) {
+						Retrait addRetrait = new Retrait(article, lObjet.getUser().getRue(), lObjet.getUser().getCodePostal(), lObjet.getUser().getVille());
+						RetraitManager.getInstance().update(addRetrait);
+					}
+				}
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -140,8 +151,8 @@ public class ArticleVenduDAOJdbcImpl implements DAOArticle {
 			pStmt.setInt(6, lObjet.getPrixVente());
 			pStmt.setInt(7, lObjet.getUser().getIdUser());
 			pStmt.setInt(8, lObjet.getCateg().getNumCat());
-			System.out.println(lObjet.getNumArticle());
-			pStmt.setInt(9, lObjet.getNumArticle());
+			pStmt.setInt(9, lObjet.getEtatVente());
+			pStmt.setInt(10, lObjet.getNumArticle());
 			pStmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -151,22 +162,33 @@ public class ArticleVenduDAOJdbcImpl implements DAOArticle {
 	
 	private ArticleVendu simplyCreator(ResultSet rs) {
 		ArticleVendu vretour = null;
+		
 		try {
 			Utilisateur user = UtilisateurManager.getInstance().selectById(rs.getInt("no_utilisateur"));
-			Categorie categ = CategorieManager.getInstance().selectById(rs.getInt("no_categorie"));
 			vretour = new ArticleVendu(	rs.getInt("no_article"),
-										rs.getString("nom_article"),
-										rs.getString("description"),
-										FicheMethodeTemps.LocalDateToDate(rs.getDate("date_debut_encheres")),
-										FicheMethodeTemps.LocalDateToDate(rs.getDate("date_fin_encheres")),
-										rs.getInt("prix_initial"),
-										rs.getInt("prix_vente"),
-										user,
-										categ,
-										0);
-			categ.addArt(vretour);
-			user.addArticleAcheter(vretour);
-			user.addArticleVendu(vretour);
+					rs.getString("nom_article"),
+					rs.getString("description"),
+					FicheMethodeTemps.LocalDateToDate(rs.getDate("date_debut_encheres")),
+					FicheMethodeTemps.LocalDateToDate(rs.getDate("date_fin_encheres")),
+					rs.getInt("prix_initial"),
+					rs.getInt("prix_vente"),
+					user,
+					CategorieManager.getInstance().selectById(rs.getInt("no_categorie")),
+					rs.getInt("etat"));
+			
+			//verification des etat de vente
+			LocalDate today = LocalDate.now();
+			
+			if((today.isAfter(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_debut_encheres"))) || today.isEqual(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_debut_encheres")))) && rs.getInt("etat") != 1) {
+				vretour.setEtatVente(1);
+				update(vretour);
+			}
+			
+			if((today.isAfter(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_fin_encheres"))) || today.isEqual(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_fin_encheres")))) && rs.getInt("etat") != 2) {
+				vretour.setEtatVente(2);
+				update(vretour);
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (BusinessException e) {

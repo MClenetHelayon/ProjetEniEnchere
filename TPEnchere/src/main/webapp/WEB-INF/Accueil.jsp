@@ -1,5 +1,8 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="org.eni.encheres.back.bo.ArticleVendu"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="fr">
 <%@include file="/WEB-INF/includes/Head.jsp" %>
@@ -14,7 +17,7 @@
 				</c:when>
 				<c:otherwise>
 					<a href="${pageContext.request.contextPath}/ServletCreationCompte">S'inscrire</a>
-					<a href="${pageContext.request.contextPath}/back/ServletConnexion">Se connecter</a>
+					<a href="${pageContext.request.contextPath}/ServletConnexion">Se connecter</a>
 				</c:otherwise>
 			</c:choose>
 		</nav>
@@ -27,8 +30,8 @@
 			<input class="filtres-form-inputText" type="search" placeholder="Le nom de l'article contient" value="${requestScope.txt}" name="filtresText">
 			<div class="filtres-form-div">
 				<%@include file="/WEB-INF/includes/ListCategorie.jsp" %>
-			</div>
-			<c:if test="${sessionScope.isConnect == true}">
+			</div>	
+			<c:if test="${sessionScope.isConnect == true && sessionScope.userId != null}">
 				<div class="filtres-accountConnected">
 					<div class="filtres-accountConnected-liste">
 						<div>
@@ -79,25 +82,35 @@
 		<div class="listeArticle">
 			
 			<c:forEach var="elem" items="${requestScope.listArticle}">
-				<c:choose>
-					<c:when test="${sessionScope.isConnect == true && sessionScope.userId == elem.user.idUser}">
-						<a class="article-a" href="${pageContext.request.contextPath}/ServletReadVente?idArticle=${elem.numArticle}&idUser=${elem.user.idUser}">
-					</c:when>
-					<c:otherwise>
-						<a class="article-a" href="${pageContext.request.contextPath}/ServletDetailVente?idArticle=${elem.numArticle}">
-					</c:otherwise>
-				</c:choose>
-					
-						<div class="article-init">
-							<img class="article-img" src="./img/defaultPicture.webp" />
-							<div>
+				
+					<div class="article-init">
+						<img class="article-img" src="./img/defaultPicture.webp" />
+						<div>
+							
+							<c:choose>
+								<c:when test="${elem.etatVente == 2 && sessionScope.isConnect == true && sessionScope.userId != null}">
+									<a class="article-a" href="${pageContext.request.contextPath}/ServletWinEnchere?idArticle=${elem.numArticle}&idUser=${elem.user.idUser}">
+								</c:when>
+								<c:when test="${elem.etatVente == 2}">
+									<a class="article-a" href="${pageContext.request.contextPath}/ServletWinEnchere?idArticle=${elem.numArticle}">
+								</c:when>
+								<c:when test="${elem.etatVente == 1}">
+									<a class="article-a" href="${pageContext.request.contextPath}/ServletDetailVente?idArticle=${elem.numArticle}">
+								</c:when>
+								<c:when test="${elem.etatVente == 0 && sessionScope.isConnect == true && sessionScope.userId != null}">
+									<a class="article-a" href="${pageContext.request.contextPath}/ServletReadVente?idArticle=${elem.numArticle}&idUser=${elem.user.idUser}">
+								</c:when>
+							</c:choose>
+							
 								<h4 class="article-h4">${elem.nom}</h4>
-								<p>Prix: ${elem.prixInit} points</p>
-								<p>Fin de l'enchère: ${elem.dateFin}</p>
-								<p>Vendeur: ${elem.user.pseudo}</p>
-							</div>
+							</a>
+							<p>Prix: ${elem.prixInit} points</p>
+							<fmt:parseDate  value="${elem.dateFin}" type="date" pattern="yyyy-MM-dd" var="parsedDate" />
+							<p>Fin de l'enchère: <fmt:formatDate type="date" value="${parsedDate}" pattern="dd/MM/YYYY"/></p>
+							<p>Vendeur: <a class="article-a2" href="${pageContext.request.contextPath}/ServletProfil${elem.user.idUser != sessionScope.userId ? '?idUser=' += elem.user.idUser : '' }">${elem.user.pseudo}</a></p>
 						</div>
-					</a>
+					</div>
+					
 			</c:forEach>
 		</div>
 		

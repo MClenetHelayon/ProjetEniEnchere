@@ -1,6 +1,7 @@
 package org.eni.encheres.front;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.servlet.RequestDispatcher;
@@ -30,29 +31,63 @@ public class ServletDetailVente extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/DetailVente.jsp");
-		rd.forward(request, response);
+		String articleId = request.getParameter("idArticle");
+		
+		if(articleId == null) {
+			response.sendRedirect("./ServletAccueil");
+			return;
+		}
+		
+		try {
+			LocalDate today = LocalDate.now();
+			
+			ArticleVendu unArticle = ArticleVenduManager.getInstance().selectById(Integer.valueOf(articleId));
+
+			if(today.isAfter(unArticle.getDateFin()) || today.isEqual(unArticle.getDateFin())) {
+				response.sendRedirect("./ServletWinEnchere?idArticle=" + articleId);
+			} else {
+				Enchere enchereLePlusHaut = EnchereManager.getInstance().selectByIdArticle(Integer.valueOf(articleId));
+				
+				if(enchereLePlusHaut == null) {
+					request.setAttribute("maxMontantUser", null);
+					
+				} else {
+					Utilisateur miseMaxUtilisateur = UtilisateurManager.getInstance().selectById(unArticle.getEnchereMax().getUser().getIdUser());
+					
+					request.setAttribute("maxMontantUser", miseMaxUtilisateur.getPseudo());
+				}
+				
+				request.setAttribute("unArticle", unArticle);
+				
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/DetailVente.jsp");
+				rd.forward(request, response);
+			}
+			
+		} catch (NumberFormatException | BusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			HttpSession session = request.getSession();
-			int userId = (int) session.getAttribute("userId");
 			
 			String articleId = request.getParameter("idArticle");
 			String encherirArticle = request.getParameter("maProposition");
 			
-			Utilisateur enchereUserById = UtilisateurManager.getInstance().selectById(userId);
 			ArticleVendu unArticle = ArticleVenduManager.getInstance().selectById(Integer.valueOf(articleId));
 			
-			Enchere insererUnMontant = new Enchere(LocalDateTime.now(), Integer.valueOf(encherirArticle), enchereUserById, unArticle);
+			unArticle.setPrixVente(Integer.valueOf(encherirArticle));
 			
+			ArticleVenduManager.getInstance().update(unArticle);
 			
-			// TODO à tester
-			// TODO verifier le changement du prix initial par le client
-			EnchereManager.getInstance().insert(insererUnMontant);
+			Utilisateur utilisateurById = UtilisateurManager.getInstance().selectById((int) session.getAttribute("userId"));
 			
+			Enchere unEnchere = new Enchere(LocalDateTime.now(), unArticle.getPrixVente(), utilisateurById, unArticle);
+			
+			EnchereManager.getInstance().update(unEnchere);
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

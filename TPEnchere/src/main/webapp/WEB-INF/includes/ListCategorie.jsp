@@ -4,7 +4,7 @@
 <select name="choixCategorie">
 	<c:forEach var="elem" items="${requestScope.listCategorie}" varStatus="value">
 		<c:choose>
-			<c:when test="${requestScope.idCat == elem.numCat}">
+			<c:when test="${(!empty requestScope.unArticle.categ.numCat && requestScope.unArticle.categ.numCat == elem.numCat)}" >
 				<option value="${elem.numCat}" selected>${elem.libelle}</option>
 			</c:when>
 			<c:otherwise>
