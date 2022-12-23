@@ -36,7 +36,7 @@
 				</div>
 				<div class="vente-form-4div">
 					<label for="lblMiseAPrix">Mise à prix:</label>
-					<input id="lblMiseAPrix" type="number" name="miseAPrix" value="${empty requestScope.unArticle.prixInit ? 0 : requestScope.unArticle.prixInit}" required>
+					<input id="lblMiseAPrix" type="number" name="miseAPrix" min="0" value="${empty requestScope.unArticle.prixInit ? 0 : requestScope.unArticle.prixInit}" required>
 				</div>
 				<div class="vente-form-4div">
 					<label for="lblDebutEnchère">Début de l'enchère:</label>

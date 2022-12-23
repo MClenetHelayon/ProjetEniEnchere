@@ -222,9 +222,10 @@ public class ServletVente extends HttpServlet {
 					String prixInitialArticle = request.getParameter("miseAPrix");
 					String dateDebutEnchereArticle = request.getParameter("dateFinEnchere");
 					String dateFinEnchereArticle = request.getParameter("dateDebutEnchere");
-					String rueVendeur = request.getParameter("rue").trim();
-					String codePostalVendeur = request.getParameter("codePostal").trim();
-					String villeVendeur = request.getParameter("ville").trim();
+					String rueVendeur = request.getParameter("rue");
+					String codePostalVendeur = request.getParameter("codePostal");
+					String villeVendeur = request.getParameter("ville");
+					System.out.println(request.getParameter("choixCategorie"));
 					try {
 						Categorie uneCategorie = CategorieManager.getInstance().selectById(Integer.parseInt(filtreCategorieArticle));
 						
@@ -270,7 +271,6 @@ public class ServletVente extends HttpServlet {
 					}
 				}
 			} catch (BusinessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				request.setAttribute("statut","erreur");
 				request.setAttribute("info", e.getMessage());

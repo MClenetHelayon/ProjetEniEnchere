@@ -182,15 +182,6 @@ class Script {
 	creationCompte() {
 		this.VerifPassword($('createAccount-submit'));
 	}
-<<<<<<< HEAD
-	
-	deconnexion() {
-		for(let i = 0; i < window.history.length; i++) {
-			/*à retirer les historique*/
-		}
-	}
-=======
->>>>>>> branch 'main' of https://github.com/MClenetHelayon/ProjetEniEnchere.git
 }
 
 (() => {
