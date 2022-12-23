@@ -49,7 +49,10 @@ public class ServletAdmin extends HttpServlet {
 																			u.getVille(),
 																			u.getMdp(),
 																			FicheMethodeBool.reverseBool(u.isBloque())));
-				UtilisateurManager.getInstance().bloquer(u.getIdUser());
+				if(u.isBloque()) {
+					UtilisateurManager.getInstance().bloquer(u.getIdUser());
+				}
+
 				RequestDispatcher rd = request.getRequestDispatcher("/adminUser");
 				rd.forward(request, response);
 			} catch (BusinessException e) {
@@ -103,7 +106,8 @@ public class ServletAdmin extends HttpServlet {
 																			a.getPrixVente(),
 																			a.getUser(),
 																			categ,
-																			a.getEtatVente()));
+																			a.getEtatVente(),
+																			a.getImgData()));
 			} catch (BusinessException e) {
 				e.printStackTrace();
 			}

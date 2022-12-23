@@ -24,8 +24,8 @@ public class ArticleVenduDAOJdbcImpl implements DAOArticle {
 	private static final String SELECT_BY_ID = "select * from ARTICLES_VENDUS WHERE no_article = ?;";
 	private static final String SELECT_BY_IDCATEG = "select * from ARTICLES_VENDUS av INNER JOIN CATEGORIES c ON c.no_categorie = av.no_categorie WHERE av.no_categorie = ?;";
 	private final static String DELETE = "DELETE FROM ARTICLES_VENDUS WHERE no_article=?;";
-	private final static String INSERT = "INSERT INTO ARTICLES_VENDUS(nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,no_utilisateur,no_categorie, etat) VALUES(?,?,?,?,?,?,?,?,?);";
-	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article=?,description=?,date_debut_encheres=?,date_fin_encheres=?,prix_initial=?,prix_vente=?,no_utilisateur=?,no_categorie=?, etat=? WHERE no_article=?;";
+	private final static String INSERT = "INSERT INTO ARTICLES_VENDUS(nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,no_utilisateur,no_categorie, etat,img_data) VALUES(?,?,?,?,?,?,?,?,?);";
+	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article=?,description=?,date_debut_encheres=?,date_fin_encheres=?,prix_initial=?,prix_vente=?,no_utilisateur=?,no_categorie=?, etat=?,img_data=? WHERE no_article=?;";
 	
 	@Override
 	public List<ArticleVendu> selectAll() throws BusinessException {
@@ -121,6 +121,7 @@ public class ArticleVenduDAOJdbcImpl implements DAOArticle {
 			pStmt.setInt(7, lObjet.getUser().getIdUser());
 			pStmt.setInt(8, lObjet.getCateg().getNumCat());
 			pStmt.setInt(9, lObjet.getEtatVente());
+			pStmt.setString(10,lObjet.getImgData());
 			int rt = pStmt.executeUpdate();
 			ResultSet rs = pStmt.getGeneratedKeys();
 			
@@ -152,7 +153,8 @@ public class ArticleVenduDAOJdbcImpl implements DAOArticle {
 			pStmt.setInt(7, lObjet.getUser().getIdUser());
 			pStmt.setInt(8, lObjet.getCateg().getNumCat());
 			pStmt.setInt(9, lObjet.getEtatVente());
-			pStmt.setInt(10, lObjet.getNumArticle());
+			pStmt.setString(10,lObjet.getImgData());
+			pStmt.setInt(11, lObjet.getNumArticle());
 			pStmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -162,38 +164,36 @@ public class ArticleVenduDAOJdbcImpl implements DAOArticle {
 	
 	private ArticleVendu simplyCreator(ResultSet rs) {
 		ArticleVendu vretour = null;
-		
 		try {
 			Utilisateur user = UtilisateurManager.getInstance().selectById(rs.getInt("no_utilisateur"));
-			vretour = new ArticleVendu(	rs.getInt("no_article"),
-					rs.getString("nom_article"),
-					rs.getString("description"),
-					FicheMethodeTemps.LocalDateToDate(rs.getDate("date_debut_encheres")),
-					FicheMethodeTemps.LocalDateToDate(rs.getDate("date_fin_encheres")),
-					rs.getInt("prix_initial"),
-					rs.getInt("prix_vente"),
-					user,
-					CategorieManager.getInstance().selectById(rs.getInt("no_categorie")),
-					rs.getInt("etat"));
+
+				vretour = new ArticleVendu(	rs.getInt("no_article"),
+						rs.getString("nom_article"),
+						rs.getString("description"),
+						FicheMethodeTemps.LocalDateToDate(rs.getDate("date_debut_encheres")),
+						FicheMethodeTemps.LocalDateToDate(rs.getDate("date_fin_encheres")),
+						rs.getInt("prix_initial"),
+						rs.getInt("prix_vente"),
+						user,
+						CategorieManager.getInstance().selectById(rs.getInt("no_categorie")),
+						rs.getInt("etat"),
+						rs.getString("img_data"));
+
 			
 			//verification des etat de vente
 			LocalDate today = LocalDate.now();
 			
-			if((today.isAfter(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_debut_encheres"))) || today.isEqual(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_debut_encheres")))) && rs.getInt("etat") != 1) {
+			if((today.isAfter(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_debut_encheres"))) || today.isEqual(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_debut_encheres")))) && rs.getInt("etat") == 0) {
 				vretour.setEtatVente(1);
 				update(vretour);
-			}
-			
-			if((today.isAfter(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_fin_encheres"))) || today.isEqual(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_fin_encheres")))) && rs.getInt("etat") != 2) {
+			} else if((today.isAfter(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_fin_encheres"))) || today.isEqual(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_fin_encheres")))) && rs.getInt("etat") == 1) {
 				vretour.setEtatVente(2);
 				update(vretour);
 			}
-			
-		} catch (SQLException e) {
+		} catch (SQLException | BusinessException e) {
 			e.printStackTrace();
-		} catch (BusinessException e) {
-			e.printStackTrace();
-		};
+		}
+
 		
 		return vretour;
 	}

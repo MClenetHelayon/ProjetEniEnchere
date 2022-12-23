@@ -56,6 +56,5 @@ public class EnchereManager {
 	}
 	public void update(Enchere ench) throws BusinessException {
 		DAOFactory.getEnchereDAO().update(ench);
-		
 	}
 }

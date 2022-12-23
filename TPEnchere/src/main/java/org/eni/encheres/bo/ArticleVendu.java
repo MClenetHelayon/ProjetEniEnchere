@@ -17,6 +17,7 @@ public class ArticleVendu {
 	private List<Enchere> LEnchere;
 	private Enchere enchereMax;
 	private int etatVente;
+	private String imgData;
 	
 	public int getNumArticle() {
 		return numArticle;
@@ -85,12 +86,18 @@ public class ArticleVendu {
 	public void setEtatVente(int etatVente) {
 		this.etatVente = etatVente;
 	}
+	public String getImgData() {
+		return imgData;
+	}
+	public void setImgData(String imgData) {
+		this.imgData = imgData;
+	}
 	
 	public ArticleVendu() {
 		LEnchere = new ArrayList<Enchere>();
 	}
 	public ArticleVendu(int numArticle, String nom, String description, LocalDate dateDeb, LocalDate dateFin,
-			int prixInit, int prixVente, Utilisateur user, Categorie categ, int etatVente) {
+			int prixInit, int prixVente, Utilisateur user, Categorie categ, int etatVente,String imgData) {
 		super();
 		this.numArticle = numArticle;
 		this.nom = nom;
@@ -102,12 +109,13 @@ public class ArticleVendu {
 		this.user = user;
 		this.categ = categ;
 		this.etatVente = etatVente;
+		this.imgData = imgData;
 		
 		categ.addArt(this);
 		user.addArticleVendu(this);
 	}
 	public ArticleVendu(String nom, String description, LocalDate dateDeb, LocalDate dateFin, int prixInit,
-			int prixVente, Utilisateur user, Categorie categ, int etatVente) {
+			int prixVente, Utilisateur user, Categorie categ, int etatVente,String imgData) {
 		super();
 		this.nom = nom;
 		this.description = description;
@@ -118,6 +126,7 @@ public class ArticleVendu {
 		this.user = user;
 		this.categ = categ;
 		this.etatVente = etatVente;
+		this.imgData = imgData;
 		
 		categ.addArt(this);
 		user.addArticleVendu(this);

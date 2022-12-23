@@ -25,46 +25,45 @@ public class ServletConnexion extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Cookie[] cookies = request.getCookies();
 		HttpSession session = request.getSession();
-		if(cookies!=null&&session.getAttribute("cookie")!=null) {
-			for(Cookie c : cookies) {
-				Utilisateur u = null;
-				try {
-					u = UtilisateurManager.getInstance().selectById(Integer.valueOf(c.getValue()));
-					if(u!=null) {
-						createSession(request, u,session);
-						returnBack(request, response,"/accueil");
-						break;
+		try {
+			if(cookies!=null&&session.getAttribute("cookie")!=null) {
+				for(Cookie c : cookies) {
+					if(c.getName().equals("id")) {
+						Utilisateur u = null;
+						u = UtilisateurManager.getInstance().selectById(Integer.valueOf(c.getValue()));
+						if(u!=null) {
+							createSession(request, u,session);
+							response.sendRedirect("./accueil");
+							break;
+						}
 					}
-				} catch (NumberFormatException | BusinessException e){returnBack(request, response,"/WEB-INF/Connexion.jsp");}
+				}
+			}else {
+				returnBack(request, response,"/WEB-INF/Connexion.jsp");
 			}
-		}else {
+		} catch (NumberFormatException | BusinessException e){
 			returnBack(request, response,"/WEB-INF/Connexion.jsp");
 		}
-
 	}
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Utilisateur userCo = null;
 		HttpSession session = request.getSession();
-		boolean bool = false;
 		try {
 			userCo =  UtilisateurManager.getInstance().connection(request.getParameter("identifiant"), request.getParameter("password"));
 			createSession(request, userCo,session);
-			bool = true;
+			if(checkBox(request)) {
+		        String idUser = Integer.toString(userCo.getIdUser());		        
+		        Cookie cookie = new Cookie("id", idUser);
+		        cookie.setMaxAge(100000000);
+		        response.addCookie(cookie);
+		        session.setAttribute("cookie",cookie);
+			}
 			
 			response.sendRedirect("./accueil");
 		}catch (Exception e) {
 			request.setAttribute("erreur","Connexion impossible");
-			
 			returnBack(request, response,"/WEB-INF/Connexion.jsp");
-		}
-		
-		if(checkBox(request)&&bool) {
-	        String idUser = Integer.toString(userCo.getIdUser());		        
-	        Cookie cookie = new Cookie("id", idUser);
-	        cookie.setMaxAge(10000);
-	        response.addCookie(cookie);
-	        session.setAttribute("cookie",cookie);
 		}
 	}
 	

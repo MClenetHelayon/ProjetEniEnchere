@@ -12,7 +12,7 @@ class Script {
 		this.getTitle = location.pathname;
 		this.lastIndex = this.getTitle.lastIndexOf('/');
 		this.pathName = this.getTitle.slice(this.lastIndex + 1);
-		this.getPathName = this.pathName == "" ? "ServletAccueil" : this.pathName;
+		this.getPathName = this.pathName == "" ? "accueil" : this.pathName;
 		this.is_function(this.getPathName);
 		this.menuNav();
 	}
@@ -63,7 +63,7 @@ class Script {
 		window.addEventListener("resize", () => { initWidth = this.calculWidthHeader(initWidth); });
  	}
  	
-	ServletAccueil() {
+	accueil() {
 		document.getElementsByName('achatsVentes').forEach((elem, index) => {
 			const groupCheckedSelected = $('filtres-accountConnected-liste-container-checkbox', index).querySelectorAll('input[type="checkbox"]');
 			const groupCheckedAll = $('filtres-accountConnected').querySelectorAll('input[type="checkbox"]');
@@ -80,7 +80,7 @@ class Script {
 		    });
 	    });
 	    
-	  	$('filtres-form-inputSubmit').addEventListener(`click`, () => {
+	  	/*$('filtres-form-inputSubmit').addEventListener(`click`, () => {
 			const infoForm = document.forms.accueilFiltres;
 			const nameRadioBox = "achatsVentes";
 			let formData = new FormData();
@@ -118,7 +118,7 @@ class Script {
 		
 		$('filtres-form-inputText').addEventListener(`keypress`, e => {
 			if(e.keyCode == 13) e.preventDefault();
-		});
+		});*/
 	}
 	
 	VerifPassword(className) {
@@ -166,23 +166,23 @@ class Script {
 		});
 	}
 	
-	ServletReadVente() {
+	readVente() {
 		this.PreviewImage();
 	}
 	
-	ServletVente() {
+	vente() {
 		this.PreviewImage();
 	}
 	
-	ServletEditProfil() {
+	editProfil() {
 		this.VerifPassword($('editAccount-submit'));
 	}
 	
-	ServletCreationCompte() {
+	creationCompte() {
 		this.VerifPassword($('createAccount-submit'));
 	}
 	
-	ServletDeconnexion() {
+	deconnexion() {
 		for(let i = 0; i < window.history.length; i++) {
 			/*à retirer les historique*/
 		}

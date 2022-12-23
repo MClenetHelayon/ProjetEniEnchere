@@ -182,54 +182,53 @@ public class ServletVente extends HttpServlet {
 		} else {
 			int utiliateurId = (int) session.getAttribute("userId");
 			
-			try {
-				Utilisateur siAutoriser = UtilisateurManager.getInstance().selectById(utiliateurId);
+			if(request.getServletPath().equals("/vente") || request.getServletPath().equals("/readVente")) {
 				
-				if(siAutoriser.isBloque()) {
-					//efnef
-				} else if(request.getServletPath().equals("/vente") || request.getServletPath().equals("/readVente")) {
+				String nomArticle = request.getParameter("article");
+				String descriptionArticle = request.getParameter("description");
+				String filtreCategorieArticle = request.getParameter("choixCategorie");
+				String photoArticle = request.getParameter("photo");
+				String prixInitialArticle = request.getParameter("miseAPrix");
+				String dateDebutEnchereArticle = request.getParameter("dateFinEnchere");
+				String dateFinEnchereArticle = request.getParameter("dateDebutEnchere");
+				String rueVendeur = request.getParameter("rue").trim();
+				String codePostalVendeur = request.getParameter("codePostal").trim();
+				String villeVendeur = request.getParameter("ville").trim();
+				
+				try {
+					Categorie uneCategorie = CategorieManager.getInstance().selectById(Integer.parseInt(filtreCategorieArticle));
+					Utilisateur unUtilisateur = UtilisateurManager.getInstance().selectById(utiliateurId);
 					
-					String nomArticle = request.getParameter("article");
-					String descriptionArticle = request.getParameter("description");
-					String filtreCategorieArticle = request.getParameter("choixCategorie");
-					//String photoArticle = request.getParameter("photo"); // plus tard
-					String prixInitialArticle = request.getParameter("miseAPrix");
-					String dateDebutEnchereArticle = request.getParameter("dateFinEnchere");
-					String dateFinEnchereArticle = request.getParameter("dateDebutEnchere");
-					String rueVendeur = request.getParameter("rue").trim();
-					String codePostalVendeur = request.getParameter("codePostal").trim();
-					String villeVendeur = request.getParameter("ville").trim();
-					
-					try {
-						Categorie uneCategorie = CategorieManager.getInstance().selectById(Integer.parseInt(filtreCategorieArticle));
-						Utilisateur unUtilisateur = UtilisateurManager.getInstance().selectById(utiliateurId);
-						
-						if((!rueVendeur.isEmpty() || !rueVendeur.isBlank()) && (!codePostalVendeur.isEmpty() || !codePostalVendeur.isBlank()) && (!villeVendeur.isEmpty() || !villeVendeur.isBlank())) {
-							unUtilisateur.setRue(rueVendeur);
-							unUtilisateur.setCodePostal(codePostalVendeur);
-							unUtilisateur.setVille(villeVendeur);
-						} else {
-							unUtilisateur.setRue("");
-							unUtilisateur.setCodePostal("");
-							unUtilisateur.setVille("");
-						}
-						
-						ArticleVendu unArticle = new ArticleVendu(nomArticle, descriptionArticle, LocalDate.parse(dateDebutEnchereArticle), LocalDate.parse(dateFinEnchereArticle), 
-								Integer.valueOf(prixInitialArticle), 0, unUtilisateur, uneCategorie, 0);
-						
-						ArticleVenduManager.getInstance().insert(unArticle);
-						
-						response.sendRedirect("./accueil");
-					} catch (NumberFormatException | BusinessException e) {
-						e.printStackTrace();
-						request.setAttribute("erreur", e);
-						RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Vente.jsp");
-						rd.forward(request, response);
+					if((!rueVendeur.isEmpty() || !rueVendeur.isBlank()) && (!codePostalVendeur.isEmpty() || !codePostalVendeur.isBlank()) && (!villeVendeur.isEmpty() || !villeVendeur.isBlank())) {
+						unUtilisateur.setRue(rueVendeur);
+						unUtilisateur.setCodePostal(codePostalVendeur);
+						unUtilisateur.setVille(villeVendeur);
+					} else {
+						unUtilisateur.setRue("");
+						unUtilisateur.setCodePostal("");
+						unUtilisateur.setVille("");
 					}
+					
+					ArticleVendu unArticle = new ArticleVendu(	nomArticle,
+																descriptionArticle,
+																LocalDate.parse(dateDebutEnchereArticle),
+																LocalDate.parse(dateFinEnchereArticle), 
+																Integer.valueOf(prixInitialArticle),
+																0,
+																unUtilisateur,
+																uneCategorie,
+																0,
+																photoArticle);
+					
+					ArticleVenduManager.getInstance().insert(unArticle);
+					
+					response.sendRedirect("./accueil");
+				} catch (NumberFormatException | BusinessException e) {
+					e.printStackTrace();
+					request.setAttribute("erreur", e);
+					RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Vente.jsp");
+					rd.forward(request, response);
 				}
-			} catch (BusinessException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
 			}
 		}
 	}

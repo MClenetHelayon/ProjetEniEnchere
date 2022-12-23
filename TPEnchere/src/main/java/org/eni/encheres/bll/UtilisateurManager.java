@@ -53,4 +53,18 @@ public class UtilisateurManager {
 	public void update(Utilisateur user) throws BusinessException {
 		DAOFactory.getUtilisateurDAO().update(user);
 	}
+	private void fondSuffisant(int fond,int payement,BusinessException be) {
+		if(payement>fond) {
+			be.ajouterErreur(CodesErreurBLL.REGLE_GESTION_FOND_SUFFISANT);
+		}
+	}
+	private void gestionFond(Utilisateur user,int montantAPayer) throws BusinessException{
+		BusinessException be = new BusinessException();
+		fondSuffisant(user.getCredit(), montantAPayer, be);
+		if(be.hasErreurs()) {
+			throw be;
+		}else {
+			update(user);
+		}
+	}
 }
