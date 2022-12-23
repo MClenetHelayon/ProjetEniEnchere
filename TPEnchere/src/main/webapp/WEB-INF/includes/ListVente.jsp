@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<form class="vente-form-init" method="post" action="${pageContext.request.contextPath}/vente"> <!-- enctype="multipart/form-data" -->
+<form class="vente-form-init" method="post" action="${pageContext.request.contextPath}/vente">
 	<div class="vente-form-div">
 		
 		<c:choose>
@@ -31,7 +31,8 @@
 				<div class="vente-form-4div">
 					<label>Photo de l'article:</label>
 					<label for="lblPhotoArticle">Uploader</label>
-					<input id="lblPhotoArticle" type="file" accept="image/png, image/jpeg, image/jpg, image/webp" name="photo" required>
+					<input id="lblPhotoArticleCode" type="hidden" name="photo">
+					<input id="lblPhotoArticle" type="file" accept="image/png, image/jpeg, image/jpg, image/webp" required>
 				</div>
 				<div class="vente-form-4div">
 					<label for="lblMiseAPrix">Mise à prix:</label>

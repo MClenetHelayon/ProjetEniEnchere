@@ -29,9 +29,7 @@
 			<%@include file="/WEB-INF/includes/Filtre.jsp" %>
 			<input type="submit" class="filtres-form-inputSubmit" value="Rechercher">
 		</form>
-		
-		<div class="listeArticle">
-			
+		<div class="listeArticle">	
 			<c:forEach var="elem" items="${requestScope.listArticle}">
 				<c:choose>
 					<c:when test="${elem.etatVente==0}">
@@ -76,10 +74,9 @@
 							<p>Vendeur: <a class="article-a2" href="${pageContext.request.contextPath}/profil${elem.user.idUser != sessionScope.userId ? '?idUser=' += elem.user.idUser : '' }">${elem.user.pseudo}</a></p>
 						</div>
 					</div>
-					
+				</div>
 			</c:forEach>
 		</div>
-		
 		<%@include file="/WEB-INF/includes/Erreur.jsp" %>
 	</main>
 	<%@include file="/WEB-INF/includes/Footer.jsp" %>

@@ -41,6 +41,8 @@ public class ServletProfil extends HttpServlet {
 		} catch (BusinessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			request.setAttribute("statut","erreur");
+			request.setAttribute("info", e.getMessage());
 		}
 		
 		if(request.getServletPath().equals("/profil")) {
@@ -50,7 +52,10 @@ public class ServletProfil extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/EditProfil.jsp");
 			rd.forward(request, response);
 		}
-		
-		
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.sendRedirect("./accueil");
 	}
 }

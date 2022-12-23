@@ -15,7 +15,6 @@ public class ArticleVendu {
 	private Utilisateur user;
 	private Categorie categ;
 	private List<Enchere> LEnchere;
-	private Enchere enchereMax;
 	private int etatVente;
 	private String imgData;
 	
@@ -93,12 +92,16 @@ public class ArticleVendu {
 		this.imgData = imgData;
 	}
 	
+	public void addEnchere(Enchere e) {
+		this.LEnchere.add(e);
+	}
+	
 	public ArticleVendu() {
 		LEnchere = new ArrayList<Enchere>();
 	}
 	public ArticleVendu(int numArticle, String nom, String description, LocalDate dateDeb, LocalDate dateFin,
 			int prixInit, int prixVente, Utilisateur user, Categorie categ, int etatVente,String imgData) {
-		super();
+		this();
 		this.numArticle = numArticle;
 		this.nom = nom;
 		this.description = description;
@@ -116,7 +119,7 @@ public class ArticleVendu {
 	}
 	public ArticleVendu(String nom, String description, LocalDate dateDeb, LocalDate dateFin, int prixInit,
 			int prixVente, Utilisateur user, Categorie categ, int etatVente,String imgData) {
-		super();
+		this();
 		this.nom = nom;
 		this.description = description;
 		this.dateDeb = dateDeb;
@@ -132,20 +135,30 @@ public class ArticleVendu {
 		user.addArticleVendu(this);
 	}
 	
+	public ArticleVendu(int numArticle, String nom, String description, LocalDate dateDeb, LocalDate dateFin,
+			int prixInit, int prixVente, Utilisateur user, Categorie categ, int etatVente, List<Enchere> listEnchere) {
+		this();
+		this.numArticle = numArticle;
+		this.nom = nom;
+		this.description = description;
+		this.dateDeb = dateDeb;
+		this.dateFin = dateFin;
+		this.prixInit = prixInit;
+		this.prixVente = prixVente;
+		this.user = user;
+		this.categ = categ;
+		this.etatVente = etatVente;
+		this.LEnchere = listEnchere;
+		
+		categ.addArt(this);
+		user.addArticleVendu(this);
+	}
+	
 	
 	@Override
 	public String toString() {
 		return "ArticleVendu [numArticle=" + numArticle + ", nom=" + nom + ", description=" + description + ", dateDeb="
 				+ dateDeb + ", dateFin=" + dateFin + ", prixInit=" + prixInit + ", prixVente=" + prixVente + ", user="
 				+ user + ", categ=" + categ + ", etatVente=" + etatVente + "]";
-	}
-	public void addEnchere(Enchere e) {
-		this.LEnchere.add(e);
-	}
-	public Enchere getEnchereMax() {
-		return enchereMax;
-	}
-	public void setEnchereMax(Enchere enchereMax) {
-		this.enchereMax = enchereMax;
 	}
 }

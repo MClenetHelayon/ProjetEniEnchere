@@ -15,10 +15,13 @@ import org.eni.encheres.bo.Enchere;
 import org.eni.encheres.utilitaire.FicheMethodeTemps;
 
 
-public class EnchereDAOJdbcImpl implements DAO<Enchere> {
+public class EnchereDAOJdbcImpl implements DAOEnchere {
 	private static final String SELECT_ALL = "SELECT * FROM ENCHERES;";
-	//private static final String SELECT_BY_ID = "SELECT * FROM ENCHERES WHERE no_enchere = ?;";
-	private static final String SELECT_BY_ID_ARTICLE = "SELECT * FROM ENCHERES WHERE no_article = ? AND  montant_enchere = (SELECT MAX(montant_enchere) FROM ENCHERES);";
+	private static final String SELECT_BY_ID = "SELECT * FROM ENCHERES WHERE no_article = ?;";
+	private static final String SELECT_LIST_BY_ID = "SELECT * FROM ENCHERES WHERE no_article = ?";
+	
+	//private static final String SELECT_MIN_BY_ID_ARTICLE = "SELECT * FROM ENCHERES WHERE no_article = ? AND montant_enchere = (SELECT MIN(montant_enchere) FROM ENCHERES);";
+	private static final String SELECT_MAX_BY_ID_ARTICLE = "SELECT * FROM ENCHERES WHERE no_article = ? AND montant_enchere = (SELECT MAX(montant_enchere) FROM ENCHERES WHERE no_article = ?);";
 	private final static String DELETE = "DELETE FROM ENCHERES WHERE no_enchere=?;";
 	private final static String INSERT = "INSERT INTO ENCHERES(date_enchere,montant_enchere,no_utilisateur,no_article) VALUES(?,?,?,?);";
 	private static final String UPDATE = "UPDATE ENCHERES SET date_enchere=?,montant_enchere=?,no_utilisateur=?,no_article=? WHERE no_article=? AND no_utilisateur= ?;";
@@ -46,17 +49,34 @@ public class EnchereDAOJdbcImpl implements DAO<Enchere> {
 
 	@Override
 	public Enchere selectById(int id) throws BusinessException {
-		// Custom
-		
 		Enchere vretour = null;
-
+		
 		try(Connection cnx = ConnectionProvider.getConnection()) {
-			PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_ID_ARTICLE);
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_BY_ID);
 			pStmt.setInt(1, id);
 			ResultSet rs = pStmt.executeQuery();
-			
-			while(rs.next()) {
+
+			if(rs.next()) {
 				vretour = simplyCreator(rs);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return vretour;
+	}
+	
+	@Override
+	public List<Enchere> selectListById(int idArticle) throws BusinessException {
+		List<Enchere> vretour = new ArrayList<>();
+
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_LIST_BY_ID);
+			pStmt.setInt(1, idArticle);
+			ResultSet rs = pStmt.executeQuery();
+
+			while(rs.next()) {
+				vretour.add(simplyCreator(rs));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -108,7 +128,7 @@ public class EnchereDAOJdbcImpl implements DAO<Enchere> {
 			pStmt.setInt(5, lObjet.getArtVendu().getNumArticle());
 			pStmt.setInt(6, lObjet.getUser().getIdUser());
 			int rs = pStmt.executeUpdate();
-
+			
 			if(rs == 0) {
 				insert(lObjet);
 			}
@@ -117,6 +137,66 @@ public class EnchereDAOJdbcImpl implements DAO<Enchere> {
 		}
 	}
 	
+
+	@Override
+	public Enchere selectMiseMax(int idArticle) throws BusinessException {
+		Enchere enchereMax = null;
+		
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_MAX_BY_ID_ARTICLE);
+			pStmt.setInt(1, idArticle);
+			pStmt.setInt(2, idArticle);
+			ResultSet rs = pStmt.executeQuery();
+
+			if(rs.next()) {
+				enchereMax = simplyCreator(rs);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return enchereMax;
+	}
+	
+	
+	/*@Override
+	public int selectAllByIdArticle(int idArticle) throws BusinessException {
+		int vretour = 10_000;
+
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_COUNT_ID_ARTICLE);
+			pStmt.setInt(1, idArticle);
+			ResultSet rs = pStmt.executeQuery();
+			System.out.println("passe ici DAL " + rs.getInt("TotalRowsByIdArticle"));
+			while(rs.next()) {
+				vretour = rs.getInt("TotalRowsByIdArticle");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return vretour;
+	}*/
+	
+	/*@Override
+	public void selectReturnCredit(int idArticle) throws BusinessException {
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pStmt = cnx.prepareStatement(SELECT_MIN_BY_ID_ARTICLE);
+			pStmt.setInt(1, idArticle);
+			ResultSet rs = pStmt.executeQuery();
+
+			if(rs.next()) {
+				Utilisateur utilisateurMin = DAOFactory.getUtilisateurDAO().selectById(rs.getInt("no_utilisateur"));
+				utilisateurMin.setCredit(rs.getInt("montant_enchere"));
+				
+				DAOFactory.getUtilisateurDAO().update(utilisateurMin);
+				
+				delete(rs.getInt("no_enchere"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}*/
 	
 	private Enchere simplyCreator(ResultSet rs) {
 		Enchere vretour = null;
@@ -126,6 +206,7 @@ public class EnchereDAOJdbcImpl implements DAO<Enchere> {
 									rs.getInt("montant_enchere"),
 									UtilisateurManager.getInstance().selectById(rs.getInt("no_utilisateur")),
 									ArticleVenduManager.getInstance().selectById(rs.getInt("no_article")));
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (BusinessException e) {
@@ -133,5 +214,4 @@ public class EnchereDAOJdbcImpl implements DAO<Enchere> {
 		}
 		return vretour;
 	}
-
 }

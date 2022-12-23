@@ -208,7 +208,7 @@ input:disabled ~ * {
 
 /***** Page Connexion *****/
 
-.connexion-form-init, .profil-container, .motDePasseOublier-form-init {
+.connexion-form-init, .profil-container, .motDePasseOublier-form-init, .listeHistorique-init {
 	display: inherit;
 	grid-gap: 1rem;
 	border-radius: 5px;
@@ -273,7 +273,7 @@ input:disabled ~ * {
 	margin: 1rem;
 }
 
-.createAccount-form-div {
+.createAccount-form-div, .listEnchere-div {
 	display: inherit;
 	grid-gap: 1rem;
 	grid-template-columns: 1fr 1fr;
@@ -369,7 +369,7 @@ input:disabled ~ * {
 
 /***** Page Error ****/
 
-.container-erreur {
+.container-erreur, .container-ok {
 	position: fixed;
 	top: 0;
 	right: 0;
@@ -382,10 +382,18 @@ input:disabled ~ * {
 	padding: 1rem;
 }
 
-.infoErreur-div {
+.container-erreur > .infoErreur-div {
 	background-color: #ff000096;
-	border-radius: 5px;
 	box-shadow: 0 0 10px rgba(255, 46, 46, 0.7);
+}
+
+.container-ok > .infoErreur-div {
+	background-color: #14ff00bd;
+	box-shadow: 0 0 10px rgba(121, 255, 46, 0.7);
+}
+
+.infoErreur-div {
+	border-radius: 5px;
 	border: 2px solid var(--colorGrey2);
 	padding: .5rem 1rem;
 	width: fit-content;
@@ -408,6 +416,10 @@ input:disabled ~ * {
 
 .infoErreur-2div-h2, .infoErreur-2div-span, .list-erreur, .list-erreur > * {
 	color: var(--colorWhite);
+}
+
+.container-ok > * > * > .infoErreur-2div-h2, .container-ok > * > * {
+	color: var(--colorBlack);
 }
 
 label[for="lblPhotoArticle"] {

@@ -58,7 +58,7 @@ public class UtilisateurManager {
 			be.ajouterErreur(CodesErreurBLL.REGLE_GESTION_FOND_SUFFISANT);
 		}
 	}
-	private void gestionFond(Utilisateur user,int montantAPayer) throws BusinessException{
+	public void gestionFond(Utilisateur user,int montantAPayer) throws BusinessException{
 		BusinessException be = new BusinessException();
 		fondSuffisant(user.getCredit(), montantAPayer, be);
 		if(be.hasErreurs()) {

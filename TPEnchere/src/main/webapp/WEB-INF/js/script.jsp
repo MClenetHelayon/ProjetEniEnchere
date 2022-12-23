@@ -150,13 +150,14 @@ class Script {
 	}
 	
 	PreviewImage() {
-		document.getElementById('lblPhotoArticle').addEventListener('change', () => {
+		document.getElementById('lblPhotoArticle').addEventListener('change', e => {
 			const reader = new FileReader();
 			const file = document.querySelector('input[type="file"]').files[0];
 			
 			reader.addEventListener("load", () => {
 				const value = reader.result;
 				$('vente-form-2div-img').src = value;
+				document.getElementById('lblPhotoArticleCode').value = value;
   			}, false);
 
 			if (/(jpe?g|png|webp)$/i.test(file.name)) reader.readAsDataURL(file);
@@ -181,12 +182,15 @@ class Script {
 	creationCompte() {
 		this.VerifPassword($('createAccount-submit'));
 	}
+<<<<<<< HEAD
 	
 	deconnexion() {
 		for(let i = 0; i < window.history.length; i++) {
 			/*à retirer les historique*/
 		}
 	}
+=======
+>>>>>>> branch 'main' of https://github.com/MClenetHelayon/ProjetEniEnchere.git
 }
 
 (() => {

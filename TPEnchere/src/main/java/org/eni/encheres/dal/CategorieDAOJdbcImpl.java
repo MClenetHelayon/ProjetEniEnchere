@@ -47,7 +47,8 @@ public class CategorieDAOJdbcImpl implements DAO<Categorie> {
 			PreparedStatement pstmt = cnx.prepareStatement(SELECT_BY_ID);
 			pstmt.setInt(1,id);
 			ResultSet rs = pstmt.executeQuery();
-			while(rs.next()) {
+			
+			if(rs.next()) {
 				vretour = new Categorie(rs.getInt("no_categorie"),rs.getString("libelle"));
 			}
 		} catch (SQLException e) {

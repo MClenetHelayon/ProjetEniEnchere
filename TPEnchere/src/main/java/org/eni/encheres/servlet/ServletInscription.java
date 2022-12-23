@@ -72,9 +72,11 @@ public class ServletInscription extends HttpServlet {
 	
 				
 				if(!verif) {
-					request.setAttribute("result","Une erreur est survenu");
+					request.setAttribute("statut","erreur");
+					request.setAttribute("info","Une erreur est survenu");
 				}else {
-					request.setAttribute("result","Changement Effectué");
+					request.setAttribute("statut","ok");
+					request.setAttribute("info","Changement Effectué");
 					Utilisateur userCo = null;
 					try {
 						userCo = UtilisateurManager.getInstance().selectById(Integer.parseInt(request.getParameter("idUser")));
@@ -109,7 +111,8 @@ public class ServletInscription extends HttpServlet {
 	
 	
 				if(!verif) {
-					request.setAttribute("result","Une erreur est survenu");
+					request.setAttribute("statut","erreur");
+					request.setAttribute("info","Une erreur est survenu");
 					RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/CreationCompte.jsp");
 					rd.forward(request, response);
 				}else {
@@ -120,7 +123,7 @@ public class ServletInscription extends HttpServlet {
 				Utilisateur user = null;
 				try {
 					user = UtilisateurManager.getInstance().mdpOublier(request.getParameter("email"));
-					System.out.println(user.getNom());
+
 					if(user.getNom()!=null) {
 						UtilisateurManager.getInstance().update(new Utilisateur(user.getIdUser(),
 								user.getPseudo(),
@@ -138,7 +141,8 @@ public class ServletInscription extends HttpServlet {
 					e.printStackTrace();
 				}
 				if(!verif) {
-					request.setAttribute("result","Une erreur est survenu");
+					request.setAttribute("statut","erreur");
+					request.setAttribute("info","Une erreur est survenu");
 					RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/mdpOublie.jsp");
 					rd.forward(request, response);
 				}else {

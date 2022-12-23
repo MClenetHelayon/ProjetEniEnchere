@@ -46,6 +46,7 @@ public class Enchere {
 		this.montant = montant;
 		this.user = user;
 		this.artVendu = artVendu;
+		this.artVendu.addEnchere(this);
 	}
 	public Enchere(int numEnchere, LocalDateTime date, int montant, Utilisateur user, ArticleVendu artVendu) {
 		this();
@@ -54,6 +55,7 @@ public class Enchere {
 		this.montant = montant;
 		this.user = user;
 		this.artVendu = artVendu;
+		this.artVendu.addEnchere(this);
 	}
 	
 }
