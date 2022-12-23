@@ -11,9 +11,11 @@ import java.util.List;
 
 import org.eni.encheres.BusinessException;
 import org.eni.encheres.bll.CategorieManager;
+import org.eni.encheres.bll.EnchereManager;
 import org.eni.encheres.bll.RetraitManager;
 import org.eni.encheres.bll.UtilisateurManager;
 import org.eni.encheres.bo.ArticleVendu;
+import org.eni.encheres.bo.Enchere;
 import org.eni.encheres.bo.Retrait;
 import org.eni.encheres.bo.Utilisateur;
 import org.eni.encheres.utilitaire.FicheMethodeTemps;
@@ -178,15 +180,19 @@ public class ArticleVenduDAOJdbcImpl implements DAOArticle {
 			
 			//verification des etat de vente
 			LocalDate today = LocalDate.now();
-			
-			if((today.isAfter(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_debut_encheres"))) || today.isEqual(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_debut_encheres")))) && rs.getInt("etat") != 1) {
+
+			if((today.isAfter(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_debut_encheres"))) || today.isEqual(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_debut_encheres")))) && rs.getInt("etat") == 0) {
 				vretour.setEtatVente(1);
 				update(vretour);
-			}
-			
-			if((today.isAfter(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_fin_encheres"))) || today.isEqual(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_fin_encheres")))) && rs.getInt("etat") != 2) {
+			} else if((today.isAfter(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_fin_encheres"))) || today.isEqual(FicheMethodeTemps.LocalDateToDate(rs.getDate("date_fin_encheres")))) && rs.getInt("etat") == 1) {
 				vretour.setEtatVente(2);
+				
+				Enchere miseMax = EnchereManager.getInstance().selectMiseMax(vretour.getNumArticle());
+				
+				vretour.getUser().setCredit(vretour.getUser().getCredit() - miseMax.getMontant());
+				
 				update(vretour);
+				
 			}
 			
 		} catch (SQLException e) {

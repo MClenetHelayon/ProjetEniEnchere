@@ -1,6 +1,8 @@
 package org.eni.encheres.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,7 +22,7 @@ import org.eni.encheres.bo.Utilisateur;
 /**
  * Servlet implementation class ServletWinEnchere
  */
-@WebServlet({"/winEnchere", "/finaliser"})
+@WebServlet({"/winEnchere", "/finaliser", "/historique"})
 public class ServletWinEnchere extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -34,40 +36,68 @@ public class ServletWinEnchere extends HttpServlet {
 			response.sendRedirect("./accueil");
 			return;
 		}
-
-		try {
-			ArticleVendu unArticle = ArticleVenduManager.getInstance().selectById(Integer.valueOf(articleId));
 		
-			Enchere enchereLePlusHaut = EnchereManager.getInstance().selectByIdArticle(Integer.valueOf(articleId));
-			
-			unArticle.setEnchereMax(enchereLePlusHaut);
-			
-			Utilisateur leVendeur = UtilisateurManager.getInstance().selectById(unArticle.getUser().getIdUser());
-			
-			if(unArticle.getEnchereMax() != null) {
-				Utilisateur miseMaxUtilisateur = UtilisateurManager.getInstance().selectById(unArticle.getEnchereMax().getUser().getIdUser());
+		if(request.getServletPath().equals("/historique")) {
+			try {
+				ArticleVendu unArticle = ArticleVenduManager.getInstance().selectById(Integer.valueOf(articleId));
 				
-				request.setAttribute("miseMaxUtilisateur", miseMaxUtilisateur);
-			} else {
-				request.setAttribute("personne", "Personne");
+				List<Enchere> listEnchere = EnchereManager.getInstance().selectListByIdArticle(Integer.valueOf(articleId));
+				
+				if(unArticle.getEtatVente() == 2) {
+					request.setAttribute("listEnchere", listEnchere);
+					
+					RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/ListHistorique.jsp");
+					rd.forward(request, response);
+				} else {
+					response.sendRedirect("./accueil");
+					return;
+				}
+			} catch (NumberFormatException | BusinessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				request.setAttribute("statut","erreur");
+				request.setAttribute("info", e.getMessage());
 			}
-
-			request.setAttribute("unArticle", unArticle);
-			request.setAttribute("leVendeur", leVendeur);
-			
-			
-			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/VenteGagner.jsp");
-			rd.forward(request, response);
-			
-		} catch (NumberFormatException | BusinessException e) {
-			e.printStackTrace();
+		} else {
+			try {
+				ArticleVendu unArticle = ArticleVenduManager.getInstance().selectById(Integer.valueOf(articleId));
+				
+				Enchere enchereLePlusHaut = EnchereManager.getInstance().selectMiseMax(Integer.valueOf(articleId));
+				
+				unArticle.addEnchere(enchereLePlusHaut);
+				
+				Utilisateur leVendeur = UtilisateurManager.getInstance().selectById(unArticle.getUser().getIdUser());
+				
+				if(enchereLePlusHaut != null) {
+					request.setAttribute("miseMaxUtilisateur", enchereLePlusHaut);
+					
+					String info = request.getParameter("info") == null ? "" : request.getParameter("info");
+					
+					if(info.equals("ok")) {
+						request.setAttribute("statut", "ok");
+						request.setAttribute("info", "Article reçu");
+					}
+				} else {
+					request.setAttribute("personne", "Personne");
+				}
+	
+				request.setAttribute("unArticle", unArticle);
+				request.setAttribute("leVendeur", leVendeur);
+				
+				
+				RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/VenteGagner.jsp");
+				rd.forward(request, response);
+				
+			} catch (NumberFormatException | BusinessException e) {
+				e.printStackTrace();
+				request.setAttribute("statut","erreur");
+				request.setAttribute("info", e.getMessage());
+			}
 		}
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(request.getServletPath().equals("finaliser")) {
-			
-		}
+		response.sendRedirect("./accueil");
 	}
 }

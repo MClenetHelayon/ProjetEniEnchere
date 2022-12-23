@@ -36,13 +36,16 @@ public class ServletAccueil extends HttpServlet {
 			request.setAttribute("listArticle", listArticle);
 		} catch (BusinessException e) {
 			e.printStackTrace();
+			request.setAttribute("statut","erreur");
+			request.setAttribute("info", e.getMessage());
 		}
 		
 		if(session.getAttribute("userCo") != null) {
 			Utilisateur unUtilisateur = (Utilisateur) session.getAttribute("userCo");
 			
 			if(unUtilisateur.isBloque() == true) {
-				request.setAttribute("erreur", "Bloquer par l'administateur");
+				request.setAttribute("statut","erreur");
+				request.setAttribute("info","Bloquer par l'administateur");
 			}
 		}
 
@@ -83,6 +86,8 @@ public class ServletAccueil extends HttpServlet {
 		    request.setAttribute("listArticle", listArticle);
 		} catch (BusinessException e) {
 			e.printStackTrace();
+			request.setAttribute("statut","erreur");
+			request.setAttribute("info", e.getMessage());
 		}
 	    RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Accueil.jsp");
 	    rd.forward(request, response);

@@ -24,6 +24,7 @@ import org.eni.encheres.bo.Categorie;
 import org.eni.encheres.bo.Enchere;
 import org.eni.encheres.bo.Retrait;
 import org.eni.encheres.bo.Utilisateur;
+import org.eni.encheres.utilitaire.FicheMethodeTemps;
 
 /**
  * Servlet implementation class ServletVente
@@ -43,9 +44,6 @@ public class ServletVente extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		String articleId = request.getParameter("idArticle");
-		int idUser = (int) session.getAttribute("userId");
-		
-		
 		
 		if(request.getServletPath().equals("/detailVente")) {
 			if(articleId == null) {
@@ -54,22 +52,19 @@ public class ServletVente extends HttpServlet {
 			}
 			
 			try {
-				LocalDate today = LocalDate.now();
-				
 				ArticleVendu unArticle = ArticleVenduManager.getInstance().selectById(Integer.valueOf(articleId));
 
-				if(today.isAfter(unArticle.getDateFin()) || today.isEqual(unArticle.getDateFin())) {
+				if(unArticle.getEtatVente() == 2) {
 					response.sendRedirect("./winEnchere?idArticle=" + articleId);
+				} else if(unArticle.getEtatVente() == 0) {
+					response.sendRedirect("./accueil");
 				} else {
-					Enchere enchereLePlusHaut = EnchereManager.getInstance().selectByIdArticle(Integer.valueOf(articleId));
-					
-					if(enchereLePlusHaut == null) {
+					Enchere enchereMax = EnchereManager.getInstance().selectMiseMax(Integer.valueOf(articleId));
+
+					if(enchereMax == null) {
 						request.setAttribute("maxMontantUser", null);
-						
 					} else {
-						Utilisateur miseMaxUtilisateur = UtilisateurManager.getInstance().selectById(unArticle.getEnchereMax().getUser().getIdUser());
-						
-						request.setAttribute("maxMontantUser", miseMaxUtilisateur.getPseudo());
+						request.setAttribute("maxMontantUser", enchereMax.getUser().getPseudo());
 					}
 					
 					if(session.getAttribute("userCo") != null) {
@@ -89,6 +84,8 @@ public class ServletVente extends HttpServlet {
 			} catch (NumberFormatException | BusinessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				request.setAttribute("statut","erreur");
+				request.setAttribute("info", e.getMessage());
 			}
 		} else {
 			try {
@@ -98,10 +95,14 @@ public class ServletVente extends HttpServlet {
 			} catch (BusinessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				request.setAttribute("statut","erreur");
+				request.setAttribute("info", e.getMessage());
 			}
 	
 			if(request.getServletPath().equals("/vente")) {
 				try {
+					int idUser = (int) session.getAttribute("userId");
+					
 					Utilisateur retraitUserById = UtilisateurManager.getInstance().selectById(idUser);
 					
 					request.setAttribute("RetraitUserById", retraitUserById);
@@ -110,6 +111,8 @@ public class ServletVente extends HttpServlet {
 				} catch (BusinessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					request.setAttribute("statut","erreur");
+					request.setAttribute("info", e.getMessage());
 				}
 			} else if(request.getServletPath().equals("/readVente")) {
 				if(articleId == null) {
@@ -127,6 +130,8 @@ public class ServletVente extends HttpServlet {
 				} catch (BusinessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					request.setAttribute("statut","erreur");
+					request.setAttribute("info", e.getMessage());
 				}
 			} else if(request.getServletPath().equals("/annuleVente")) {
 				if(articleId == null) {
@@ -147,6 +152,8 @@ public class ServletVente extends HttpServlet {
 				} catch (NumberFormatException | BusinessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					request.setAttribute("statut","erreur");
+					request.setAttribute("info", e.getMessage());
 				}
 			}
 		}
@@ -164,18 +171,40 @@ public class ServletVente extends HttpServlet {
 				String encherirArticle = request.getParameter("maProposition");
 				
 				ArticleVendu unArticle = ArticleVenduManager.getInstance().selectById(Integer.valueOf(articleId));
+				List<Enchere> listEnchere = EnchereManager.getInstance().selectListByIdArticle(Integer.valueOf(articleId));
+				
+				for (Enchere enchere : listEnchere) {
+					unArticle.addEnchere(enchere);
+				}
+				
+				Utilisateur utilisateurById = UtilisateurManager.getInstance().selectById((int) session.getAttribute("userId"));
+
+				//verification du credit utiliateur
+				//UtilisateurManager.getInstance().gestionFond(utilisateurById, Integer.valueOf(encherirArticle));
+				//recuperer l'enchere la plus haute afin de comparer avec a liste dans unArticle
+				Enchere futureAncienneMiseMax = EnchereManager.getInstance().selectMiseMax(Integer.valueOf(articleId));
+				
+				if(futureAncienneMiseMax != null) {
+					//list Enchere avant insertion
+					int val = unArticle.getLEnchere().size();
+					
+					if(unArticle.getLEnchere().get(val-1).getMontant() == futureAncienneMiseMax.getMontant()) {
+						futureAncienneMiseMax.getUser().setCredit(futureAncienneMiseMax.getUser().getCredit() + futureAncienneMiseMax.getMontant());
+
+						UtilisateurManager.getInstance().update(futureAncienneMiseMax.getUser());
+					}
+				}
 				
 				unArticle.setPrixVente(Integer.valueOf(encherirArticle));
 				
 				ArticleVenduManager.getInstance().update(unArticle);
-				
-				Utilisateur utilisateurById = UtilisateurManager.getInstance().selectById((int) session.getAttribute("userId"));
-				
+
 				Enchere unEnchere = new Enchere(LocalDateTime.now(), unArticle.getPrixVente(), utilisateurById, unArticle);
-				
-				EnchereManager.getInstance().update(unEnchere);
+				EnchereManager.getInstance().insert(unEnchere);
 			} catch (BusinessException e) {
 				e.printStackTrace();
+				request.setAttribute("statut","erreur");
+				request.setAttribute("info", e.getMessage());
 			}
 			
 			doGet(request, response);
@@ -186,7 +215,8 @@ public class ServletVente extends HttpServlet {
 				Utilisateur siAutoriser = UtilisateurManager.getInstance().selectById(utiliateurId);
 				
 				if(siAutoriser.isBloque()) {
-					//efnef
+					request.setAttribute("statut","erreur");
+					request.setAttribute("info","Bloquer par l'administateur");
 				} else if(request.getServletPath().equals("/vente") || request.getServletPath().equals("/readVente")) {
 					
 					String nomArticle = request.getParameter("article");
@@ -213,23 +243,46 @@ public class ServletVente extends HttpServlet {
 							unUtilisateur.setCodePostal("");
 							unUtilisateur.setVille("");
 						}
+						/**/
+						LocalDate dateDebut = LocalDate.parse(dateDebutEnchereArticle);
+						LocalDate today = LocalDate.now();
+						List<Categorie> listCategorie = CategorieManager.getInstance().selectAll();
 						
-						ArticleVendu unArticle = new ArticleVendu(nomArticle, descriptionArticle, LocalDate.parse(dateDebutEnchereArticle), LocalDate.parse(dateFinEnchereArticle), 
-								Integer.valueOf(prixInitialArticle), 0, unUtilisateur, uneCategorie, 0);
+						request.setAttribute("listCategorie", listCategorie);
 						
-						ArticleVenduManager.getInstance().insert(unArticle);
-						
-						response.sendRedirect("./accueil");
+						if(today.isBefore(dateDebut)) {
+							if(dateDebut.isBefore(LocalDate.parse(dateFinEnchereArticle))) {
+								ArticleVendu unArticle = new ArticleVendu(nomArticle, descriptionArticle, LocalDate.parse(dateDebutEnchereArticle), LocalDate.parse(dateFinEnchereArticle), 
+										Integer.valueOf(prixInitialArticle), 0, unUtilisateur, uneCategorie, 0);
+								
+								ArticleVenduManager.getInstance().insert(unArticle);
+								
+								response.sendRedirect("./accueil");
+							} else {
+								request.setAttribute("statut","erreur");
+								request.setAttribute("info", "Date fin enchère doit être supérieur à début enchère");
+								RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Vente.jsp");
+								rd.forward(request, response);
+							}
+						} else {
+							request.setAttribute("statut","erreur");
+							request.setAttribute("info", "La date Debut enchère doit au moins commencer demain");
+							RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Vente.jsp");
+							rd.forward(request, response);
+						}
 					} catch (NumberFormatException | BusinessException e) {
 						e.printStackTrace();
-						request.setAttribute("erreur", e);
+						request.setAttribute("statut","erreur");
+						request.setAttribute("info", e.getMessage());
 						RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Vente.jsp");
 						rd.forward(request, response);
 					}
 				}
-			} catch (BusinessException e1) {
+			} catch (BusinessException e) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				e.printStackTrace();
+				request.setAttribute("statut","erreur");
+				request.setAttribute("info", e.getMessage());
 			}
 		}
 	}

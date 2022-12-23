@@ -27,12 +27,15 @@ public class ArticleVenduManager {
 	}
 	public ArticleVendu selectById(int id) throws BusinessException {
 		ArticleVendu vretour = null;
+		
 		vretour = DAOFactory.getArticleVenduDAO().selectById(id);
+
 		return vretour;
 	}
 	public List<ArticleVendu> selectAllByCateg(int idCateg) throws BusinessException{
 		List<ArticleVendu> vretour = new ArrayList<ArticleVendu>();
 		vretour = DAOFactory.getArticleVenduDAO().selectAllByCateg(idCateg);
+		
 		return vretour;
 	}
 	public List<ArticleVendu> selectAllByNom(String nom) throws BusinessException{

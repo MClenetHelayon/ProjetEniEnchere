@@ -75,42 +75,44 @@
 					</div>
 				</div>
 			</c:if>
-			<input type="submit" value="Rechercher">
-			<!--<span class="filtres-form-inputSubmit">Rechercher</span>-->
+			<input type="submit" class="filtres-form-inputSubmit" value="Rechercher">
 		</form>
 		
 		<div class="listeArticle">
 			
 			<c:forEach var="elem" items="${requestScope.listArticle}">
 				
-					<div class="article-init">
-						<img class="article-img" src="./img/defaultPicture.webp" />
-						<div>
-							
-							<c:choose>
-								<c:when test="${elem.etatVente == 2 && sessionScope.isConnect == true && sessionScope.userId != null}">
-									<a class="article-a" href="${pageContext.request.contextPath}/winEnchere?idArticle=${elem.numArticle}&idUser=${elem.user.idUser}">
-								</c:when>
-								<c:when test="${elem.etatVente == 2}">
-									<a class="article-a" href="${pageContext.request.contextPath}/winEnchere?idArticle=${elem.numArticle}">
-								</c:when>
-								<c:when test="${elem.etatVente == 1}">
-									<a class="article-a" href="${pageContext.request.contextPath}/detailVente?idArticle=${elem.numArticle}">
-								</c:when>
-								<c:when test="${elem.etatVente == 0 && sessionScope.isConnect == true && sessionScope.userId != null}">
-									<a class="article-a" href="${pageContext.request.contextPath}/readVente?idArticle=${elem.numArticle}&idUser=${elem.user.idUser}">
-								</c:when>
-							</c:choose>
-							
-								<h4 class="article-h4">${elem.nom}</h4>
-							</a>
-							<p>Prix: ${elem.prixInit} points</p>
-							<fmt:parseDate  value="${elem.dateFin}" type="date" pattern="yyyy-MM-dd" var="parsedDate" />
-							<p>Fin de l'enchère: <fmt:formatDate type="date" value="${parsedDate}" pattern="dd/MM/YYYY"/></p>
-							<p>Vendeur: <a class="article-a2" href="${pageContext.request.contextPath}/profil${elem.user.idUser != sessionScope.userId ? '?idUser=' += elem.user.idUser : '' }">${elem.user.pseudo}</a></p>
-						</div>
+				<div class="article-init">
+					<img class="article-img" src="./img/defaultPicture.webp" />
+					<div>
+						
+						<c:choose>
+							<c:when test="${elem.etatVente == 2 && sessionScope.isConnect == true && sessionScope.userId == elem.user.idUser}">
+								<a class="article-a" href="${pageContext.request.contextPath}/winEnchere?idArticle=${elem.numArticle}&idUser=${elem.user.idUser}">
+							</c:when>
+							<c:when test="${elem.etatVente == 2}">
+								<a class="article-a" href="${pageContext.request.contextPath}/winEnchere?idArticle=${elem.numArticle}">
+							</c:when>
+							<c:when test="${elem.etatVente == 1}">
+								<a class="article-a" href="${pageContext.request.contextPath}/detailVente?idArticle=${elem.numArticle}">
+							</c:when>
+							<c:when test="${elem.etatVente == 0 && sessionScope.isConnect == true && sessionScope.userId == elem.user.idUser}">
+								<a class="article-a" href="${pageContext.request.contextPath}/readVente?idArticle=${elem.numArticle}&idUser=${elem.user.idUser}">
+							</c:when>
+							<c:otherwise>
+								<a class="article-a">
+							</c:otherwise>
+						</c:choose>
+						
+							<h4 class="article-h4">${elem.nom}</h4>
+						</a>
+						<p>Prix: ${elem.prixInit} points</p>
+						<fmt:parseDate  value="${elem.dateFin}" type="date" pattern="yyyy-MM-dd" var="parsedDate" />
+						<p>Fin de l'enchère: <fmt:formatDate type="date" value="${parsedDate}" pattern="dd/MM/YYYY"/></p>
+						<p>Vendeur: <a class="article-a2" href="${pageContext.request.contextPath}/profil${elem.user.idUser != sessionScope.userId ? '?idUser=' += elem.user.idUser : '' }">${elem.user.pseudo}</a></p>
 					</div>
-					
+				</div>
+
 			</c:forEach>
 		</div>
 		

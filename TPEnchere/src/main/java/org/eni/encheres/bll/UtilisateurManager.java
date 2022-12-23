@@ -53,4 +53,9 @@ public class UtilisateurManager {
 	public void update(Utilisateur user) throws BusinessException {
 		DAOFactory.getUtilisateurDAO().update(user);
 	}
+
+	public void gestionFond(Utilisateur utilisateurById, Integer valueOf) {
+		// TODO Auto-generated method stub
+		
+	}
 }

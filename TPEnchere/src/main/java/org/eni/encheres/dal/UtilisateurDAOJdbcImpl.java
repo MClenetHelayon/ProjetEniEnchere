@@ -19,8 +19,8 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 	private static final String SELECT_BY_EMAIL = "select * from UTILISATEURS WHERE email = ?;";
 	private static final String SELECT_BY_PSEUDO_OR_EMAIL_AND_MDP = "select * from UTILISATEURS WHERE (pseudo like ? OR email like ?) AND mot_de_passe like ?;";
 	private final static String DELETE = "DELETE FROM UTILISATEURS WHERE no_utilisateur=?;";
-	private final static String INSERT = "INSERT INTO UTILISATEURS(pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur,bloque) VALUES(?,?,?,?,?,?,?,?,?,?,?,?);";
-	private final static String UPDATE = "UPDATE UTILISATEURS SET pseudo=?,nom=?,prenom=?,email=?,telephone=?,rue=?,code_postal=?,ville=?,mot_de_passe=?,bloquer=? WHERE no_utilisateur=?;";
+	private final static String INSERT = "INSERT INTO UTILISATEURS(pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur,bloquer) VALUES(?,?,?,?,?,?,?,?,?,?,?,?);";
+	private final static String UPDATE = "UPDATE UTILISATEURS SET pseudo=?,nom=?,prenom=?,email=?,telephone=?,rue=?,code_postal=?,ville=?,mot_de_passe=?, credit=?, bloquer=? WHERE no_utilisateur=?;";
 	private final static String BLOQUER1 = "DELETE FROM ARTICLES_VENDUS WHERE no_utilisateur=?;";
 	private final static String BLOQUER2 = "DELETE FROM ENCHERES WHERE no_utilisateur=?;";
 	
@@ -138,7 +138,7 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 			pStmt.setString(7, lObjet.getCodePostal());
 			pStmt.setString(8, lObjet.getVille());
 			pStmt.setString(9, lObjet.getMdp());
-			pStmt.setInt(10, lObjet.getCredit());
+			pStmt.setInt(10, 500);
 			pStmt.setByte(11,FicheMethodeBool.boolToBit(lObjet.isAdmin()));
 			pStmt.setByte(12,FicheMethodeBool.boolToBit(lObjet.isBloque()));
 			pStmt.executeUpdate();
@@ -164,8 +164,9 @@ public class UtilisateurDAOJdbcImpl implements DAOUser {
 			pStmt.setString(7, lObjet.getCodePostal());
 			pStmt.setString(8, lObjet.getVille());
 			pStmt.setString(9, lObjet.getMdp());
-			pStmt.setByte(10,FicheMethodeBool.boolToBit(lObjet.isBloque()));
-			pStmt.setInt(11, lObjet.getIdUser());
+			pStmt.setInt(10, lObjet.getCredit());
+			pStmt.setByte(11,FicheMethodeBool.boolToBit(lObjet.isBloque()));
+			pStmt.setInt(12, lObjet.getIdUser());
 			pStmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

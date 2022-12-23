@@ -48,6 +48,11 @@
 					</div>
 					
 					<c:choose>
+						<c:when test="${sessionScope.isConnect == true && sessionScope.userId == requestScope.unArticle.user.idUser}">
+							<div class="detailVente-form-4div">
+								<h4>Vous ne pouvez pas encherir sur votre article</h4>
+							</div>
+						</c:when>
 						<c:when test="${sessionScope.isConnect == true && sessionScope.userId != param.idUser && sessionScope.userCo.bloque == false}">
 							<form method="post" action="${pageContext.request.contextPath}/detailVente?idArticle=${param.idArticle}">
 								<label for="lblMaProposition">Ma proposition:</label>

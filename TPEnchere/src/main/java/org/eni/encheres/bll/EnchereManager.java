@@ -26,7 +26,8 @@ public class EnchereManager {
 		
 		return vretour;
 	}
-	/*public Enchere selectById(int id) {
+	
+	public Enchere selectById(int id) {
 		Enchere vretour = null;
 		try {
 			vretour = DAOFactory.getEnchereDAO().selectById(id);
@@ -34,14 +35,14 @@ public class EnchereManager {
 			e.printStackTrace();
 		}
 		return vretour;
-	}*/
+	}
 	
-	public Enchere selectByIdArticle(int idArticle) throws BusinessException {
-		Enchere vretour = null;
+	public List<Enchere> selectListByIdArticle(int idArticle) throws BusinessException {
+		List<Enchere> listEnchere = new ArrayList<>();
 		
-		vretour = DAOFactory.getEnchereDAO().selectById(idArticle);
+		listEnchere = DAOFactory.getEnchereDAO().selectListById(idArticle);
 		
-		return vretour;
+		return listEnchere;
 	}
 	
 	public void delete(int id) {
@@ -52,10 +53,49 @@ public class EnchereManager {
 		}
 	}
 	public void insert(Enchere ench) throws BusinessException {
-		DAOFactory.getEnchereDAO().insert(ench);
+		//control if not exist
+		Enchere controlDoublon = selectMiseMax(ench.getArtVendu().getNumArticle());
+		
+		if(controlDoublon != null) {
+			if(ench.getDate() != controlDoublon.getDate() && ench.getMontant() != controlDoublon.getMontant()) {
+				DAOFactory.getEnchereDAO().insert(ench);
+			}
+		} else {
+			DAOFactory.getEnchereDAO().insert(ench);
+		}
+		
+		
 	}
 	public void update(Enchere ench) throws BusinessException {
 		DAOFactory.getEnchereDAO().update(ench);
-		
 	}
+	
+	public Enchere selectMiseMax(int idArticle) throws BusinessException {
+		Enchere vretour = null;
+		
+		vretour = DAOFactory.getEnchereDAO().selectMiseMax(idArticle);
+		
+		return vretour;
+	}
+	
+	
+	
+	
+	
+	
+	/*public void selectReturnCredit(int idArticle) throws BusinessException {
+		DAOFactory.getEnchereDAO().selectReturnCredit(idArticle);
+	}*/
+	
+	/*public void selectAllByIdArticle(int idArticle) throws BusinessException {
+		Enchere ancientMax = DAOFactory.getEnchereDAO().selectById(idArticle);
+		
+		int countIdArticle = DAOFactory.getEnchereDAO().selectAllByIdArticle(idArticle);
+		System.out.println("passe ici Manager " + countIdArticle);
+		if(countIdArticle != 10_000) {
+			DAOFactory.getEnchereDAO().selectReturnCredit(countIdArticle);
+		} else {
+			System.out.println("Erreur BLL ENCHERE manager");
+		}
+	}*/
 }

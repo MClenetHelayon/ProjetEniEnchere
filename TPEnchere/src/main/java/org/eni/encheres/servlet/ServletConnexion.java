@@ -54,7 +54,8 @@ public class ServletConnexion extends HttpServlet {
 			
 			response.sendRedirect("./accueil");
 		}catch (Exception e) {
-			request.setAttribute("erreur","Connexion impossible");
+			request.setAttribute("statut","erreur");
+			request.setAttribute("info","Connexion impossible");
 			
 			returnBack(request, response,"/WEB-INF/Connexion.jsp");
 		}

@@ -12,11 +12,11 @@
 	<main>
 		<div class="detailVente-form-div">
 			<c:choose>
-				<c:when test="${sessionScope.isConnect == true && sessionScope.userId == requestScope.miseMaxUtilisateur.idUser}">
+				<c:when test="${sessionScope.isConnect == true && sessionScope.userId == requestScope.miseMaxUtilisateur.user.idUser}">
 					<h1 class="detailVente-form-div-h1">Vous avez remporté la vente</h1>
 				</c:when>
 				<c:otherwise>
-					<h1 class="detailVente-form-div-h1">${empty requestScope.miseMaxUtilisateur ? requestScope.personne : requestScope.miseMaxUtilisateur.nom} à remporté la vente</h1>
+					<h1 class="detailVente-form-div-h1">${empty requestScope.miseMaxUtilisateur ? requestScope.personne : requestScope.miseMaxUtilisateur.user.nom} à remporté la vente</h1>
 				</c:otherwise>
 			</c:choose>
 			
@@ -34,11 +34,11 @@
 						<p>Meilleur offre:</p>
 						
 						<c:choose>
-							<c:when test="${sessionScope.isConnect == true && sessionScope.userId == requestScope.miseMaxUtilisateur.idUser}">
-								<p>${requestScope.unArticle.enchereMax.montant} pts</p>
+							<c:when test="${sessionScope.isConnect == true && sessionScope.userId == requestScope.miseMaxUtilisateur.user.idUser}">
+								<p>${requestScope.miseMaxUtilisateur.montant} pts</p>
 							</c:when>
 							<c:otherwise>
-								<p>${empty requestScope.unArticle.enchereMax.montant ? "0" : requestScope.unArticle.enchereMax.montant} pts par ${empty requestScope.miseMaxUtilisateur ? requestScope.personne : requestScope.miseMaxUtilisateur.nom}</p>
+								<p>${empty requestScope.miseMaxUtilisateur.montant ? "0" : requestScope.miseMaxUtilisateur.montant} pts par ${empty requestScope.miseMaxUtilisateur ? requestScope.personne : requestScope.miseMaxUtilisateur.user.nom}</p>
 							</c:otherwise>
 						</c:choose>
 						
@@ -51,7 +51,7 @@
 					
 					<!-- si other win -->
 					
-					<c:if test="${sessionScope.userId != requestScope.miseMaxUtilisateur.idUser}">
+					<c:if test="${sessionScope.userId != requestScope.miseMaxUtilisateur.user.idUser}">
 						<div class="detailVente-form-4div">
 							<p>Fin de l'enchère:</p>
 							<p><%=DateTimeFormatter.ofPattern("dd/MM/YYYY").format(((ArticleVendu) request.getAttribute("unArticle")).getDateFin()) %></p>
@@ -71,7 +71,7 @@
 					
 					<!-- si j'ai win -->
 					
-					<c:if test="${sessionScope.isConnect == true && sessionScope.userId == requestScope.miseMaxUtilisateur.idUser}">
+					<c:if test="${sessionScope.isConnect == true && sessionScope.userId == requestScope.miseMaxUtilisateur.user.idUser}">
 						<div class="detailVente-form-4div">
 							<p>Tel:</p>
 							<p>${requestScope.leVendeur.telephone}</p>
@@ -85,8 +85,12 @@
 		</div>
 		<div>
 			
-			<c:if test="${sessionScope.isConnect == true && sessionScope.userId == requestScope.miseMaxUtilisateur.idUser || sessionScope.userId == requestScope.leVendeur.idUser}">
-				<a class="detailVente-a-back" href="${pageContext.request.contextPath}/finaliser">Retrait effectué</a>
+			<c:if test="${sessionScope.isConnect == true && sessionScope.userId == requestScope.miseMaxUtilisateur.user.idUser}">
+				<a class="detailVente-a-back" href="${pageContext.request.contextPath}/finaliser?idArticle=${requestScope.unArticle.numArticle}&info=ok">Retrait effectué</a>
+			</c:if>
+			
+			<c:if test="${sessionScope.isConnect == true && sessionScope.userId == requestScope.leVendeur.idUser && !requestScope.personne.equals('personne') }">
+				<a class="detailVente-a-back" href="${pageContext.request.contextPath}/historique?idArticle=${requestScope.unArticle.numArticle}">Historique de l'enchère</a>
 			</c:if>
 			
 			<a class="detailVente-a-back" href="${pageContext.request.contextPath}/">Retour</a>

@@ -34,6 +34,8 @@ public class ServletDeconnexion extends HttpServlet {
 					UtilisateurManager.getInstance().delete(idUser);
 				} catch (BusinessException e) {
 					e.printStackTrace();
+					request.setAttribute("statut","erreur");
+					request.setAttribute("info", e.getMessage());
 				}
 			}
 			

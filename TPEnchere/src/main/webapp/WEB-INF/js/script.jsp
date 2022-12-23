@@ -63,7 +63,7 @@ class Script {
 		window.addEventListener("resize", () => { initWidth = this.calculWidthHeader(initWidth); });
  	}
  	
-	ServletAccueil() {
+	accueil() {
 		document.getElementsByName('achatsVentes').forEach((elem, index) => {
 			const groupCheckedSelected = $('filtres-accountConnected-liste-container-checkbox', index).querySelectorAll('input[type="checkbox"]');
 			const groupCheckedAll = $('filtres-accountConnected').querySelectorAll('input[type="checkbox"]');
@@ -80,7 +80,7 @@ class Script {
 		    });
 	    });
 	    
-	  	$('filtres-form-inputSubmit').addEventListener(`click`, () => {
+	  	/*$('filtres-form-inputSubmit').addEventListener(`click`, () => {
 			const infoForm = document.forms.accueilFiltres;
 			const nameRadioBox = "achatsVentes";
 			let formData = new FormData();
@@ -118,7 +118,7 @@ class Script {
 		
 		$('filtres-form-inputText').addEventListener(`keypress`, e => {
 			if(e.keyCode == 13) e.preventDefault();
-		});
+		});*/
 	}
 	
 	VerifPassword(className) {
@@ -150,13 +150,14 @@ class Script {
 	}
 	
 	PreviewImage() {
-		document.getElementById('lblPhotoArticle').addEventListener('change', () => {
+		document.getElementById('lblPhotoArticle').addEventListener('change', e => {
 			const reader = new FileReader();
 			const file = document.querySelector('input[type="file"]').files[0];
 			
 			reader.addEventListener("load", () => {
 				const value = reader.result;
 				$('vente-form-2div-img').src = value;
+				document.getElementById('lblPhotoArticleCode').value = value;
   			}, false);
 
 			if (/(jpe?g|png|webp)$/i.test(file.name)) reader.readAsDataURL(file);
@@ -166,26 +167,20 @@ class Script {
 		});
 	}
 	
-	ServletReadVente() {
+	readVente() {
 		this.PreviewImage();
 	}
 	
-	ServletVente() {
+	vente() {
 		this.PreviewImage();
 	}
 	
-	ServletEditProfil() {
+	editProfil() {
 		this.VerifPassword($('editAccount-submit'));
 	}
 	
-	ServletCreationCompte() {
+	creationCompte() {
 		this.VerifPassword($('createAccount-submit'));
-	}
-	
-	ServletDeconnexion() {
-		for(let i = 0; i < window.history.length; i++) {
-			/*à retirer les historique*/
-		}
 	}
 }
 
