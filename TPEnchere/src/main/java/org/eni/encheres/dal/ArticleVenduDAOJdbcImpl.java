@@ -26,7 +26,7 @@ public class ArticleVenduDAOJdbcImpl implements DAOArticle {
 	private static final String SELECT_BY_ID = "select * from ARTICLES_VENDUS WHERE no_article = ?;";
 	private static final String SELECT_BY_IDCATEG = "select * from ARTICLES_VENDUS av INNER JOIN CATEGORIES c ON c.no_categorie = av.no_categorie WHERE av.no_categorie = ?;";
 	private final static String DELETE = "DELETE FROM ARTICLES_VENDUS WHERE no_article=?;";
-	private final static String INSERT = "INSERT INTO ARTICLES_VENDUS(nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,no_utilisateur,no_categorie, etat,img_data) VALUES(?,?,?,?,?,?,?,?,?);";
+	private final static String INSERT = "INSERT INTO ARTICLES_VENDUS(nom_article,description,date_debut_encheres,date_fin_encheres,prix_initial,prix_vente,no_utilisateur,no_categorie, etat,img_data) VALUES(?,?,?,?,?,?,?,?,?,?);";
 	private static final String UPDATE = "UPDATE ARTICLES_VENDUS SET nom_article=?,description=?,date_debut_encheres=?,date_fin_encheres=?,prix_initial=?,prix_vente=?,no_utilisateur=?,no_categorie=?, etat=?,img_data=? WHERE no_article=?;";
 	
 	@Override

@@ -21,23 +21,14 @@
 			</c:choose>
 			
 			<div class="detailVente-form-2div">
-					<c:choose>
-						<c:when test="${!empty requestScope.unArticle.imgData}">
-							<img class="detailVente-form-2div-img" src="${requestScope.unArticle.imgData}"/>
-						</c:when>
-						<c:otherwise><img class="detailVente-form-2div-img" src="./img/defaultPicture.webp" /></c:otherwise>
-					</c:choose>
 				<c:choose>
-				<c:when test="${requestScope.unArticle.etatVente==0}">
-									<div class="detailVente-form-3div" style="background-color: rgba(0,150,250,.7)">
-				</c:when>
-				<c:when test="${requestScope.unArticle.etatVente==1}">
-									<div class="detailVente-form-3div" style="background-color: rgba(250,150,0,.7)">
-				</c:when>
-				<c:when test="${requestScope.unArticle.etatVente==2}">
-									<div class="detailVente-form-3div" style="background-color: rgba(250,0,150,.7)">
-				</c:when>
+					<c:when test="${!empty requestScope.unArticle.imgData}">
+						<img class="detailVente-form-2div-img" src="${requestScope.unArticle.imgData}"/>
+					</c:when>
+					<c:otherwise><img class="detailVente-form-2div-img" src="./img/defaultPicture.webp" /></c:otherwise>
 				</c:choose>
+				
+				<div class="detailVente-form-3div">
 					<div class="detailVente-form-4div">
 						<h3 class="detailVente-form-4div-h3">${requestScope.unArticle.nom}</h3>
 					</div>

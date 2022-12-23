@@ -78,6 +78,7 @@ public class ServletAdmin extends HttpServlet {
 		List<ArticleVendu> LArticle = new ArrayList<ArticleVendu>();
 		if(request.getServletPath().equals("/adminArtCateg")) {
 			int id = Integer.parseInt(request.getParameter("choixCategorie"));
+			request.setAttribute("idCat",id);
 			try {
 				if(id==1) {
 					LArticle = ArticleVenduManager.getInstance().selectAll();

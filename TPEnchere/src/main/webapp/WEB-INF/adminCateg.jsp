@@ -13,16 +13,30 @@
 	<main>
 		<h1>Liste des Catégories</h1>
 		<form class="filtres-form-init" name="accueilFiltres" method="post" action="${pageContext.request.contextPath}/adminArtCateg">
-				<%@include file="/WEB-INF/includes/ListCategorie.jsp" %>
+	<label>Catégorie:</label>
+	<select name="choixCategorie">
+		<c:forEach var="elem" items="${requestScope.listCategorie}" varStatus="value">
+			<c:choose>
+				<c:when test="${elem.numCat==requestScope.idCat}" >
+					<option value="${elem.numCat}" selected>${elem.libelle}</option>
+				</c:when>
+				<c:otherwise>
+					<option value="${elem.numCat}">${elem.libelle}</option>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
+	</select>
 				<input type="submit" value="Enregistrer">
 		</form>
-		<c:choose>
-			<c:when test="${!empty requestScope.LArticle}">
-				<c:forEach var="a" items="${requestScope.LArticle}">
-					<div class="listeArticle">
+		
+		<div class="listeArticle">
+		
+			<c:choose>
+				<c:when test="${!empty requestScope.LArticle}">
+					<c:forEach var="a" items="${requestScope.LArticle}">
 						<div class="article-init">
-							<div><h4 class="article-h4">${a.nom}</h4></div>
-							<form class="filtres-form-init" name="accueilFiltres" method="post" action="${pageContext.request.contextPath}/updateArtCateg?idArt=${a.numArticle}">
+							<h4 class="article-h4">${a.nom}</h4>
+							<form style="display: inherit; grid-gap: 1rem;" name="accueilFiltres" method="post" action="${pageContext.request.contextPath}/updateArtCateg?idArt=${a.numArticle}">
 								<select name="newChoixCategorie">
 									<c:forEach var="elem" items="${requestScope.listCategorie}" varStatus="value">
 										<c:if test="${elem.numCat!=1}">
@@ -40,13 +54,15 @@
 								<input type="submit" value="Enregistrer">
 							</form>
 						</div>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<div class="article-init">
+						<h3>Choisissez une option</h3>
 					</div>
-				</c:forEach>
-			</c:when>
-			<c:otherwise>
-				<h3>Choisissez une option</h3>
-			</c:otherwise>
-		</c:choose>
+				</c:otherwise>
+			</c:choose>
+		</div>
 
 		<%@include file="/WEB-INF/includes/Erreur.jsp" %>
 	</main>

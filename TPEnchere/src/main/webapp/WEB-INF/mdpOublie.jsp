@@ -19,7 +19,7 @@
 			</div>
 			<div class="motDePasseOublier-form-div">
 				<label for="lblEmail">Confirmer le Mot de Passe:</label>
-				<input id="lblIEmail" type="password" name="Envoyer" required>
+				<input id="lblIEmail" type="password" name="confirmation" required>
 			</div>
 			<input class="motDePasseOublier-form-inputSubmit" type="submit" value="Connexion">
 		</form>

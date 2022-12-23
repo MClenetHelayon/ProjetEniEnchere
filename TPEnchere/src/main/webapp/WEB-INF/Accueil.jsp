@@ -31,40 +31,46 @@
 		</form>
 		<div class="listeArticle">	
 			<c:forEach var="elem" items="${requestScope.listArticle}">
+				
 				<c:choose>
 					<c:when test="${elem.etatVente==0}">
-			<div class="article-init" style="background-color: rgba(0,150,250,.7)">
+						<div class="article-init" style="box-shadow:0 0 6px rgba(11, 163, 255, 0.7);">
 					</c:when>
 					<c:when test="${elem.etatVente==1}">
-			<div class="article-init" style="background-color: rgba(250,150,0,.7)">
+						<div class="article-init" style="box-shadow:0 0 6px rgba(255, 114, 11, 0.7);">
 					</c:when>
 					<c:when test="${elem.etatVente==2}">
-			<div class="article-init" style="background-color: rgba(250,0,150,.7)">
+						<div class="article-init" style="box-shadow: 0 0 6px rgba(110, 255, 11, 0.7)">
 					</c:when>
 				</c:choose>
+				
+				
 				<c:choose>
 					<c:when test="${!empty elem.imgData}">
-				<img class="article-img" src="${elem.imgData}"/>
+						<img class="article-img" src="${elem.imgData}"/>
 					</c:when>
 					<c:otherwise>
-				<img class="article-img" src="./img/defaultPicture.webp" />
+						<img class="article-img" src="./img/defaultPicture.webp" />
 					</c:otherwise>
 				</c:choose>
+				
 				<div>
+				
 				<c:choose>
-					<c:when test="${elem.etatVente == 2 && sessionScope.isConnect == true && sessionScope.userId != null}">
-					<a class="article-a" href="${pageContext.request.contextPath}/winEnchere?idArticle=${elem.numArticle}&idUser=${elem.user.idUser}">
+					<c:when test="${elem.etatVente == 2 && sessionScope.isConnect == true && sessionScope.userId == elem.user.idUser}">
+						<a class="article-a" href="${pageContext.request.contextPath}/winEnchere?idArticle=${elem.numArticle}&idUser=${elem.user.idUser}">
 					</c:when>
 					<c:when test="${elem.etatVente == 2}">
-					<a class="article-a" href="${pageContext.request.contextPath}/winEnchere?idArticle=${elem.numArticle}">
+						<a class="article-a" href="${pageContext.request.contextPath}/winEnchere?idArticle=${elem.numArticle}">
 					</c:when>
 					<c:when test="${elem.etatVente == 1}">
-					<a class="article-a" href="${pageContext.request.contextPath}/detailVente?idArticle=${elem.numArticle}">
+						<a class="article-a" href="${pageContext.request.contextPath}/detailVente?idArticle=${elem.numArticle}">
 					</c:when>
-					<c:when test="${elem.etatVente == 0 && sessionScope.isConnect == true && sessionScope.userId != null}">
-					<a class="article-a" href="${pageContext.request.contextPath}/readVente?idArticle=${elem.numArticle}&idUser=${elem.user.idUser}">
+					<c:when test="${elem.etatVente == 0 && sessionScope.isConnect == true && sessionScope.userId == elem.user.idUser}">
+						<a class="article-a" href="${pageContext.request.contextPath}/readVente?idArticle=${elem.numArticle}&idUser=${elem.user.idUser}">
 					</c:when>
 				</c:choose>
+				
 						<h4 class="article-h4">${elem.nom}</h4>
 					</a>
 					<p>Prix: ${elem.prixInit} points</p>

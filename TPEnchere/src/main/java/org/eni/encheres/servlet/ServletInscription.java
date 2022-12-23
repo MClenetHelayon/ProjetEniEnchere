@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -116,7 +117,15 @@ public class ServletInscription extends HttpServlet {
 					RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/CreationCompte.jsp");
 					rd.forward(request, response);
 				}else {
-					doGet(request, response);
+					Cookie[] cookies = request.getCookies();
+					for (Cookie c : cookies) {
+						if(c.getName().equals("id")) {
+							c.setValue(null);
+					        response.addCookie(c);
+							session.setAttribute("cookie",null);
+						}
+					}
+					response.sendRedirect("./connexion");
 				}
 			}
 			if(request.getServletPath().equals("/forgotMdp")) {

@@ -56,18 +56,14 @@ public class ServletAccueil extends HttpServlet {
 		rd.forward(request, response);
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 	    String textComparer = request.getParameter("filtresText");
 	    int id = Integer.parseInt(request.getParameter("choixCategorie"));
-	    
-	    
-
-	    
+	    HttpSession session = request.getSession();
+        Utilisateur lUser = (Utilisateur) session.getAttribute("userCo");
 	    request.setAttribute("idCat", id);
 	    request.setAttribute("txt", textComparer);
 	    List<ArticleVendu> listArticle = new ArrayList<ArticleVendu>(), listTmp = new ArrayList<ArticleVendu>();
 	    try {
-
 	        if (id != 1 || !textComparer.isEmpty()) {
 	            List<ArticleVendu> listComparantId = ArticleVenduManager.getInstance().selectAllByCateg(id);
 	            List<ArticleVendu> listComparantText = ArticleVenduManager.getInstance().selectAllByNom(textComparer);
@@ -89,7 +85,11 @@ public class ServletAccueil extends HttpServlet {
 	        } else {
 	            listTmp = ArticleVenduManager.getInstance().selectAll();
 	        }
-	        listArticle = filtrageCheck(request, listArticle, listTmp);
+			if(session.getAttribute("userCo") != null) {
+				listArticle = filtrageCheck(request, listArticle, listTmp,lUser);
+			}else {
+				listArticle = listTmp;
+			}
 		    List<Categorie> listCategorie = CategorieManager.getInstance().selectAll();
 		    request.setAttribute("listCategorie", listCategorie);
 	        request.setAttribute("listArticle", listArticle);
@@ -102,9 +102,8 @@ public class ServletAccueil extends HttpServlet {
 	    RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/Accueil.jsp");
 	    rd.forward(request, response);
 	}
-	private List<ArticleVendu> filtrageCheck(HttpServletRequest request,List<ArticleVendu>vretour,List<ArticleVendu>need){
-	    HttpSession session = request.getSession();
-        Utilisateur lUser = (Utilisateur) session.getAttribute("userCo");
+	private List<ArticleVendu> filtrageCheck(HttpServletRequest request,List<ArticleVendu>vretour,List<ArticleVendu>need,Utilisateur lUser){
+
 	    boolean achats = radio(request.getParameter("achatsVentes")),filtre0,filtre1,filtre2;
 	    if(achats) {
 		    filtre0 = checkbox(request.getParameter("achats0"));

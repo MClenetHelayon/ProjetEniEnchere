@@ -25,6 +25,7 @@ public class ServletConnexion extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Cookie[] cookies = request.getCookies();
 		HttpSession session = request.getSession();
+		boolean bool = false;
 		try {
 			if(cookies!=null&&session.getAttribute("cookie")!=null) {
 				for(Cookie c : cookies) {
@@ -33,10 +34,14 @@ public class ServletConnexion extends HttpServlet {
 						u = UtilisateurManager.getInstance().selectById(Integer.valueOf(c.getValue()));
 						if(u!=null) {
 							createSession(request, u,session);
-							response.sendRedirect("./accueil");
-							break;
+							bool = true;
 						}
 					}
+				}
+				if(bool) {
+					response.sendRedirect("./accueil");
+				}else {
+					returnBack(request, response,"/WEB-INF/Connexion.jsp");
 				}
 			}else {
 				returnBack(request, response,"/WEB-INF/Connexion.jsp");

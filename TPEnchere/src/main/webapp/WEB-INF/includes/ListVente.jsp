@@ -26,7 +26,21 @@
 					<textarea id="lblDescription" name="description" minlength="30" maxlength="300" required>${requestScope.unArticle.description}</textarea>
 				</div>
 				<div class="vente-form-4div">
-					<%@include file="/WEB-INF/includes/ListCategorie.jsp" %>
+					<label>Catégorie:</label>
+					<select name="choixCategorie">
+						<c:forEach var="elem" items="${requestScope.listCategorie}" varStatus="value">
+							<c:if test="${elem.numCat!=1}">
+								<c:choose>
+									<c:when test="${a.categ.numCat == elem.numCat}">
+										<option value="${elem.numCat}" selected>${elem.libelle}</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${elem.numCat}">${elem.libelle}</option>
+									</c:otherwise>
+								</c:choose>
+							</c:if>
+						</c:forEach>
+					</select>
 				</div>
 				<div class="vente-form-4div">
 					<label>Photo de l'article:</label>
